@@ -40,7 +40,7 @@ fun LoginCardContent(
             Spacer(modifier = Modifier.height(20.dp))
             RememberMeRow(checked, onCheckedChange, robotoFont)
             Spacer(modifier = Modifier.height(10.dp))
-            LoginButton { Toast.makeText(context, "Go to Main Screen", Toast.LENGTH_SHORT).show() }
+            LoginButton { navController.navigate(Constant.HOME_SCREEN) }
             Spacer(modifier = Modifier.height(8.dp))
             SignUpPrompt {
                 navController.navigate(Constant.REGISTRATION_SCREEN)
