@@ -1,5 +1,8 @@
 package com.techcognics.erpapp.util
 
+import com.techcognics.erpapp.R
+import com.techcognics.erpapp.data.DrawerMenu
+
 object Constant {
 
     //Screens
@@ -8,4 +11,67 @@ object Constant {
     const val HOME_SCREEN = "HOME"
 
 
+    //menuList
+    val menuItems = listOf(
+        DrawerMenu(
+            icon = R.drawable.hrm_icon,
+            title = "Human Resource Management",
+        ),
+        DrawerMenu(
+            icon = R.drawable.procurement_icon,
+            title = "Procurement Management",
+        ),
+        DrawerMenu(
+            icon = R.drawable.inventory_icon,
+            title = "Inventory Management",
+        ),
+        DrawerMenu(
+            icon = R.drawable.accounts_icon,
+            title = "Accounts and Financial Management",
+        ),
+        DrawerMenu(
+            icon = R.drawable.production_icon,
+            title = "Production Management",
+        ),
+        DrawerMenu(
+            icon = R.drawable.high_quality_icon,
+            title = "Quality Management",
+        ),
+        DrawerMenu(
+            icon = R.drawable.crm_icon,
+            title = "Customer Relationship Management",
+        ),
+        DrawerMenu(
+            icon = R.drawable.warehouse_icon,
+            title = "Warehouse Management",
+        ),
+        DrawerMenu(
+            icon = R.drawable.dispatch_icon,
+            title = "Dispatch and Logistics",
+        ),
+        DrawerMenu(
+            icon = R.drawable.franchise_icon,
+            title = "Franchise Management",
+        ),
+
+
+        DrawerMenu(
+            icon = R.drawable.project_management_icon,
+            title = "Compliance Management",
+        ),
+        DrawerMenu(
+            icon = R.drawable.asset_icon,
+            title = "Asset Management",
+        ),
+        DrawerMenu(
+            icon = R.drawable.project_icon,
+            title = "Project Management",
+        ),
+
+        DrawerMenu(
+            icon = R.drawable.planting_icon,
+            title = "Sustainability",
+        ),
+
+        )
 }

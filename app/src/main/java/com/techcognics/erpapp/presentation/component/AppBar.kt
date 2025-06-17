@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.DrawerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -30,19 +31,27 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.techcognics.erpapp.R
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppBar(modifier: Modifier = Modifier,navController: NavHostController) {
+fun AppBar(
+    modifier: Modifier = Modifier,
+    navController: NavHostController,
+    scope: CoroutineScope,
+    drawerState: DrawerState
+) {
     val context = LocalContext.current
     val profileBorderColor = colorResource(id = R.color.profile_border_color)
     TopAppBar(
         navigationIcon = {
         IconButton(
-            onClick = { Toast.makeText(context, "Drawer Menu", Toast.LENGTH_SHORT).show() },
+            onClick = { //Toast.makeText(context, "Drawer Menu", Toast.LENGTH_SHORT).show()
+                scope.launch { if (drawerState.isOpen == true) drawerState.close() else drawerState.open() }
+            },
 
             ) {
             Icon(
@@ -66,7 +75,9 @@ fun AppBar(modifier: Modifier = Modifier,navController: NavHostController) {
                 modifier = Modifier.padding(8.dp),
             )
         },
-        modifier = modifier.background(colorResource(R.color.app_bar_background_color)).padding(end = 10.dp),
+        modifier = modifier
+            .background(colorResource(R.color.app_bar_background_color))
+            .padding(end = 10.dp),
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = colorResource(R.color.app_bar_background_color),
         ),
