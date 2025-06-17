@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -13,21 +14,32 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.techcognics.erpapp.R
 import com.techcognics.erpapp.util.Constant
 
 @Composable
 fun AppDrawer(
-    modifier: Modifier = Modifier, onClickMenu: () -> Unit, onClickClose: () -> Unit
+    modifier: Modifier = Modifier,
+    onClickMenu: () -> Unit,
+    onClickClose: () -> Unit,
+    onClickSignOut:  () -> Unit
 ) {
     val stagesOne = listOf(
         "Company Setup", "User Management", "Role Management", "Authorization To Role"
@@ -59,11 +71,7 @@ fun AppDrawer(
                         contentDescription = "Close"
                     )
                 }
-
-
             }
-
-
 
             LazyColumn(
                 modifier = Modifier.fillMaxSize()
@@ -87,9 +95,11 @@ fun AppDrawer(
                         menuTitle = "CONFIGURATION"
                     )
                     VerticalStageStepper(stages = stagesTwo)
-                    Row(modifier = modifier
-                        .fillMaxWidth()
-                        .padding(start = 20.dp)) {
+                    Row(
+                        modifier = modifier
+                            .fillMaxWidth()
+                            .padding(start = 20.dp)
+                    ) {
                         Spacer(
                             modifier = modifier
                                 .height(0.5.dp)
@@ -105,6 +115,26 @@ fun AppDrawer(
                         icon = Constant.menuItems[item].icon,
                         menuTitle = Constant.menuItems[item].title
                     )
+                }
+                item {
+                    Row(modifier = modifier.height(30.dp).fillMaxWidth()) {
+                        Button(
+                            onClick = onClickSignOut,
+                            modifier = Modifier.height(26.dp),
+                            shape = RoundedCornerShape(3.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = colorResource(R.color.login_button),
+                                contentColor = Color.White
+                            ),
+                            contentPadding = PaddingValues(0.dp)
+                        ) {
+                            Text(
+                                text = "Sign Out", style = TextStyle(
+                                    fontSize = 11.sp, fontWeight = FontWeight.Medium
+                                )
+                            )
+                        }
+                    }
                 }
             }
 

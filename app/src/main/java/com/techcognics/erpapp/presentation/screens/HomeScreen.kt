@@ -1,5 +1,6 @@
 package com.techcognics.erpapp.presentation.screens
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -38,6 +39,7 @@ import com.techcognics.erpapp.presentation.component.StatCardItem
 import kotlinx.coroutines.launch
 
 
+@SuppressLint("ResourceType")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(modifier: Modifier = Modifier, navController: NavHostController) {
@@ -76,7 +78,13 @@ fun HomeScreen(modifier: Modifier = Modifier, navController: NavHostController) 
             AppDrawer(
                 modifier,
                 onClickClose = { scope.launch { if (drawerState.isOpen == true) drawerState.close() else drawerState.open() } },
-                onClickMenu = {
+                onClickMenu = {},
+                onClickSignOut = {
+
+                    navController.popBackStack(
+                        destinationId = navController.graph.startDestinationId, inclusive = false
+                    )
+
                 })
         }) {
         Scaffold(

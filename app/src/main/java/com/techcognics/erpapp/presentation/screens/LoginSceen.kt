@@ -1,5 +1,6 @@
 package com.techcognics.erpapp.presentation.screens
 
+import android.content.res.Configuration
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
@@ -92,8 +93,18 @@ fun LoginScreen(modifier: Modifier = Modifier, navController: NavHostController)
 
 
 @RequiresApi(Build.VERSION_CODES.Q)
+@Preview(showSystemUi = false, showBackground = false,
+    uiMode = Configuration.UI_MODE_NIGHT_NO or Configuration.UI_MODE_TYPE_UNDEFINED,
+    device = "spec:width=1080px,height=2340px,dpi=440"
+)
+@Composable
+private fun ShowLoginScreenDark() {
+   // LoginScreen()
+}
+
+@RequiresApi(Build.VERSION_CODES.Q)
 @Preview
 @Composable
-private fun ShowLoginScreen() {
-   // LoginScreen()
+private fun ShowLoginScreenLight() {
+    // LoginScreen()
 }
