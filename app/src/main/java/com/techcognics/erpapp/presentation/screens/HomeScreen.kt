@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -34,6 +35,7 @@ import com.techcognics.erpapp.R
 import com.techcognics.erpapp.data.StatCard
 import com.techcognics.erpapp.presentation.component.AppBar
 import com.techcognics.erpapp.presentation.component.AppDrawer
+import com.techcognics.erpapp.presentation.component.BottomNavigationBar
 import com.techcognics.erpapp.presentation.component.SalesComparisonCard
 import com.techcognics.erpapp.presentation.component.StatCardItem
 import kotlinx.coroutines.launch
@@ -93,8 +95,9 @@ fun HomeScreen(modifier: Modifier = Modifier, navController: NavHostController) 
                     navController = navController, scope = scope, drawerState = drawerState
                 )
             },
+            bottomBar = { BottomNavigationBar(navController = navController) },
 
-            modifier = modifier.background(colorResource(id = R.color.white)),
+            modifier = modifier.background(MaterialTheme.colorScheme.background),
         ) {
             Column(
                 modifier = modifier
