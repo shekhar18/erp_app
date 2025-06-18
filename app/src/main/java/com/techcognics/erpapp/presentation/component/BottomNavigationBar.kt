@@ -1,8 +1,11 @@
 package com.techcognics.erpapp.presentation.component
 
 import android.widget.Toast
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -28,7 +31,7 @@ fun BottomNavigationBar(modifier: Modifier = Modifier, navController: NavHostCon
     )
 
     NavigationBar(
-        modifier = modifier.height(35.dp),
+        modifier = modifier.windowInsetsPadding(WindowInsets.navigationBars).height(45.dp),
         tonalElevation = 10.dp,
         containerColor = Color(0xFFF8F8F8),
         content = {
