@@ -6,23 +6,18 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.AccountBox
-import androidx.compose.material.icons.outlined.AccountCircle
-import androidx.compose.material.icons.outlined.Call
-import androidx.compose.material.icons.outlined.LocationOn
-import androidx.compose.material.icons.outlined.Lock
-import androidx.compose.material.icons.outlined.MailOutline
-import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,13 +34,14 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.techcognics.erpapp.R
 import com.techcognics.erpapp.presentation.component.CopyrightFooter
-import com.techcognics.erpapp.presentation.component.RegistrationInputField
-import com.techcognics.erpapp.presentation.component.RegistrationTitle
-import com.techcognics.erpapp.presentation.component.SubmitButton
+import com.techcognics.erpapp.presentation.component.button.PrimaryButton
+import com.techcognics.erpapp.presentation.component.inputfields.IconInputField
+import com.techcognics.erpapp.presentation.component.text.RichTextRight
+import com.techcognics.erpapp.presentation.component.text.TitleText
 
 @Composable
 fun RegistrationScreen(modifier: Modifier = Modifier, navController: NavController) {
-    val robotoFont = FontFamily(Font(R.font.roboto))
+    FontFamily(Font(R.font.roboto))
     val context = LocalContext.current
     val scrollState = rememberScrollState()
     Box(
@@ -74,67 +70,92 @@ fun RegistrationScreen(modifier: Modifier = Modifier, navController: NavControll
                     ), colors = CardDefaults.cardColors(
                     containerColor = colorResource(R.color.white)
                 ), elevation = CardDefaults.elevatedCardElevation(10.dp), content = {
-                    RegistrationTitle(robotoFont = robotoFont)
+                    Row(
+                        modifier = modifier
+                            .fillMaxWidth()
+                            .padding(top = 10.dp, start = 10.dp)
+                    ) { TitleText("Registration") }
+                    //RegistrationTitle(robotoFont = robotoFont)
+                    Row(
+                        modifier = modifier
+                            .fillMaxWidth()
+                            .padding(top = 5.dp, start = 10.dp)
+                    ) {
+                        RichTextRight(
+                            "If you already have an account ? ",
+                            "Login Here",
+                            MaterialTheme.colorScheme.onSecondary,
+                            MaterialTheme.colorScheme.onPrimary,
+                            onclick = {}
+                        )
+                    }
                     Spacer(modifier = modifier.height(14.dp))
-                    RegistrationInputField(
-                        icon = Icons.Outlined.MailOutline,
+                    IconInputField(
+                        icon = R.drawable.email_icon,
                         contentDescription = "Email",
                         isPasswordField = false,
                         hintText = "E Mail",
                         keypadType = KeyboardType.Email
                     )
                     Spacer(modifier = modifier.height(5.dp))
-                    RegistrationInputField(
-                        icon = Icons.Outlined.Lock,
+                    IconInputField(
+                        icon = R.drawable.password_icon,
                         contentDescription = "Password",
                         isPasswordField = true,
                         hintText = "Password",
                         keypadType = KeyboardType.Password
                     )
                     Spacer(modifier = modifier.height(5.dp))
-                    RegistrationInputField(
-                        icon = Icons.Outlined.Person,
+                    IconInputField(
+                        icon = R.drawable.user_icon,
                         contentDescription = "Company Name",
                         isPasswordField = false,
                         hintText = "Company Name",
-                        keypadType =  KeyboardType.Text
+                        keypadType = KeyboardType.Text
                     )
                     Spacer(modifier = modifier.height(5.dp))
-                    RegistrationInputField(
-                        icon = Icons.Outlined.AccountBox,
+                    IconInputField(
+                        icon = R.drawable.add_user_icon,
                         contentDescription = "Contact Person",
                         isPasswordField = false,
                         hintText = "Contact Person",
-                        keypadType =  KeyboardType.Text
+                        keypadType = KeyboardType.Text
                     )
                     Spacer(modifier = modifier.height(5.dp))
-                    RegistrationInputField(
-                        icon = Icons.Outlined.LocationOn,
+                    IconInputField(
+                        icon = R.drawable.country_icon,
                         contentDescription = "Country",
                         isPasswordField = false,
                         hintText = "Country",
-                        keypadType =  KeyboardType.Text
+                        keypadType = KeyboardType.Text
                     )
                     Spacer(modifier = modifier.height(5.dp))
-                    RegistrationInputField(
-                        icon = Icons.Outlined.Call,
+                    IconInputField(
+                        icon = R.drawable.phone_icon,
                         contentDescription = "Mobile Number",
                         isPasswordField = false,
                         hintText = "Mobile Number",
-                        keypadType =  KeyboardType.Phone
+                        keypadType = KeyboardType.Phone
                     )
                     Spacer(modifier = modifier.height(5.dp))
-                    RegistrationInputField(
-                        icon = Icons.Outlined.AccountCircle,
+                    IconInputField(
+                        icon = R.drawable.supplier_icon,
                         contentDescription = "Supplier",
                         isPasswordField = false,
                         hintText = "Supplier",
-                        keypadType =  KeyboardType.Text
+                        keypadType = KeyboardType.Text
                     )
                     Spacer(modifier = modifier.height(16.dp))
-                    SubmitButton {
-                        Toast.makeText(context, "Submit Data", Toast.LENGTH_SHORT).show()
+                    Row(
+                        modifier = modifier
+                            .fillMaxWidth()
+                            .padding(start = 10.dp, end = 10.dp)
+                    ) {
+                        PrimaryButton("Submit") {
+                            Toast.makeText(context, "Submit Data", Toast.LENGTH_SHORT).show()
+                        }
                     }
+
                 })
             Spacer(modifier.height(40.dp))
             CopyrightFooter()

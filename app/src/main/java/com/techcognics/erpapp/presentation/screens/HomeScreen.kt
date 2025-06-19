@@ -33,9 +33,9 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.techcognics.erpapp.R
 import com.techcognics.erpapp.data.StatCard
-import com.techcognics.erpapp.presentation.component.AppBar
+import com.techcognics.erpapp.presentation.component.topbar.AppBar
 import com.techcognics.erpapp.presentation.component.AppDrawer
-import com.techcognics.erpapp.presentation.component.BottomNavigationBar
+import com.techcognics.erpapp.presentation.component.bottombar.BottomNavigationBar
 import com.techcognics.erpapp.presentation.component.SalesComparisonCard
 import com.techcognics.erpapp.presentation.component.StatCardItem
 import kotlinx.coroutines.launch

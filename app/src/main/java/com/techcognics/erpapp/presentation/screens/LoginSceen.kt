@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -67,10 +68,10 @@ fun LoginScreen(modifier: Modifier = Modifier, navController: NavHostController)
                     .height(341.dp)
                     .border(
                         width = 8.dp,
-                        color = colorResource(R.color.card_border_color), // your color
-                        shape = RectangleShape // no corner radius
+                        color = MaterialTheme.colorScheme.outline,
+                        shape = RectangleShape
                     ), colors = CardDefaults.cardColors(
-                    containerColor = colorResource(R.color.white) // Light cyan background
+                    containerColor = MaterialTheme.colorScheme.surface
                 ), content = {
 
                     LoginCardContent(

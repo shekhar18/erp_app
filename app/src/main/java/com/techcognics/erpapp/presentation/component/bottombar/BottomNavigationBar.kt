@@ -1,4 +1,4 @@
-package com.techcognics.erpapp.presentation.component
+package com.techcognics.erpapp.presentation.component.bottombar
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.WindowInsets
