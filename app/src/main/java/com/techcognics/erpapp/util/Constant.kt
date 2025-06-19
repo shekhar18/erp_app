@@ -9,6 +9,8 @@ object Constant {
     const val LOGIN_SCREEN = "LOGIN"
     const val REGISTRATION_SCREEN = "REGISTRATION"
     const val HOME_SCREEN = "HOME"
+    const val BASE_URL = "http://ec2-13-48-42-94.eu-north-1.compute.amazonaws.com:8080/api/"
+
 
 
     //menuList

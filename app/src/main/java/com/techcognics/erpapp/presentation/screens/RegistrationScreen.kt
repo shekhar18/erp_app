@@ -24,7 +24,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -66,9 +65,11 @@ fun RegistrationScreen(modifier: Modifier = Modifier, navController: NavControll
                     .width(294.dp)
                     .height(341.dp)
                     .border(
-                        width = 4.dp, color = colorResource(R.color.white), shape = RectangleShape
+                        width = 4.dp,
+                        color = MaterialTheme.colorScheme.background,
+                        shape = RectangleShape
                     ), colors = CardDefaults.cardColors(
-                    containerColor = colorResource(R.color.white)
+                    containerColor = MaterialTheme.colorScheme.background
                 ), elevation = CardDefaults.elevatedCardElevation(10.dp), content = {
                     Row(
                         modifier = modifier
@@ -86,8 +87,7 @@ fun RegistrationScreen(modifier: Modifier = Modifier, navController: NavControll
                             "Login Here",
                             MaterialTheme.colorScheme.onSecondary,
                             MaterialTheme.colorScheme.onPrimary,
-                            onclick = {}
-                        )
+                            onclick = {})
                     }
                     Spacer(modifier = modifier.height(14.dp))
                     IconInputField(
