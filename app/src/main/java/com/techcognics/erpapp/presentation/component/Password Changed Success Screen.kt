@@ -1,5 +1,6 @@
 package com.techcognics.erpapp.presentation.component
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Wallpapers
 import androidx.compose.ui.unit.dp
 import com.techcognics.erpapp.R
 
@@ -51,11 +53,122 @@ fun PasswordChangedSuccessScreen() {
 
 annotation class Composable
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, device = "spec:width=1080px,height=2340px,dpi=440,isRound=true",
+    uiMode = Configuration.UI_MODE_NIGHT_NO or Configuration.UI_MODE_TYPE_NORMAL,
+    wallpaper = Wallpapers.NONE
+)
 @Composable
 private fun PreviewPasswordChangedSuccessScreen() {
     Sessionexpiredscreen()
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
