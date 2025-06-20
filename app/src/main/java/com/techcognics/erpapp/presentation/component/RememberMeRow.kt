@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.techcognics.erpapp.R
 
 @Composable
-fun RememberMeRow(checked: Boolean, onCheckedChange: (Boolean) -> Unit, robotoFont: FontFamily) {
+fun RememberMeRow(checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.Top,
@@ -51,7 +51,7 @@ fun RememberMeRow(checked: Boolean, onCheckedChange: (Boolean) -> Unit, robotoFo
         Text(
             text = "Forgot Password",
             style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSecondary,
+            color = MaterialTheme.colorScheme.secondary,
             modifier = Modifier.padding(top = 3.dp)
         )
     }

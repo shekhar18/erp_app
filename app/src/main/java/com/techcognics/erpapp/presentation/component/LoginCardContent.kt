@@ -14,7 +14,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.techcognics.erpapp.presentation.component.button.PrimaryButton
@@ -30,11 +29,10 @@ fun LoginCardContent(
     onPasswordChange: (String) -> Unit,
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit,
-    robotoFont: FontFamily,
     fontBlue: Color,
-    navController: NavHostController
+    navController: NavHostController,
+    onClick:()-> Unit
 ) {
-    remember { MutableInteractionSource() }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -44,9 +42,9 @@ fun LoginCardContent(
             Spacer(modifier = Modifier.height(10.dp))
             InputField("Password", password, onPasswordChange, isPassword = true)
             Spacer(modifier = Modifier.height(20.dp))
-            RememberMeRow(checked, onCheckedChange, robotoFont)
+            RememberMeRow(checked, onCheckedChange)
             Spacer(modifier = Modifier.height(10.dp))
-            PrimaryButton("Login") { navController.navigate(Constant.HOME_SCREEN) }
+            PrimaryButton("Login") {onClick() }
             Spacer(modifier = Modifier.height(8.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center

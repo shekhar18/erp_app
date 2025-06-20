@@ -10,7 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.techcognics.erpapp.presentation.screens.HomeScreen
-import com.techcognics.erpapp.presentation.screens.LoginScreen
+import com.techcognics.erpapp.presentation.screens.login.LoginScreen
 import com.techcognics.erpapp.presentation.screens.RegistrationScreen
 import com.techcognics.erpapp.util.Constant
 

@@ -1,7 +1,8 @@
-package com.techcognics.erpapp.presentation.screens
+package com.techcognics.erpapp.presentation.screens.login
 
 import android.content.res.Configuration
 import android.os.Build
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -15,36 +16,51 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
+import androidx.hilt.navigation.compose.hiltViewModel
+
 import androidx.navigation.NavHostController
 import com.techcognics.erpapp.R
+import com.techcognics.erpapp.presentation.base.Result
 import com.techcognics.erpapp.presentation.component.CopyrightFooter
 import com.techcognics.erpapp.presentation.component.LoginCardContent
+import com.techcognics.erpapp.util.Constant
 
 @RequiresApi(Build.VERSION_CODES.Q)
 @Composable
 fun LoginScreen(modifier: Modifier = Modifier, navController: NavHostController) {
+    val context = LocalContext.current
+    val viewModel: LoginViewModel = hiltViewModel()
+    val loginState = viewModel.loginState
 
-    val robotoFont = FontFamily(Font(R.font.roboto))
-    var userId by remember { mutableStateOf("johndoe1499000") }
-    var password by remember { mutableStateOf("123456789") }
-    var checked by remember { mutableStateOf(false) }
+  /*  when (val state = loginState) {
+        is Result.Loading -> {
+            CircularProgressIndicator()
+        }
+
+        is Result.Success<*> -> {
+
+            navController.navigate(Constant.HOME_SCREEN)
+        }
+
+        is Result.Error -> {
+            Toast.makeText(context, state.message, Toast.LENGTH_SHORT).show()
+        }
+    }*/
+
+
 
     Box(
         modifier = modifier.fillMaxSize()
@@ -75,16 +91,18 @@ fun LoginScreen(modifier: Modifier = Modifier, navController: NavHostController)
                 ), content = {
 
                     LoginCardContent(
-                        userId = userId,
-                        onUserIdChange = { userId = it },
-                        password = password,
-                        onPasswordChange = { password = it },
-                        checked = checked,
-                        onCheckedChange = { checked = it },
-                        robotoFont = robotoFont,
+                        userId = viewModel.userId.observeAsState().value.toString(),
+                        onUserIdChange = { viewModel.updateUserid(it) },
+                        password = viewModel.userPassword.observeAsState().value.toString(),
+                        onPasswordChange = { viewModel.updatePassword(it) },
+                        checked = viewModel.rememberCheck.observeAsState().value as Boolean,
+                        onCheckedChange = { viewModel.updateRememberCheck(it) },
                         fontBlue = colorResource(R.color.font_blue_color),
-                        navController
-                    )
+                        navController,
+                        onClick = {
+                            viewModel.getLogin()
+
+                        })
                 })
             Spacer(modifier.height(40.dp))
             CopyrightFooter()
@@ -94,13 +112,15 @@ fun LoginScreen(modifier: Modifier = Modifier, navController: NavHostController)
 
 
 @RequiresApi(Build.VERSION_CODES.Q)
-@Preview(showSystemUi = false, showBackground = false,
+@Preview(
+    showSystemUi = false,
+    showBackground = false,
     uiMode = Configuration.UI_MODE_NIGHT_NO or Configuration.UI_MODE_TYPE_UNDEFINED,
     device = "spec:width=1080px,height=2340px,dpi=440"
 )
 @Composable
 private fun ShowLoginScreenDark() {
-   // LoginScreen()
+    // LoginScreen()
 }
 
 @RequiresApi(Build.VERSION_CODES.Q)

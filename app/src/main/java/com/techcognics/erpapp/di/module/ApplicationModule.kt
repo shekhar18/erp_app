@@ -2,6 +2,9 @@ package com.techcognics.erpapp.di.module
 
 
 import com.techcognics.erpapp.data.network.AppApiService
+import com.techcognics.erpapp.data.repositorys.UserRepository
+import com.techcognics.erpapp.data.repositorys.UserRepositoryImpl
+import com.techcognics.erpapp.domain.usecase.LoginUseCase
 import com.techcognics.erpapp.util.Constant
 import dagger.Module
 import dagger.Provides
@@ -16,12 +19,12 @@ import retrofit2.converter.gson.GsonConverterFactory
 @InstallIn(SingletonComponent::class)
 class ApplicationModule {
 
-    @Singleton
+
     @Provides
     fun provideGsonConverterFactory(): GsonConverterFactory = GsonConverterFactory.create()
 
 
-    @Singleton
+
     @Provides
     fun provideAppApiService(
         gsonFactory: GsonConverterFactory
@@ -29,4 +32,13 @@ class ApplicationModule {
         return Retrofit.Builder().baseUrl(Constant.BASE_URL).addConverterFactory(gsonFactory)
             .build().create(AppApiService::class.java)
     }
+
+
+    @Provides
+    fun provideUserRepository(appApiService: AppApiService): UserRepository =
+        UserRepositoryImpl(appApiService)
+
+
+    @Provides
+    fun provideLoginUserCase(userRepository: UserRepository) = LoginUseCase(userRepository)
 }

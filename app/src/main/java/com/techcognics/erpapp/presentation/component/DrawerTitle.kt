@@ -12,11 +12,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -26,9 +26,10 @@ import androidx.compose.ui.unit.sp
 fun DrawerTitle(
     text: String, icon: Int, isSelected: Boolean
 ) {
-    val backgroundColor = if (isSelected) Color(0xFFF6F8FF) else Color.Transparent
-    val contentColor = Color(0xFF3B3486)  // Dark purple color
-    val indicatorColor = Color(0xFF3B3486)
+    val backgroundColor =
+        MaterialTheme.colorScheme.background
+    val contentColor = MaterialTheme.colorScheme.primary  // Dark purple color
+    val indicatorColor = MaterialTheme.colorScheme.primary
 
     Box(
         modifier = Modifier
@@ -50,7 +51,7 @@ fun DrawerTitle(
             )
             Spacer(modifier = Modifier.width(16.dp))
             Text(
-                text = text, color = contentColor, fontSize = 18.sp, fontWeight = FontWeight.Bold
+                text = text, color = contentColor, style = MaterialTheme.typography.bodyLarge
             )
         }
 
