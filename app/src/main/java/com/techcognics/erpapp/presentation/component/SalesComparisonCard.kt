@@ -10,6 +10,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -49,7 +50,7 @@ fun SalesComparisonCard(modifier: Modifier = Modifier) {
                     pushStringAnnotation(tag = "percentage", annotation = "percentage")
                     withStyle(
                         style = SpanStyle(
-                            color = colorResource(R.color.sales_comparison), // Dark Blue
+                            color = MaterialTheme.colorScheme.onSecondaryContainer, // Dark Blue
                             fontWeight = FontWeight.W200,
                         )
                     ) {

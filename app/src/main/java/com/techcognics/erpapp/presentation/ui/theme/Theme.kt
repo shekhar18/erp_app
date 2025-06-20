@@ -30,7 +30,7 @@ private val LightColorScheme = lightColorScheme(
     secondary = SecondaryColor,
     onSecondary = OnSecondaryColor,
     secondaryContainer = OnSecondaryColor,
-    onSecondaryContainer = OnSurfaceColor,
+    onSecondaryContainer = SuccessColor,
     background = BackgroundColor,
     onBackground = OnBackgroundColor,
     surface = SurfaceColor,
@@ -40,6 +40,7 @@ private val LightColorScheme = lightColorScheme(
     tertiary = TertiaryColor,
     onTertiary = OnPrimaryColor,
     outline = PrimaryOutline,
+
 
     )
 

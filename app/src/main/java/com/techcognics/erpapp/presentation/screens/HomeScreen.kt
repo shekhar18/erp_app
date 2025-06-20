@@ -110,7 +110,7 @@ fun HomeScreen(modifier: Modifier = Modifier, navController: NavHostController) 
                     Text(
                         "Techcognics India Pvt LTD Sales Dashboard",
                         style = TextStyle(
-                            color = colorResource(R.color.login_here_text_color),
+                            color = MaterialTheme.colorScheme.primary,
                             fontSize = 14.sp,
                             fontFamily = FontFamily(Font(R.font.roboto)),
                             fontWeight = FontWeight.SemiBold,
