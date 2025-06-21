@@ -6,12 +6,18 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -23,7 +29,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -33,11 +38,12 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.techcognics.erpapp.R
 import com.techcognics.erpapp.data.StatCard
-import com.techcognics.erpapp.presentation.component.topbar.AppBar
 import com.techcognics.erpapp.presentation.component.AppDrawer
-import com.techcognics.erpapp.presentation.component.bottombar.BottomNavigationBar
 import com.techcognics.erpapp.presentation.component.SalesComparisonCard
 import com.techcognics.erpapp.presentation.component.StatCardItem
+import com.techcognics.erpapp.presentation.component.bottombar.BottomNavigationBar
+import com.techcognics.erpapp.presentation.component.charts.Pie
+import com.techcognics.erpapp.presentation.component.topbar.AppBar
 import kotlinx.coroutines.launch
 
 
@@ -135,6 +141,21 @@ fun HomeScreen(modifier: Modifier = Modifier, navController: NavHostController) 
                     }
                 }
                 SalesComparisonCard()
+                Spacer(modifier = modifier.height(10.dp))
+                Card(
+                    modifier = modifier
+                        .height(400.dp)
+                        .width(350.dp),
+                    shape = RoundedCornerShape(4.dp),
+                    elevation = CardDefaults.cardElevation(
+                        defaultElevation = 8.dp,
+                    ),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.background
+                    )
+                ) {
+                    Pie()
+                }
             }
         }
     }

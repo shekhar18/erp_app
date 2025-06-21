@@ -1,4 +1,4 @@
-package com.techcognics.erpapp.presentation.screens
+package com.techcognics.erpapp.presentation.screens.registration
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -30,6 +30,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.techcognics.erpapp.R
 import com.techcognics.erpapp.presentation.component.CopyrightFooter
@@ -43,6 +44,9 @@ fun RegistrationScreen(modifier: Modifier = Modifier, navController: NavControll
     FontFamily(Font(R.font.roboto))
     val context = LocalContext.current
     val scrollState = rememberScrollState()
+
+    val viewModel: RegistrationViewModel = hiltViewModel()
+
     Box(
         modifier = modifier.fillMaxSize()
     ) {

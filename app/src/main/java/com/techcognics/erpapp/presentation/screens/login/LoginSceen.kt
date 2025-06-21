@@ -2,7 +2,6 @@ package com.techcognics.erpapp.presentation.screens.login
 
 import android.content.res.Configuration
 import android.os.Build
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -16,8 +15,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -30,36 +29,20 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-
 import androidx.navigation.NavHostController
 import com.techcognics.erpapp.R
 import com.techcognics.erpapp.presentation.base.Result
 import com.techcognics.erpapp.presentation.component.CopyrightFooter
+import com.techcognics.erpapp.presentation.component.Loader
 import com.techcognics.erpapp.presentation.component.LoginCardContent
 import com.techcognics.erpapp.util.Constant
 
 @RequiresApi(Build.VERSION_CODES.Q)
 @Composable
 fun LoginScreen(modifier: Modifier = Modifier, navController: NavHostController) {
-    val context = LocalContext.current
+    LocalContext.current
     val viewModel: LoginViewModel = hiltViewModel()
-    val loginState = viewModel.loginState
-
-  /*  when (val state = loginState) {
-        is Result.Loading -> {
-            CircularProgressIndicator()
-        }
-
-        is Result.Success<*> -> {
-
-            navController.navigate(Constant.HOME_SCREEN)
-        }
-
-        is Result.Error -> {
-            Toast.makeText(context, state.message, Toast.LENGTH_SHORT).show()
-        }
-    }*/
-
+    val loginState = viewModel.loginState.observeAsState().value
 
 
     Box(
@@ -90,19 +73,38 @@ fun LoginScreen(modifier: Modifier = Modifier, navController: NavHostController)
                     containerColor = MaterialTheme.colorScheme.surface
                 ), content = {
 
-                    LoginCardContent(
-                        userId = viewModel.userId.observeAsState().value.toString(),
-                        onUserIdChange = { viewModel.updateUserid(it) },
-                        password = viewModel.userPassword.observeAsState().value.toString(),
-                        onPasswordChange = { viewModel.updatePassword(it) },
-                        checked = viewModel.rememberCheck.observeAsState().value as Boolean,
-                        onCheckedChange = { viewModel.updateRememberCheck(it) },
-                        fontBlue = colorResource(R.color.font_blue_color),
-                        navController,
-                        onClick = {
-                            viewModel.getLogin()
+                    when (loginState) {
+                        is Result.Loading -> {
+                            Loader()
+                        }
 
-                        })
+                        is Result.Success<*> -> {
+                            Loader()
+                            navController.popBackStack()
+                            navController.navigate(Constant.HOME_SCREEN)
+                        }
+
+                        is Result.Error -> {
+                            Text(text = loginState.message)
+                        }
+
+                        else -> {
+                            LoginCardContent(
+                                userId = viewModel.userId.observeAsState().value ?: "",
+                                onUserIdChange = { viewModel.updateUserid(it) },
+                                password = viewModel.userPassword.observeAsState().value ?: "",
+                                onPasswordChange = { viewModel.updatePassword(it) },
+                                checked = viewModel.rememberCheck.observeAsState().value == true,
+                                onCheckedChange = { viewModel.updateRememberCheck(it) },
+                                fontBlue = colorResource(R.color.font_blue_color),
+                                navController,
+                                onClick = {
+                                    viewModel.getLogin()
+
+                                })
+                        }
+                    }
+
                 })
             Spacer(modifier.height(40.dp))
             CopyrightFooter()

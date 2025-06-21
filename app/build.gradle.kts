@@ -76,4 +76,7 @@ dependencies {
     implementation(libs.converter.gson)
     implementation(libs.okhttp)
     implementation(libs.interceptor)
+
+    //chart
+    implementation (libs.compose.charts)
 }

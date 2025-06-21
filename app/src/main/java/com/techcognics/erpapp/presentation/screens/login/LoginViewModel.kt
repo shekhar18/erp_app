@@ -7,11 +7,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.techcognics.erpapp.data.login_data.LoginResponse
 import com.techcognics.erpapp.domain.usecase.LoginUseCase
+import com.techcognics.erpapp.presentation.base.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(val loginUseCase: LoginUseCase) : ViewModel() {
@@ -48,14 +48,20 @@ class LoginViewModel @Inject constructor(val loginUseCase: LoginUseCase) : ViewM
         Log.d(LOGIN_TAG, rememberCheck.value.toString())
 
         viewModelScope.launch(Dispatchers.IO) {
-           // _loginState.postValue(Result)
-            val token = loginUseCase.invoke(
-                userId.value.toString(),
-                userPassword.value.toString(),
-                rememberCheck.value as Boolean
-            ).tokenId
+            _loginState.postValue(Result.Loading)
 
-            Log.d(LOGIN_TAG, token.toString())
+            try {
+                val response = loginUseCase.invoke(
+                    userId.value.toString(),
+                    userPassword.value.toString(),
+                    rememberCheck.value as Boolean
+                )
+
+                _loginState.postValue(Result.Success(response))
+
+            } catch (e: Exception) {
+                _loginState.postValue(Result.Error(e.toString()))
+            }
         }
     }
 

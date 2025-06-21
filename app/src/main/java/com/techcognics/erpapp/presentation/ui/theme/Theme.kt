@@ -7,7 +7,7 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 
 private val DarkColorScheme = darkColorScheme(
-    primary = DarkPrimaryColor,
+    primary = DarkSecondaryColor,
     onPrimary = DarkOnPrimaryColor,
     primaryContainer = DarkPrimaryVariant,
     secondary = DarkSecondaryColor,
@@ -24,7 +24,7 @@ private val DarkColorScheme = darkColorScheme(
 private val LightColorScheme = lightColorScheme(
 
     primary = PrimaryColor,//main theme color.
-    onPrimary = OnPrimaryColor, //this onPrimary is User in for font and Icon we use in app
+    onPrimary = OnPrimaryColor, //This onPrimary Color is use for Icon and Text which come on the Primary color
     primaryContainer = OnPrimaryColor,
     onPrimaryContainer = OnSurfaceColor,
     secondary = SecondaryColor,

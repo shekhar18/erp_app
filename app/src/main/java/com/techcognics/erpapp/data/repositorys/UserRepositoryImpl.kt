@@ -9,7 +9,7 @@ import javax.inject.Inject
 class UserRepositoryImpl @Inject constructor(val appApiService: AppApiService): UserRepository {
     override suspend fun login(
         loginRequest: LoginRequest
-    ): LoginResponse {
+    ): LoginResponse{
         Log.d("UserRepo","UserRepo")
        return appApiService.getAuthenticate(loginRequest)
     }
