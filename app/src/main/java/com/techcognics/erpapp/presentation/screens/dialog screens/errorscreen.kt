@@ -1,4 +1,4 @@
-package com.techcognics.erpapp.presentation.component
+package com.techcognics.erpapp.presentation.screens
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
@@ -16,13 +16,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.Wallpapers
 import androidx.compose.ui.unit.dp
 import com.techcognics.erpapp.R
 
+
 @Composable
-fun PasswordChangedSuccessScreen() {
+fun ErrorScreen() {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -31,147 +33,22 @@ fun PasswordChangedSuccessScreen() {
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Icon(
-                painter = painterResource(id = R.drawable.success), // your success icon
-                contentDescription = "Success",
-                tint = Color(0xFF4CAF50), // green color
+                painter = painterResource(id = R.drawable.ic_error), // your error icon
+                contentDescription = "Error",
+                tint = Color.Red,
                 modifier = Modifier.size(64.dp)
             )
             Spacer(modifier = Modifier.height(16.dp))
-            Text(text = "Congratulations",
+            Text(text = "An Error has occurred.\nPlease try again",
                 style = MaterialTheme.typography.titleMedium,
-                color = Color(0xFF4CAF50)) // Green Text
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = "You have successfully changed your password.",
-                style = MaterialTheme.typography.bodyMedium,
-                textAlign = TextAlign.Center
-            )
+                textAlign = TextAlign.Center)
         }
     }
 }
 
 
-annotation class Composable
-
-@Preview(showBackground = true, device = "spec:width=1080px,height=2340px,dpi=440,isRound=true",
-    uiMode = Configuration.UI_MODE_NIGHT_NO or Configuration.UI_MODE_TYPE_NORMAL,
-    wallpaper = Wallpapers.NONE
-)
+@Preview(showBackground = true)
 @Composable
-private fun PreviewPasswordChangedSuccessScreen() {
-    Sessionexpiredscreen()
+private fun ErrorScreen() {
+    ErrorScreen()
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

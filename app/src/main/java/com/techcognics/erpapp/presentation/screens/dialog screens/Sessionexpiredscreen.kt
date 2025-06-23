@@ -1,4 +1,4 @@
-package com.techcognics.erpapp.presentation.component
+package com.techcognics.erpapp.presentation.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -40,7 +40,7 @@ fun Sessionexpiredscreen() {
     }
 }
 
-annotation class Composable
+
 
 @Preview(showBackground = true)
 @Composable

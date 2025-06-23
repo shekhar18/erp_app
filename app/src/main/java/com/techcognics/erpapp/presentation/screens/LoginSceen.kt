@@ -29,7 +29,6 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.techcognics.erpapp.R
 import com.techcognics.erpapp.presentation.component.CopyrightFooter
@@ -97,3 +96,18 @@ fun LoginScreen(modifier: Modifier = Modifier, navController: NavHostController)
 private fun ShowLoginScreen() {
    // LoginScreen()
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
