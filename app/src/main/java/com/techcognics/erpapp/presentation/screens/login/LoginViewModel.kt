@@ -18,7 +18,7 @@ class LoginViewModel @Inject constructor(val loginUseCase: LoginUseCase) : ViewM
 
     private val LOGIN_TAG = "LoginViewModel"
 
-    private val _loginState = MutableLiveData<Result<LoginResponse>>()
+    private val _loginState = MutableLiveData<Result<LoginResponse>>(Result.Idle)
     val loginState: LiveData<Result<LoginResponse>> = _loginState
 
     private val _userid: MutableLiveData<String> = MutableLiveData<String>("")
@@ -40,6 +40,10 @@ class LoginViewModel @Inject constructor(val loginUseCase: LoginUseCase) : ViewM
 
     fun updateRememberCheck(isCheck: Boolean) {
         _rememberCheck.value = isCheck
+    }
+
+    fun reset() {
+        _loginState.value = Result.Idle
     }
 
     fun getLogin() {

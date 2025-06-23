@@ -5,6 +5,7 @@ import com.techcognics.erpapp.data.network.AppApiService
 import com.techcognics.erpapp.data.repositorys.UserRepository
 import com.techcognics.erpapp.data.repositorys.UserRepositoryImpl
 import com.techcognics.erpapp.domain.usecase.LoginUseCase
+import com.techcognics.erpapp.domain.usecase.RegistrationUseCase
 import com.techcognics.erpapp.util.Constant
 import dagger.Module
 import dagger.Provides
@@ -41,4 +42,7 @@ class ApplicationModule {
 
     @Provides
     fun provideLoginUserCase(userRepository: UserRepository) = LoginUseCase(userRepository)
+
+    @Provides
+    fun provideRegistrationUserCase(userRepository: UserRepository) = RegistrationUseCase(userRepository)
 }

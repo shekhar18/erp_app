@@ -35,6 +35,7 @@ import com.techcognics.erpapp.presentation.base.Result
 import com.techcognics.erpapp.presentation.component.CopyrightFooter
 import com.techcognics.erpapp.presentation.component.Loader
 import com.techcognics.erpapp.presentation.component.LoginCardContent
+import com.techcognics.erpapp.presentation.component.button.PrimaryButton
 import com.techcognics.erpapp.util.Constant
 
 @RequiresApi(Build.VERSION_CODES.Q)
@@ -85,10 +86,16 @@ fun LoginScreen(modifier: Modifier = Modifier, navController: NavHostController)
                         }
 
                         is Result.Error -> {
-                            Text(text = loginState.message)
+                            Column {
+                                Text(text = loginState.message)
+                                PrimaryButton("Back") {
+                                    viewModel.reset()
+                                }
+                            }
+
                         }
 
-                        else -> {
+                        is Result.Idle -> {
                             LoginCardContent(
                                 userId = viewModel.userId.observeAsState().value ?: "",
                                 onUserIdChange = { viewModel.updateUserid(it) },
@@ -102,6 +109,10 @@ fun LoginScreen(modifier: Modifier = Modifier, navController: NavHostController)
                                     viewModel.getLogin()
 
                                 })
+                        }
+
+                        else -> {
+
                         }
                     }
 

@@ -35,6 +35,8 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun IconInputField(
+    value: String,
+    onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     icon: Int,
     contentDescription: String = "",
@@ -42,7 +44,6 @@ fun IconInputField(
     isPasswordField: Boolean = false,
     keypadType: KeyboardType
 ) {
-    var value by remember { mutableStateOf("") }
     var isFocused by remember { mutableStateOf(false) }
 
     val labelOffsetY by animateFloatAsState(
@@ -85,7 +86,7 @@ fun IconInputField(
                     },
                 value = value,
 
-                onValueChange = { value = it },
+                onValueChange = onValueChange,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = keypadType // Opens number keypad
                 ),
@@ -99,7 +100,7 @@ fun IconInputField(
                             Text(
                                 text = hintText,
                                 style = MaterialTheme.typography.labelMedium,
-                                color = MaterialTheme.colorScheme.onBackground
+                                color = MaterialTheme.colorScheme.onBackground,
                             )
                             Text(
 
@@ -108,12 +109,13 @@ fun IconInputField(
                                 color = MaterialTheme.colorScheme.error
                             )
                         }
-                    }else{
+                    } else {
                         Row {
-                            Text( modifier = modifier
-                                .background(Color.White)
-                                .padding(start = if (icon != null) 15.dp else 0.dp)
-                                .offset(y = if (isFocused)labelOffsetY.dp else 0.dp),
+                            Text(
+                                modifier = modifier
+                                    .background(MaterialTheme.colorScheme.background)
+                                    .padding(start = if (icon != null) 15.dp else 0.dp)
+                                    .offset(y = if (isFocused) labelOffsetY.dp else 0.dp),
                                 text = hintText,
                                 style = MaterialTheme.typography.labelMedium,
                                 color = MaterialTheme.colorScheme.onBackground
@@ -121,7 +123,7 @@ fun IconInputField(
                             Text(
                                 modifier = modifier
                                     .background(Color.White)
-                                    .offset(y = if (isFocused)labelOffsetY.dp else 0.dp),
+                                    .offset(y = if (isFocused) labelOffsetY.dp else 0.dp),
                                 text = "*",
                                 style = MaterialTheme.typography.labelMedium,
                                 color = MaterialTheme.colorScheme.error
@@ -132,8 +134,7 @@ fun IconInputField(
                 })
 
 
-        }
-     /*   if (isFocused) {
+        }/*   if (isFocused) {
             Row {
                 Text(
                     modifier = modifier
