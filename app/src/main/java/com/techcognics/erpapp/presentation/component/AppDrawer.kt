@@ -27,12 +27,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.techcognics.erpapp.R
+import com.techcognics.erpapp.presentation.component.dropdownmenu.ExpandableDrawerMenuItem
 import com.techcognics.erpapp.util.Constant
 
 @Composable
@@ -40,7 +41,9 @@ fun AppDrawer(
     modifier: Modifier = Modifier,
     onClickMenu: () -> Unit,
     onClickClose: () -> Unit,
-    onClickSignOut:  () -> Unit
+    onClickSignOut: () -> Unit,
+    homeNavController: NavHostController,
+    mainNavController: NavHostController
 ) {
     val stagesOne = listOf(
         "Company Setup", "User Management", "Role Management", "Authorization To Role"
@@ -78,23 +81,37 @@ fun AppDrawer(
                 modifier = Modifier.fillMaxSize()
             ) {
                 item {
-                    DrawerTitle(
+                    /*DrawerTitle(
                         text = "DASHBOARD",
                         icon = R.drawable.dashboard_icon,  // replace with your icon
                         isSelected = true
-                    )
+                    )*/
+
+                    ExpandableDrawerMenuItem(
+                        title = "Dashboard",
+                        icon = R.drawable.dashboard_icon,
+                        children = Constant.dashboardMenu
+                    ) { childClicked ->
+                        // Handle click on child item
+                        when (childClicked) {
+                            Constant.dashboardMenu[0].title -> homeNavController.navigate(Constant.COMPANY_DASHBOARD_SCREEN)
+                            Constant.dashboardMenu[1].title -> homeNavController.navigate(Constant.SALES_DASHBOARD_SCREEN)
+                            else -> {}
+                        }
+
+                    }
                     MenuItem(
                         modifier = modifier,
                         icon = R.drawable.admin_icon,
                         menuTitle = "ADMIN UTILITY"
-                    )
+                    ) {}
                     VerticalStageStepper(stages = stagesOne)
                     Spacer(modifier = modifier.height(10.dp))
                     MenuItem(
                         modifier = modifier,
                         icon = R.drawable.configration_icon,
                         menuTitle = "CONFIGURATION"
-                    )
+                    ) {}
                     VerticalStageStepper(stages = stagesTwo)
                     Row(
                         modifier = modifier
@@ -115,10 +132,14 @@ fun AppDrawer(
                         modifier = modifier,
                         icon = Constant.menuItems[item].icon,
                         menuTitle = Constant.menuItems[item].title
-                    )
+                    ) {}
                 }
                 item {
-                    Row(modifier = modifier.height(30.dp).fillMaxWidth()) {
+                    Row(
+                        modifier = modifier
+                            .height(30.dp)
+                            .fillMaxWidth()
+                    ) {
                         Button(
                             onClick = onClickSignOut,
                             modifier = Modifier.height(26.dp),

@@ -8,13 +8,25 @@ object Constant {
 
     //network
     const val BASE_URL = "http://ec2-13-48-42-94.eu-north-1.compute.amazonaws.com:8080/api/"
+
     //Screens
     const val LOGIN_SCREEN = "LOGIN"
     const val REGISTRATION_SCREEN = "REGISTRATION"
     const val HOME_SCREEN = "HOME"
+    const val DASHBOARD_SCREEN = "DASHBOARD"
+    const val SALES_DASHBOARD_SCREEN = "SALES_DASHBOARD"
+    const val COMPANY_DASHBOARD_SCREEN = "COMPANY_DASHBOARD"
 
 
-
+    val dashboardMenu = listOf(
+        DrawerMenu(
+            icon = R.drawable.home_icon,
+            title = "Company Dashboard",
+        ), DrawerMenu(
+            icon = R.drawable.home_icon,
+            title = "Sales Dashboard",
+        )
+    )
 
     //menuList
     val menuItems = listOf(

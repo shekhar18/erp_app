@@ -60,7 +60,7 @@ class LoginViewModel @Inject constructor(val loginUseCase: LoginUseCase) : ViewM
                     userPassword.value.toString(),
                     rememberCheck.value as Boolean
                 )
-
+                Log.d(LOGIN_TAG,response.tokenId)
                 _loginState.postValue(Result.Success(response))
 
             } catch (e: Exception) {

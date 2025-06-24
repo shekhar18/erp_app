@@ -31,13 +31,13 @@ fun ErpAppNavHost(modifier: Modifier = Modifier) {
 fun Host(navController: NavHostController) {
     NavHost(navController = navController, startDestination = Constant.LOGIN_SCREEN) {
         composable(Constant.LOGIN_SCREEN) {
-            LoginScreen(navController = navController)
+            LoginScreen(mainNavController = navController)
         }
         composable(Constant.REGISTRATION_SCREEN) {
-            RegistrationScreen(navController = navController)
+            RegistrationScreen(mainNavController = navController)
         }
         composable(Constant.HOME_SCREEN) {
-            HomeScreen(navController = navController)
+            HomeScreen(mainNavController = navController)
         }
     }
 }

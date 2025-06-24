@@ -79,4 +79,7 @@ dependencies {
 
     //chart
     implementation (libs.compose.charts)
+
+    //animation
+    implementation(libs.androidx.animation)
 }

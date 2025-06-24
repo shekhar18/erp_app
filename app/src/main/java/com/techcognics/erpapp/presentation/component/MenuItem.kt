@@ -20,14 +20,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun MenuItem(modifier: Modifier = Modifier, icon: Int, menuTitle: String) {
+fun MenuItem(modifier: Modifier = Modifier, icon: Int, menuTitle: String, itemClick: () -> Unit) {
     val context = LocalContext.current
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { Toast.makeText(context, menuTitle, Toast.LENGTH_SHORT).show() }
-            .padding(10.dp),
-        verticalAlignment = Alignment.CenterVertically) {
+    Row(modifier = Modifier
+        .clickable {
+            itemClick()
+        }
+        .fillMaxWidth()
+        .clickable { Toast.makeText(context, menuTitle, Toast.LENGTH_SHORT).show() }
+        .padding(10.dp), verticalAlignment = Alignment.CenterVertically) {
         Icon(
             modifier = modifier
                 .height(16.dp)

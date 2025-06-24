@@ -1,6 +1,5 @@
 package com.techcognics.erpapp.presentation.component
 
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,7 +9,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,7 +28,7 @@ fun LoginCardContent(
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit,
     fontBlue: Color,
-    navController: NavHostController,
+    mainNavController: NavHostController,
     onClick:()-> Unit
 ) {
     Column(
@@ -56,7 +54,7 @@ fun LoginCardContent(
                     highlightedTextColor = MaterialTheme.colorScheme.onSurface,
                     true,
                     MaterialTheme.typography.labelSmall,
-                    onclick = { navController.navigate(Constant.REGISTRATION_SCREEN) })
+                    onclick = { mainNavController.navigate(Constant.REGISTRATION_SCREEN) })
             }
         }
     }

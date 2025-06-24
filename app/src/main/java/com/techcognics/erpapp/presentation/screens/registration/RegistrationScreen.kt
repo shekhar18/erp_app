@@ -33,6 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.techcognics.erpapp.R
 import com.techcognics.erpapp.presentation.base.Result
 import com.techcognics.erpapp.presentation.component.CopyrightFooter
@@ -43,7 +44,7 @@ import com.techcognics.erpapp.presentation.component.text.RichTextRight
 import com.techcognics.erpapp.presentation.component.text.TitleText
 
 @Composable
-fun RegistrationScreen(modifier: Modifier = Modifier, navController: NavController) {
+fun RegistrationScreen(modifier: Modifier = Modifier, mainNavController: NavHostController) {
     FontFamily(Font(R.font.roboto))
 
     val scrollState = rememberScrollState()
@@ -60,7 +61,7 @@ fun RegistrationScreen(modifier: Modifier = Modifier, navController: NavControll
         is Result.Success<*> -> {
             Toast.makeText(LocalContext.current, "Account Create successfully.", Toast.LENGTH_SHORT)
                 .show()
-            navController.popBackStack()
+            mainNavController.popBackStack()
 
         }
 
@@ -119,7 +120,7 @@ fun RegistrationScreen(modifier: Modifier = Modifier, navController: NavControll
                                     MaterialTheme.colorScheme.onSurface,
                                     MaterialTheme.colorScheme.primary,
                                     onclick = {
-                                        navController.popBackStack()
+                                        mainNavController.popBackStack()
                                     })
                             }
                             Spacer(modifier = modifier.height(12.dp))

@@ -23,7 +23,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -40,8 +39,7 @@ import com.techcognics.erpapp.util.Constant
 
 @RequiresApi(Build.VERSION_CODES.Q)
 @Composable
-fun LoginScreen(modifier: Modifier = Modifier, navController: NavHostController) {
-    LocalContext.current
+fun LoginScreen(modifier: Modifier = Modifier, mainNavController: NavHostController) {
     val viewModel: LoginViewModel = hiltViewModel()
     val loginState = viewModel.loginState.observeAsState().value
 
@@ -81,8 +79,8 @@ fun LoginScreen(modifier: Modifier = Modifier, navController: NavHostController)
 
                         is Result.Success<*> -> {
                             Loader()
-                            navController.popBackStack()
-                            navController.navigate(Constant.HOME_SCREEN)
+                            mainNavController.popBackStack()
+                            mainNavController.navigate(Constant.HOME_SCREEN)
                         }
 
                         is Result.Error -> {
@@ -104,7 +102,7 @@ fun LoginScreen(modifier: Modifier = Modifier, navController: NavHostController)
                                 checked = viewModel.rememberCheck.observeAsState().value == true,
                                 onCheckedChange = { viewModel.updateRememberCheck(it) },
                                 fontBlue = colorResource(R.color.font_blue_color),
-                                navController,
+                                mainNavController,
                                 onClick = {
                                     viewModel.getLogin()
 
