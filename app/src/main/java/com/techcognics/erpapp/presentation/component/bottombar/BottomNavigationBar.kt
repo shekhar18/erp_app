@@ -21,7 +21,7 @@ import com.techcognics.erpapp.R
 import com.techcognics.erpapp.data.BottomNavItem
 
 @Composable
-fun BottomNavigationBar(modifier: Modifier = Modifier, navController: NavHostController) {
+fun BottomNavigationBar(modifier: Modifier = Modifier, mainNavController: NavHostController, homeNavController: NavHostController) {
     val context = LocalContext.current
     val bottomNavItems = listOf(
         BottomNavItem("Home", R.drawable.home_icon, "home"),
@@ -36,7 +36,7 @@ fun BottomNavigationBar(modifier: Modifier = Modifier, navController: NavHostCon
         containerColor = Color(0xFFF8F8F8),
         content = {
             val currentDestination =
-                navController.currentBackStackEntryAsState().value?.destination?.route
+                mainNavController.currentBackStackEntryAsState().value?.destination?.route
             bottomNavItems.forEach { item ->
                 NavigationBarItem(selected = currentDestination == item.route, onClick = {
                     Toast.makeText(context, item.label, Toast.LENGTH_SHORT).show()/* navController.navigate(item.route) {

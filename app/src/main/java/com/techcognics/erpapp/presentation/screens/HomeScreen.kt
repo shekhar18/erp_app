@@ -14,11 +14,8 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.techcognics.erpapp.R
-import com.techcognics.erpapp.data.StatCard
 import com.techcognics.erpapp.presentation.base.ErpHomeNavHost
 import com.techcognics.erpapp.presentation.component.AppDrawer
 import com.techcognics.erpapp.presentation.component.bottombar.BottomNavigationBar
@@ -57,10 +54,13 @@ fun HomeScreen(modifier: Modifier = Modifier, mainNavController: NavHostControll
         Scaffold(
             topBar = {
                 AppBar(
-                    navController = mainNavController, scope = scope, drawerState = drawerState
+                    mainNavController = mainNavController,
+                    scope = scope,
+                    drawerState = drawerState,
+                    homeNavController = homeNavController
                 )
             },
-            bottomBar = { BottomNavigationBar(navController = mainNavController) },
+            bottomBar = { BottomNavigationBar(mainNavController = mainNavController, homeNavController = homeNavController) },
 
             modifier = modifier.background(MaterialTheme.colorScheme.background),
         ) {

@@ -43,9 +43,10 @@ import kotlinx.coroutines.launch
 @Composable
 fun AppBar(
     modifier: Modifier = Modifier,
-    navController: NavHostController,
+    mainNavController: NavHostController,
     scope: CoroutineScope,
-    drawerState: DrawerState
+    drawerState: DrawerState,
+    homeNavController: NavHostController
 ) {
     val context = LocalContext.current
     val profileBorderColor = MaterialTheme.colorScheme.primary
@@ -133,7 +134,7 @@ fun AppBar(
                 onItemClick = { selectedMenu: String ->
                     when (selectedMenu) {
                         "Profile" -> {
-                            Toast.makeText(context, selectedMenu, Toast.LENGTH_SHORT).show()
+                                homeNavController.navigate(Constant.PROFILE_SCREEN)
                         }
 
                         "Setting" -> {
@@ -145,8 +146,8 @@ fun AppBar(
                                 route = Constant.LOGIN_SCREEN,
                                 inclusive = false
                             )*/
-                            navController.popBackStack()
-                            navController.navigate(Constant.LOGIN_SCREEN)
+                            mainNavController.popBackStack()
+                            mainNavController.navigate(Constant.LOGIN_SCREEN)
 
                         }
 

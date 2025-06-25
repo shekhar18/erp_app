@@ -16,6 +16,7 @@ object Constant {
     const val DASHBOARD_SCREEN = "DASHBOARD"
     const val SALES_DASHBOARD_SCREEN = "SALES_DASHBOARD"
     const val COMPANY_DASHBOARD_SCREEN = "COMPANY_DASHBOARD"
+    const val PROFILE_SCREEN = "PROFILE_SCREEN"
 
 
     val dashboardMenu = listOf(

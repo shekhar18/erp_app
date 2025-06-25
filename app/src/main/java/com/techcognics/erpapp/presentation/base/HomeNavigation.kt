@@ -40,6 +40,9 @@ fun HomeHost(homeNavController: NavHostController, paddingValues: PaddingValues,
         composable(Constant.SALES_DASHBOARD_SCREEN) {
             SalesDashboard(paddingValue = paddingValues,)
         }
+        composable(Constant.PROFILE_SCREEN) {
+
+        }
     }
 
 }
