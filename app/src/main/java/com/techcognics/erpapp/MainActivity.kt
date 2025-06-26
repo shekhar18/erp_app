@@ -9,10 +9,7 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import com.techcognics.erpapp.presentation.base.ErpAppNavHost
 import com.techcognics.erpapp.presentation.ui.theme.ERPAPPTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,6 +25,7 @@ class MainActivity : ComponentActivity() {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     ErpAppNavHost(modifier = Modifier.padding(innerPadding))
                 }
+
             }
         }
     }

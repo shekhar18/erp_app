@@ -81,20 +81,41 @@ dependencies {
     implementation(libs.interceptor)
 
     //chart
-    implementation (libs.compose.charts)
+    //implementation (libs.compose.charts)
 
     //animation
-    implementation(libs.androidx.animation)
+   // implementation(libs.androidx.animation)
+
+    // Charts (Jetpack Compose)
+  //  implementation ('io.github.bytebeats:compose-charts:0.1.5') // Or latest version
+
+// Animation (Jetpack Compose)
+    implementation ("androidx.compose.animation:animation:1.5.4")
+
 }
 dependencies {
     implementation ("androidx.activity:activity-compose:1.8.2")
     implementation ("androidx.compose.ui:ui:1.6.4")
     implementation ("androidx.compose.material3:material3:1.2.1")
     implementation ("androidx.compose.ui:ui-tooling-preview:1.6.4")
+    // Material Design
+    implementation ("com.google.android.material:material:1.12.0")
+
+// AndroidX AppCompat
+    implementation ("androidx.appcompat:appcompat:1.6.1")
+
+// Support Annotations (deprecated — avoid if possible)
+    implementation ("androidx.annotation:annotation:1.7.1")
+
+// Jetpack Compose (layout foundations - only valid in Compose projects)
+    implementation ("androidx.compose.foundation:foundation-layout:1.5.4")
+
 }
 dependencies {
 
-    implementation(libs.androidx.foundation.layout.android)
+    // Material Design
+
+
     val composeBom = platform("androidx.compose:compose-bom:2025.05.00")
     implementation(composeBom)
     androidTestImplementation(composeBom)
