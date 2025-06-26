@@ -62,7 +62,8 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-
+    //compose livedata
+    implementation(libs.androidx.runtime.livedata)
 
     //Navigation 3 Libs
     implementation(libs.androidx.navigation.compose)
@@ -72,6 +73,18 @@ dependencies {
     implementation (libs.hilt.android)
     kapt (libs.hilt.compiler)
     implementation(libs.composeHilt)
+
+    //Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.okhttp)
+    implementation(libs.interceptor)
+
+    //chart
+    implementation (libs.compose.charts)
+
+    //animation
+    implementation(libs.androidx.animation)
 }
 dependencies {
     implementation ("androidx.activity:activity-compose:1.8.2")

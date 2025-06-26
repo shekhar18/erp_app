@@ -2,10 +2,13 @@ package com.techcognics.erpapp.presentation.component
 
 import android.content.Intent
 import android.net.Uri
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,7 +27,11 @@ import androidx.compose.ui.unit.sp
 fun CopyrightFooter(modifier: Modifier = Modifier) {
     val context = LocalContext.current
     val annotatedString = buildAnnotatedString {
-        append("Copyright © 2025 ")
+        withStyle(
+            style = SpanStyle(
+                color = Color.White,
+            )
+        ) { append("Copyright © 2025 ")}
 
         pushStringAnnotation(tag = "URL", annotation = "https://techcognicsindia.com")
         withStyle(
@@ -35,20 +42,23 @@ fun CopyrightFooter(modifier: Modifier = Modifier) {
             append("techcognicsindia.com")
         }
         pop()
-
-        append(" -\nAll rights reserved.")
+        withStyle(
+            style = SpanStyle(
+                color = Color.White,
+            )
+        ) {
+        append(" -\nAll rights reserved.")}
     }
 
     Column(
         modifier = modifier
             .fillMaxWidth()
             .padding(8.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
         ClickableText(
-            text = annotatedString, style = TextStyle(
-                color = Color.White, fontSize = 10.sp, textAlign = TextAlign.Center
-            ), onClick = { offset ->
+            text = annotatedString, style = MaterialTheme.typography.bodyMedium, onClick = { offset ->
                 annotatedString.getStringAnnotations(tag = "URL", start = offset, end = offset)
                     .firstOrNull()?.let { annotation ->
                         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(annotation.item))

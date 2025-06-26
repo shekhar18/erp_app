@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -15,15 +16,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.techcognics.erpapp.R
 
 @Composable
-fun RememberMeRow(checked: Boolean, onCheckedChange: (Boolean) -> Unit, robotoFont: FontFamily) {
+fun RememberMeRow(checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.Top,
@@ -46,18 +44,15 @@ fun RememberMeRow(checked: Boolean, onCheckedChange: (Boolean) -> Unit, robotoFo
                     .width(15.dp)
             )
             Text(
-                text = "  Remember Me", fontSize = 9.sp, fontWeight = FontWeight.Bold
+                text = "  Remember Me", style = MaterialTheme.typography.labelSmall
             )
         }
 
         Text(
-            text = "Forgot Password", style = TextStyle(
-                color = colorResource(R.color.forget_text_color),
-                fontSize = 9.sp,
-                fontFamily = robotoFont,
-                fontWeight = FontWeight.ExtraBold,
-                letterSpacing = 0.08.sp,
-            ), modifier = Modifier.padding(top = 3.dp)
+            text = "Forgot Password",
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.secondary,
+            modifier = Modifier.padding(top = 3.dp)
         )
     }
 }
