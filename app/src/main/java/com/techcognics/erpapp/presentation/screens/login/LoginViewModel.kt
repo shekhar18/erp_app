@@ -6,7 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.techcognics.erpapp.data.login_data.LoginResponse
+import com.techcognics.erpapp.domain.usecase.GetTokenUseCase
 import com.techcognics.erpapp.domain.usecase.LoginUseCase
+import com.techcognics.erpapp.domain.usecase.SaveTokenUseCase
 import com.techcognics.erpapp.presentation.base.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
@@ -14,7 +16,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(val loginUseCase: LoginUseCase) : ViewModel() {
+class LoginViewModel @Inject constructor(
+    val loginUseCase: LoginUseCase,
+    val saveTokenUseCase: SaveTokenUseCase,
+) : ViewModel() {
 
     private val LOGIN_TAG = "LoginViewModel"
 
@@ -46,11 +51,10 @@ class LoginViewModel @Inject constructor(val loginUseCase: LoginUseCase) : ViewM
         _loginState.value = Result.Idle
     }
 
-    fun getLogin() {
-        Log.d(LOGIN_TAG, userId.value.toString())
+    fun getLogin() {/* Log.d(LOGIN_TAG, userId.value.toString())
         Log.d(LOGIN_TAG, userPassword.value.toString())
         Log.d(LOGIN_TAG, rememberCheck.value.toString())
-
+*/
         viewModelScope.launch(Dispatchers.IO) {
             _loginState.postValue(Result.Loading)
 
@@ -60,7 +64,8 @@ class LoginViewModel @Inject constructor(val loginUseCase: LoginUseCase) : ViewM
                     userPassword.value.toString(),
                     rememberCheck.value as Boolean
                 )
-                Log.d(LOGIN_TAG,response.tokenId)
+                Log.d(LOGIN_TAG, response.tokenId)
+                saveTokenUseCase.invoke("Bearer ${response.tokenId}")
                 _loginState.postValue(Result.Success(response))
 
             } catch (e: Exception) {

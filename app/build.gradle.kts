@@ -52,6 +52,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.appcompat)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -82,4 +83,9 @@ dependencies {
 
     //animation
     implementation(libs.androidx.animation)
+
+    //datastore
+    implementation(libs.androidx.datastore.preferences)
+    //splashscreen dep
+    implementation(libs.androidx.core.splashscreen)
 }

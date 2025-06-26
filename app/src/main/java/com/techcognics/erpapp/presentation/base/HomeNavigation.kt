@@ -9,7 +9,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.techcognics.erpapp.presentation.screens.DashboardScreen
+import com.techcognics.erpapp.presentation.screens.company_dashboard.DashboardScreen
 import com.techcognics.erpapp.presentation.screens.SalesDashboard
 import com.techcognics.erpapp.util.Constant
 

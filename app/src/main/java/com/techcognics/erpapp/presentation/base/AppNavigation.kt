@@ -1,6 +1,7 @@
 package com.techcognics.erpapp.presentation.base
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -17,19 +18,22 @@ import com.techcognics.erpapp.util.Constant
 
 @RequiresApi(Build.VERSION_CODES.Q)
 @Composable
-fun ErpAppNavHost(modifier: Modifier = Modifier) {
+fun ErpAppNavHost(modifier: Modifier = Modifier, isLogin: Boolean ) {
     val navController = rememberNavController()
     navController.currentBackStackEntryAsState()
-
-    Host(navController)
+    Log.d("COMPOSE",isLogin.toString())
+    Host(navController, isLogin)
 
 }
 
 
 @RequiresApi(Build.VERSION_CODES.Q)
 @Composable
-fun Host(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = Constant.LOGIN_SCREEN) {
+fun Host(navController: NavHostController, isLogin: Boolean) {
+    NavHost(
+        navController = navController,
+        startDestination = if (isLogin) Constant.HOME_SCREEN else Constant.LOGIN_SCREEN
+    ) {
         composable(Constant.LOGIN_SCREEN) {
             LoginScreen(mainNavController = navController)
         }

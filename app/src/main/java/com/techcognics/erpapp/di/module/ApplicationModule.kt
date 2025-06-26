@@ -1,17 +1,24 @@
 package com.techcognics.erpapp.di.module
 
 
+import android.content.Context
 import com.techcognics.erpapp.data.network.AppApiService
-import com.techcognics.erpapp.data.repositorys.UserRepository
-import com.techcognics.erpapp.data.repositorys.UserRepositoryImpl
+import com.techcognics.erpapp.data.repository.UserRepositoryImpl
+import com.techcognics.erpapp.data.repository.UserSessionRepositoryImpl
+import com.techcognics.erpapp.data.session.SessionManager
+import com.techcognics.erpapp.domain.repository.UserRepository
+import com.techcognics.erpapp.domain.repository.UserSessionRepository
+import com.techcognics.erpapp.domain.usecase.ClearSessionUseCase
+import com.techcognics.erpapp.domain.usecase.GetTokenUseCase
 import com.techcognics.erpapp.domain.usecase.LoginUseCase
 import com.techcognics.erpapp.domain.usecase.RegistrationUseCase
+import com.techcognics.erpapp.domain.usecase.SaveTokenUseCase
 import com.techcognics.erpapp.util.Constant
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import jakarta.inject.Singleton
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -23,7 +30,6 @@ class ApplicationModule {
 
     @Provides
     fun provideGsonConverterFactory(): GsonConverterFactory = GsonConverterFactory.create()
-
 
 
     @Provides
@@ -44,5 +50,27 @@ class ApplicationModule {
     fun provideLoginUserCase(userRepository: UserRepository) = LoginUseCase(userRepository)
 
     @Provides
-    fun provideRegistrationUserCase(userRepository: UserRepository) = RegistrationUseCase(userRepository)
+    fun provideRegistrationUserCase(userRepository: UserRepository) =
+        RegistrationUseCase(userRepository)
+
+    @Provides
+    fun provideSessionManager(@ApplicationContext context: Context): SessionManager =
+        SessionManager(context)
+
+    @Provides
+    fun provideUserSessionRepository(sessionManager: SessionManager): UserSessionRepository =
+        UserSessionRepositoryImpl(sessionManager)
+
+    @Provides
+    fun provideSaveTokenUseCase(userSessionRepository: UserSessionRepository): SaveTokenUseCase =
+        SaveTokenUseCase(userSessionRepository)
+
+    @Provides
+    fun provideGetTokenUseCase(userSessionRepository: UserSessionRepository): GetTokenUseCase =
+        GetTokenUseCase(userSessionRepository)
+
+    @Provides
+    fun provideClearSessionUseCase(userSessionRepository: UserSessionRepository): ClearSessionUseCase =
+        ClearSessionUseCase(userSessionRepository)
+
 }

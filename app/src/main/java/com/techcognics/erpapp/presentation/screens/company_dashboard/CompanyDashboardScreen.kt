@@ -1,4 +1,4 @@
-package com.techcognics.erpapp.presentation.screens
+package com.techcognics.erpapp.presentation.screens.company_dashboard
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
