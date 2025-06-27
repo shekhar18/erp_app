@@ -31,8 +31,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         installSplashScreen().apply {
             lifecycleScope.launch {
-                viewModel.isLogin.collect { islogin ->
-                    _isLogin.value = islogin
+                viewModel.isLogin.collect { login ->
+                    _isLogin.value = login
                 }
             }
             setKeepOnScreenCondition {
