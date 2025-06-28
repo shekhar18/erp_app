@@ -1,5 +1,10 @@
 package com.techcognics.erpapp.data.network
 
+import com.techcognics.erpapp.data.company_dashboard_data.AllAmountByMonthListResponse
+import com.techcognics.erpapp.data.company_dashboard_data.AllTotalAmountListResponse
+import com.techcognics.erpapp.data.company_dashboard_data.AmountsByMonthListResponse
+import com.techcognics.erpapp.data.company_dashboard_data.SalesInvoiceByMonthListResponse
+import com.techcognics.erpapp.data.company_dashboard_data.TotalIncomeAmountListResponse
 import com.techcognics.erpapp.data.login_data.LoginRequest
 import com.techcognics.erpapp.data.login_data.LoginResponse
 import com.techcognics.erpapp.data.profile_data.UserProfileResponse
@@ -9,6 +14,8 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface AppApiService {
     @POST("authenticate")
@@ -19,4 +26,48 @@ interface AppApiService {
 
     @GET("account")
     suspend fun getUserProfile(@Header("Authorization") token: String): UserProfileResponse
+
+
+    //Company Dashboard
+    @GET("dashboard/fetchAllSalesInvoicesByMonth/{docNo}")
+    suspend fun getFetchAllSalseInvoicesByMonth(
+        @Header("Authorization") token: String,
+        @Path("docNo") docNo: String,
+        @Query("docNo") pDocNo: String,
+        @Query("startDate") startDate: String,
+        @Query("endDate") endDate: String
+    ): SalesInvoiceByMonthListResponse
+
+    @GET("dashboard/fetchAmountsByMonth")
+    suspend fun getFetchAmountsByMonth(
+        @Header("Authorization") token: String,
+        @Query("docNo") pDocNo: String,
+        @Query("startDate") startDate: String,
+        @Query("endDate") endDate: String
+    ): AmountsByMonthListResponse
+
+    @GET("dashboard/fetchTotalIncomeAmount")
+    suspend fun getFetchTotalIncomeAmount(
+        @Header("Authorization") token: String,
+        @Query("docNo") pDocNo: String,
+        @Query("startDate") startDate: String,
+        @Query("endDate") endDate: String
+    ): TotalIncomeAmountListResponse
+
+
+    @GET("dashboard/fetchAllAmountsByMonth")
+    suspend fun getFetchAllAmountsByMonth(
+        @Header("Authorization") token: String,
+        @Query("docNo") pDocNo: String,
+        @Query("startDate") startDate: String,
+        @Query("endDate") endDate: String
+    ): AllAmountByMonthListResponse
+
+    @GET("dashboard/fetchAllTotalAmounts")
+    suspend fun getFetchAllTotalAmounts(
+        @Header("Authorization") token: String,
+        @Query("docNo") pDocNo: String,
+        @Query("startDate") startDate: String,
+        @Query("endDate") endDate: String
+    ): AllTotalAmountListResponse
 }
