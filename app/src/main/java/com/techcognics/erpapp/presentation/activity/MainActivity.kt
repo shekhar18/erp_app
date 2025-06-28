@@ -10,12 +10,15 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import com.techcognics.erpapp.presentation.base.ErpAppNavHost
+import com.techcognics.erpapp.presentation.component.ErrorDialog
 import com.techcognics.erpapp.presentation.ui.theme.ERPAPPTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -54,4 +57,11 @@ class MainActivity : ComponentActivity() {
 
 
     }
+}
+
+@Preview
+@Composable
+private fun ShowErrorScreen() {
+    ErrorDialog {  }
+
 }

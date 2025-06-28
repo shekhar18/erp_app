@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -32,9 +31,9 @@ import androidx.navigation.NavHostController
 import com.techcognics.erpapp.R
 import com.techcognics.erpapp.presentation.base.Result
 import com.techcognics.erpapp.presentation.component.CopyrightFooter
+import com.techcognics.erpapp.presentation.component.ErrorDialog
 import com.techcognics.erpapp.presentation.component.Loader
 import com.techcognics.erpapp.presentation.component.LoginCardContent
-import com.techcognics.erpapp.presentation.component.button.PrimaryButton
 import com.techcognics.erpapp.util.Constant
 
 @RequiresApi(Build.VERSION_CODES.Q)
@@ -84,12 +83,7 @@ fun LoginScreen(modifier: Modifier = Modifier, mainNavController: NavHostControl
                         }
 
                         is Result.Error -> {
-                            Column {
-                                Text(text = loginState.message)
-                                PrimaryButton("Back") {
-                                    viewModel.reset()
-                                }
-                            }
+                            ErrorDialog(modifier, onClick = {viewModel.reset()})
 
                         }
 
