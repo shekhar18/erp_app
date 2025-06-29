@@ -9,8 +9,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.techcognics.erpapp.presentation.screens.company_dashboard.DashboardScreen
-import com.techcognics.erpapp.presentation.screens.SalesDashboard
+import com.techcognics.erpapp.presentation.screens.company_dashboard.CompanyDashboardScreen
+import com.techcognics.erpapp.presentation.screens.dashboard.DashboardScreen
+import com.techcognics.erpapp.presentation.screens.sales_dashboard.SalesDashboard
 import com.techcognics.erpapp.util.Constant
 
 @RequiresApi(Build.VERSION_CODES.Q)
@@ -35,7 +36,7 @@ fun HomeHost(homeNavController: NavHostController, paddingValues: PaddingValues,
             DashboardScreen(homeNavController = homeNavController)
         }
         composable(Constant.COMPANY_DASHBOARD_SCREEN) {
-
+            CompanyDashboardScreen(paddingValue = paddingValues)
         }
         composable(Constant.SALES_DASHBOARD_SCREEN) {
             SalesDashboard(paddingValue = paddingValues,)

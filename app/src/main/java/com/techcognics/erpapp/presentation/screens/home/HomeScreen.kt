@@ -1,4 +1,4 @@
-package com.techcognics.erpapp.presentation.screens
+package com.techcognics.erpapp.presentation.screens.home
 
 import android.annotation.SuppressLint
 import android.os.Build

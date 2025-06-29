@@ -1,12 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.ERPAPP" parent="Theme.AppCompat.Light.NoActionBar"/>
+
+    <style name="Theme.ERPAPP" parent="Theme.AppCompat.Light.NoActionBar" />
 
     <style name="Theme.ERPAPP.NoActionBar" parent="Theme.ERPAPP">
         <item name="windowSplashScreenBackground">@color/white</item>
         <item name="postSplashScreenTheme">@style/Theme.ERPAPP</item>
     </style>
 
+    <style name="CustomCalendarTheme" parent="Theme.AppCompat.DayNight.Dialog">
+        <item name="colorAccent">@color/login_button</item>
+        <!-- Header (Month & Year) background -->
+        <item name="android:headerBackground">@color/login_button</item>
 
+        <!-- Date selected circle background -->
+        <item name="android:colorAccent">@color/login_button</item> <!-- light green -->
+
+        <!-- Cancel / OK button text color -->
+        <item name="android:textColorPrimary">@color/login_button</item> <!-- black -->
+    </style>
 
 </resources>

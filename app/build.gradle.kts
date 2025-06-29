@@ -88,4 +88,6 @@ dependencies {
     implementation(libs.androidx.datastore.preferences)
     //splashscreen dep
     implementation(libs.androidx.core.splashscreen)
+
+    implementation(libs.material)
 }
