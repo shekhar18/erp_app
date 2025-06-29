@@ -1,9 +1,14 @@
 package com.techcognics.erpapp.data.repository
 
 import android.util.Log
+import com.techcognics.erpapp.data.company_dashboard_data.AllAmountByMonthListResponse
+import com.techcognics.erpapp.data.company_dashboard_data.AllTotalAmountListResponse
+import com.techcognics.erpapp.data.company_dashboard_data.AmountsByMonthListResponse
+import com.techcognics.erpapp.data.company_dashboard_data.SalesInvoiceByMonthListResponse
+import com.techcognics.erpapp.data.company_dashboard_data.TotalIncomeAmountListResponse
 import com.techcognics.erpapp.data.login_data.LoginRequest
 import com.techcognics.erpapp.data.login_data.LoginResponse
-import com.techcognics.erpapp.data.network.AppApiService
+import com.techcognics.erpapp.data.network.api_service.AppApiService
 import com.techcognics.erpapp.data.profile_data.UserProfileResponse
 import com.techcognics.erpapp.data.registration_data.RegistrationRequest
 import com.techcognics.erpapp.data.registration_data.RegistrationResponse
@@ -25,4 +30,8 @@ class UserRepositoryImpl @Inject constructor(val appApiService: AppApiService) :
     override suspend fun getUserProfile(token: String): UserProfileResponse {
         return appApiService.getUserProfile(token = token)
     }
+
+
+
+
 }

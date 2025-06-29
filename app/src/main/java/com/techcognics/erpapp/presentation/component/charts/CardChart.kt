@@ -28,10 +28,11 @@ import com.techcognics.erpapp.presentation.component.text.RichTextLeft
 fun CardChart(
     title: String,
     amount: String,
-    changePercentage: Float,
+    changePercentage: Double,
     isPositive: Boolean,
-    barData: List<Float>,
-    modifier: Modifier = Modifier
+    barData: List<Double>,
+    modifier: Modifier = Modifier,
+    color:Color
 ) {
 
     Card(
@@ -41,13 +42,13 @@ fun CardChart(
         shape = RoundedCornerShape(4.dp),
         elevation = CardDefaults.cardElevation(8.dp),
         modifier = modifier
-            .padding(8.dp)
+            .padding(4.dp)
             .background(MaterialTheme.colorScheme.background),
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column(modifier = Modifier.padding(12.dp)) {
             Text(text = title, style = MaterialTheme.typography.titleMedium)
             Spacer(modifier = Modifier.height(8.dp))
-            SmallBarChart(barData = barData)
+            SmallBarChart(barData = barData, barColor = color)
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = "₹$amount",
@@ -67,11 +68,11 @@ fun CardChart(
 
 @Composable
 fun SmallBarChart(
-    barData: List<Float>,
+    barData: List<Double>,
     modifier: Modifier = Modifier,
     barColor: Color = MaterialTheme.colorScheme.primary
 ) {
-    val maxValue = (barData.maxOrNull() ?: 1f)
+    val maxValue = (barData.maxOrNull() ?: 1f).toFloat()
 
     Row(
         modifier = modifier
@@ -84,7 +85,7 @@ fun SmallBarChart(
             Box(
                 modifier = Modifier
                     .width(5.dp)
-                    .fillMaxHeight(value / maxValue)
+                    .fillMaxHeight((value.toFloat() / maxValue))
                     .background(barColor, shape = RectangleShape)
             )
             Spacer(modifier = modifier.width(2.dp))

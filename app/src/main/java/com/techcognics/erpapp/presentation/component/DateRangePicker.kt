@@ -51,11 +51,11 @@ fun DateRangePicker(
 
 
     val today = remember { LocalDate.now() }
-    val nextMonth = remember { today.plusMonths(1) }
+    val previousMonth = remember { today.minusMonths(1) }
 
-    var startDate by remember { mutableStateOf(today) }
-    var endDate by remember { mutableStateOf(nextMonth) }
-    var step by remember { mutableStateOf(1) } // 1 = Start date, 2 = End date
+    var startDate by remember { mutableStateOf(previousMonth) }
+    var endDate by remember { mutableStateOf(today) }
+    var step by remember { mutableStateOf(1) }
 
 
     val startDatePickerDialog = DatePickerDialog(

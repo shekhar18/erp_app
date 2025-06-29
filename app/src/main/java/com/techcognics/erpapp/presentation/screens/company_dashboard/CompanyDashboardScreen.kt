@@ -10,9 +10,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.graphics.toColorInt
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.techcognics.erpapp.presentation.component.AutoResponsiveCardGrid
 import com.techcognics.erpapp.presentation.component.CompanyDashboardTitle
@@ -26,6 +29,8 @@ fun CompanyDashboardScreen(
     paddingValue: PaddingValues
 ) {
     val viewModel: CompanyDashboardScreenViewModel = hiltViewModel()
+    val componyStateCards by  viewModel.cardList.observeAsState()
+
     LazyColumn(
         modifier = modifier
             .padding(paddingValue)
@@ -48,7 +53,20 @@ fun CompanyDashboardScreen(
                     .height(400.dp)
                     .padding(horizontal = 8.dp)
             ) {
-                ResponsiveDashboard()
+
+                val cards: List<@Composable () -> Unit> = componyStateCards?.map {
+                    {
+                        CardChart(
+                            title = it.title,
+                            amount = it.totalAmount.toString(),
+                            changePercentage = it.percentage,
+                            isPositive = true,
+                            barData = it.data,
+                            color = it.color
+                        )
+                    }
+                } ?: emptyList()
+                AutoResponsiveCardGrid(cards = cards)
             }
         }
 
@@ -64,26 +82,3 @@ private fun ShowCompanyDashboardScreen() {
     //CompanyDashboardScreen()
 }
 
-@Composable
-fun ResponsiveDashboard() {
-    val mockDataList = listOf(
-        listOf(30f, 45f, 40f, 50f, 35f, 42f, 20f),
-        listOf(30f, 45f, 40f, 50f, 35f, 42f, 20f),
-        listOf(15f, 25f, 35f),
-        listOf(30f, 45f, 40f, 50f, 35f, 42f, 20f)
-    )
-
-    val cards = mockDataList.mapIndexed { index, data ->
-        @Composable {
-            CardChart(
-                title = "Total Income",
-                amount = "83,320.50",
-                changePercentage = 18.2f,
-                isPositive = true,
-                barData = data
-            )
-        }
-    }
-
-    AutoResponsiveCardGrid(cards = cards)
-}

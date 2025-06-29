@@ -1,10 +1,11 @@
-package com.techcognics.erpapp.data.network
+package com.techcognics.erpapp.data.network.api_service
 
 import com.techcognics.erpapp.data.company_dashboard_data.AllAmountByMonthListResponse
 import com.techcognics.erpapp.data.company_dashboard_data.AllTotalAmountListResponse
 import com.techcognics.erpapp.data.company_dashboard_data.AmountsByMonthListResponse
-import com.techcognics.erpapp.data.company_dashboard_data.SalesInvoiceByMonthListResponse
+import com.techcognics.erpapp.data.company_dashboard_data.SalesInvoiceByMonthResponse
 import com.techcognics.erpapp.data.company_dashboard_data.TotalIncomeAmountListResponse
+import com.techcognics.erpapp.data.company_dashboard_data.TotalIncomeAmountResponse
 import com.techcognics.erpapp.data.login_data.LoginRequest
 import com.techcognics.erpapp.data.login_data.LoginResponse
 import com.techcognics.erpapp.data.profile_data.UserProfileResponse
@@ -36,7 +37,7 @@ interface AppApiService {
         @Query("docNo") pDocNo: String,
         @Query("startDate") startDate: String,
         @Query("endDate") endDate: String
-    ): SalesInvoiceByMonthListResponse
+    ): List<SalesInvoiceByMonthResponse>
 
     @GET("dashboard/fetchAmountsByMonth")
     suspend fun getFetchAmountsByMonth(
@@ -49,10 +50,9 @@ interface AppApiService {
     @GET("dashboard/fetchTotalIncomeAmount")
     suspend fun getFetchTotalIncomeAmount(
         @Header("Authorization") token: String,
-        @Query("docNo") pDocNo: String,
         @Query("startDate") startDate: String,
         @Query("endDate") endDate: String
-    ): TotalIncomeAmountListResponse
+    ): List<TotalIncomeAmountResponse>
 
 
     @GET("dashboard/fetchAllAmountsByMonth")
