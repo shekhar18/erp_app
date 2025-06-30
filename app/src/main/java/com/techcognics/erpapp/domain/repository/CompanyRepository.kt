@@ -2,6 +2,7 @@ package com.techcognics.erpapp.domain.repository
 
 import com.techcognics.erpapp.data.company_dashboard_data.AllAmountByMonthListResponse
 import com.techcognics.erpapp.data.company_dashboard_data.AllTotalAmountListResponse
+import com.techcognics.erpapp.data.company_dashboard_data.AllTotalAmountResponse
 import com.techcognics.erpapp.data.company_dashboard_data.AmountsByMonthListResponse
 import com.techcognics.erpapp.data.company_dashboard_data.SalesInvoiceByMonthResponse
 import com.techcognics.erpapp.data.company_dashboard_data.TotalIncomeAmountResponse
@@ -29,5 +30,5 @@ interface CompanyRepository {
         docNo: String,
         startDate: String,
         endDate: String
-    ): AllTotalAmountListResponse
+    ): List<AllTotalAmountResponse>
 }

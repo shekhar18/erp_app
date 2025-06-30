@@ -2,6 +2,7 @@ package com.techcognics.erpapp.data.network.api_service
 
 import com.techcognics.erpapp.data.company_dashboard_data.AllAmountByMonthListResponse
 import com.techcognics.erpapp.data.company_dashboard_data.AllTotalAmountListResponse
+import com.techcognics.erpapp.data.company_dashboard_data.AllTotalAmountResponse
 import com.techcognics.erpapp.data.company_dashboard_data.AmountsByMonthListResponse
 import com.techcognics.erpapp.data.company_dashboard_data.SalesInvoiceByMonthResponse
 import com.techcognics.erpapp.data.company_dashboard_data.TotalIncomeAmountListResponse
@@ -69,5 +70,5 @@ interface AppApiService {
         @Query("docNo") pDocNo: String,
         @Query("startDate") startDate: String,
         @Query("endDate") endDate: String
-    ): AllTotalAmountListResponse
+    ): List<AllTotalAmountResponse>
 }

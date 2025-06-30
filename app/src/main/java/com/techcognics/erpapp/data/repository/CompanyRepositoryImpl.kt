@@ -2,6 +2,7 @@ package com.techcognics.erpapp.data.repository
 
 import com.techcognics.erpapp.data.company_dashboard_data.AllAmountByMonthListResponse
 import com.techcognics.erpapp.data.company_dashboard_data.AllTotalAmountListResponse
+import com.techcognics.erpapp.data.company_dashboard_data.AllTotalAmountResponse
 import com.techcognics.erpapp.data.company_dashboard_data.AmountsByMonthListResponse
 import com.techcognics.erpapp.data.company_dashboard_data.SalesInvoiceByMonthResponse
 import com.techcognics.erpapp.data.company_dashboard_data.TotalIncomeAmountResponse
@@ -52,7 +53,7 @@ class CompanyRepositoryImpl @Inject constructor(val appApiService: AppApiService
 
     override suspend fun getAllTotalAmounts(
         token: String, docNo: String, startDate: String, endDate: String
-    ): AllTotalAmountListResponse {
+    ): List<AllTotalAmountResponse> {
         return appApiService.getFetchAllTotalAmounts(
             token = token, pDocNo = docNo, startDate = startDate, endDate = endDate
         )

@@ -7,8 +7,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.techcognics.erpapp.data.CompanyStatusCard
+import com.techcognics.erpapp.data.company_dashboard_data.AllTotalAmountResponse
 import com.techcognics.erpapp.domain.usecase.GetTokenUseCase
 import com.techcognics.erpapp.domain.usecase.company_dashboard_usecase.AllSalesInvoiceByMonthUseCase
+import com.techcognics.erpapp.domain.usecase.company_dashboard_usecase.AllTotalAmountsUseCase
 import com.techcognics.erpapp.domain.usecase.company_dashboard_usecase.TotalIncomeAmountUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -19,7 +21,8 @@ import javax.inject.Inject
 class CompanyDashboardScreenViewModel @Inject constructor(
     val getTokenUseCase: GetTokenUseCase,
     val allSalesInvoiceByMonthUseCase: AllSalesInvoiceByMonthUseCase,
-    val totalIncomeAmountUseCase: TotalIncomeAmountUseCase
+    val totalIncomeAmountUseCase: TotalIncomeAmountUseCase,
+    val allTotalAmountsUseCase: AllTotalAmountsUseCase
 ) : ViewModel() {
 
     private val _startDate: MutableLiveData<String> = MutableLiveData<String>()
@@ -30,6 +33,9 @@ class CompanyDashboardScreenViewModel @Inject constructor(
 
     private val _docNo: MutableLiveData<String> = MutableLiveData<String>("D09")
     val docNo: LiveData<String> = _docNo
+
+    private val _docNoTwo: MutableLiveData<String> = MutableLiveData<String>("D06")
+    val docNoTwo: LiveData<String> = _docNoTwo
 
     private val _cardList: MutableLiveData<List<CompanyStatusCard>> =
         MutableLiveData<List<CompanyStatusCard>>(emptyList<CompanyStatusCard>())
@@ -45,6 +51,27 @@ class CompanyDashboardScreenViewModel @Inject constructor(
                     startDate = startDate.value.toString(),
                     endDate = endDate.value.toString()
                 )
+
+                val allSalesInvoiceByMonthD09Response = allSalesInvoiceByMonthUseCase.invoke(
+                    token = token.toString(),
+                    docNo = _docNo.value.toString(),
+                    startDate = _startDate.value.toString(),
+                    endDate = _endDate.value.toString()
+                )
+
+                val allSalesInvoiceByMonthD06Response = allSalesInvoiceByMonthUseCase.invoke(
+                    token = token.toString(),
+                    docNo = _docNoTwo.value.toString(),
+                    startDate = _startDate.value.toString(),
+                    endDate = _endDate.value.toString()
+                )
+                val allTotalAmountsResponse = allTotalAmountsUseCase.invoke(
+                    token = token.toString(),
+                    docNo = _docNo.value.toString(),
+                    startDate = _startDate.value.toString(),
+                    endDate = _endDate.value.toString()
+                )
+
 
                 val companyStatusCardOne = CompanyStatusCard(
                     title = "Total Income",
@@ -62,9 +89,26 @@ class CompanyDashboardScreenViewModel @Inject constructor(
                     color = Color(0xFF13C6C0)
                 )
 
+                val companyStatusCardThird = CompanyStatusCard(
+                    title = "ACCOUNTS RECEIVABLE",
+                    data = allSalesInvoiceByMonthD09Response.map { it.totalAmount.toDouble() },
+                    totalAmount = getAmountOfAccountReceivable(allTotalAmountsResponse).toDouble(),
+                    percentage = 0.0,
+                    color = Color(0xFFFFEB3B)
+                )
+
+                val companyStatusCardForth = CompanyStatusCard(
+                    title = "ACCOUNTS PAYABLE",
+                    data = allSalesInvoiceByMonthD06Response.map { it.totalAmount.toDouble() },
+                    totalAmount = allSalesInvoiceByMonthD06Response.sumOf { it.totalAmount.toDouble() },
+                    percentage = 0.0,
+                    color = Color(0xFFF44336)
+                )
                 _cardList.value = _cardList.value + listOf(
                     companyStatusCardOne,
-                    companyStatusCardTwo
+                    companyStatusCardTwo,
+                    companyStatusCardThird,
+                    companyStatusCardForth
                 )
 
 
@@ -73,6 +117,12 @@ class CompanyDashboardScreenViewModel @Inject constructor(
         }
     }
 
+
+    fun getAmountOfAccountReceivable(allTotalAmountsResponse: List<AllTotalAmountResponse>): String {
+        val dataObject = allTotalAmountsResponse.find { it.accountName == "Account Receivable" }
+
+        return dataObject?.totalAmount.toString()
+    }
 
     fun updateStartDate(startDate: String) {
         Log.d("CDVMS", startDate)
