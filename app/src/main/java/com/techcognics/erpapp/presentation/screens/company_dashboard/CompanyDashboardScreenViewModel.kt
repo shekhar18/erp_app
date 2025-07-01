@@ -44,33 +44,38 @@ class CompanyDashboardScreenViewModel @Inject constructor(
 
     init {
         //implement api Call
+       companyDashboardApiCalls()
+    }
+
+
+    fun companyDashboardApiCalls(){
         viewModelScope.launch {
             getTokenUseCase.invoke().collect { token ->
                 val totalIncomeAndExpenses = totalIncomeAmountUseCase.invoke(
                     token = token.toString(),
                     startDate = startDate.value.toString(),
                     endDate = endDate.value.toString()
-                )
+                )?: emptyList()
 
                 val allSalesInvoiceByMonthD09Response = allSalesInvoiceByMonthUseCase.invoke(
                     token = token.toString(),
                     docNo = _docNo.value.toString(),
                     startDate = _startDate.value.toString(),
                     endDate = _endDate.value.toString()
-                )
+                )?: emptyList()
 
                 val allSalesInvoiceByMonthD06Response = allSalesInvoiceByMonthUseCase.invoke(
                     token = token.toString(),
                     docNo = _docNoTwo.value.toString(),
                     startDate = _startDate.value.toString(),
                     endDate = _endDate.value.toString()
-                )
+                )?: emptyList()
                 val allTotalAmountsResponse = allTotalAmountsUseCase.invoke(
                     token = token.toString(),
                     docNo = _docNo.value.toString(),
                     startDate = _startDate.value.toString(),
                     endDate = _endDate.value.toString()
-                )
+                )?: emptyList()
 
 
                 val companyStatusCardOne = CompanyStatusCard(
@@ -104,6 +109,7 @@ class CompanyDashboardScreenViewModel @Inject constructor(
                     percentage = 0.0,
                     color = Color(0xFFF44336)
                 )
+                _cardList.value= emptyList<CompanyStatusCard>()
                 _cardList.value = _cardList.value + listOf(
                     companyStatusCardOne,
                     companyStatusCardTwo,

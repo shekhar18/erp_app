@@ -40,6 +40,7 @@ fun CompanyDashboardScreen(
             DateRangePicker(onDateRangeSelected = { start, end ->
                 viewModel.updateStartDate(startDate = start.toString())
                 viewModel.updateEndString(endDate = end.toString())
+                viewModel.companyDashboardApiCalls()
             }, viewModel = viewModel)
             Spacer(modifier = modifier.height(10.dp))
         }
