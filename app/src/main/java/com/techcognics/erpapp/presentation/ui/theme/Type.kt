@@ -51,7 +51,12 @@ val Typography = Typography(
         fontWeight = FontWeight.Normal,
         fontSize = 12.sp,
         lineHeight = 16.sp
-    ),
+    ), titleSmall = TextStyle(
+        fontFamily = FontFamily(Font(R.font.roboto)),
+        fontWeight = FontWeight.Normal,
+        fontSize = 8.sp,
+        lineHeight = 8.sp
+    )
 
 
 

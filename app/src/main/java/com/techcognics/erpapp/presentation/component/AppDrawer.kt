@@ -62,7 +62,7 @@ fun AppDrawer(
         modifier = Modifier
             .width(LocalConfiguration.current.screenWidthDp.dp * 0.75f)
             .fillMaxHeight()
-            .background(Color.White) // optional background
+            .background(MaterialTheme.colorScheme.background) // optional background
     ) {
         Column {
             Row(modifier = modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {

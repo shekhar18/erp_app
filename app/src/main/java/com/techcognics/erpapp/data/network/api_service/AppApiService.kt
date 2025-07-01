@@ -4,6 +4,7 @@ import com.techcognics.erpapp.data.company_dashboard_data.AllAmountByMonthListRe
 import com.techcognics.erpapp.data.company_dashboard_data.AllTotalAmountListResponse
 import com.techcognics.erpapp.data.company_dashboard_data.AllTotalAmountResponse
 import com.techcognics.erpapp.data.company_dashboard_data.AmountsByMonthListResponse
+import com.techcognics.erpapp.data.company_dashboard_data.AmountsByMonthResponse
 import com.techcognics.erpapp.data.company_dashboard_data.SalesInvoiceByMonthResponse
 import com.techcognics.erpapp.data.company_dashboard_data.TotalIncomeAmountListResponse
 import com.techcognics.erpapp.data.company_dashboard_data.TotalIncomeAmountResponse
@@ -46,7 +47,7 @@ interface AppApiService {
         @Query("docNo") pDocNo: String,
         @Query("startDate") startDate: String,
         @Query("endDate") endDate: String
-    ): AmountsByMonthListResponse
+    ): List<AmountsByMonthResponse>
 
     @GET("dashboard/fetchTotalIncomeAmount")
     suspend fun getFetchTotalIncomeAmount(

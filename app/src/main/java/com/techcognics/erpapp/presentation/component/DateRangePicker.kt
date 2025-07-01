@@ -102,7 +102,7 @@ fun DateRangePicker(
         Icon(
             painter = painterResource(R.drawable.filter_icon),
             contentDescription = "Filter Icon",
-            tint = Color.Black,
+            tint = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier.size(18.dp)
         )
         Spacer(modifier = Modifier.width(4.dp))
@@ -110,7 +110,7 @@ fun DateRangePicker(
             text = "Filters :",
             style = MaterialTheme.typography.bodyLarge,
             fontWeight = FontWeight.W400,
-            color = Color.Black,
+            color = MaterialTheme.colorScheme.onBackground,
         )
         Spacer(modifier = Modifier.width(6.dp))
 

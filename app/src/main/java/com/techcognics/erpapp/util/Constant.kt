@@ -19,6 +19,26 @@ object Constant {
     const val PROFILE_SCREEN = "PROFILE_SCREEN"
 
 
+
+    //TABLE HEADER
+    val headersOne = listOf(
+        "Month",
+        "Cash at EOM",
+        "Account Payable",
+        "Account Receivable",
+        "Quick Ratio",
+        "Current Ratio"
+    )
+    val headersTwo = listOf(
+        "Month",
+        "Cash at EOM",
+        "Account Payable",
+        "Account Receivable",
+        "Quick Ratio",
+        "Current Ratio"
+    )
+
+
     val dashboardMenu = listOf(
         DrawerMenu(
             icon = R.drawable.home_icon,

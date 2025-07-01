@@ -29,14 +29,14 @@ fun CopyrightFooter(modifier: Modifier = Modifier) {
     val annotatedString = buildAnnotatedString {
         withStyle(
             style = SpanStyle(
-                color = Color.White,
+                color = MaterialTheme.colorScheme.onBackground,
             )
         ) { append("Copyright © 2025 ")}
 
         pushStringAnnotation(tag = "URL", annotation = "https://techcognicsindia.com")
         withStyle(
             style = SpanStyle(
-                color = Color.White, textDecoration = TextDecoration.Underline
+                color = MaterialTheme.colorScheme.onBackground, textDecoration = TextDecoration.Underline
             )
         ) {
             append("techcognicsindia.com")
@@ -44,7 +44,7 @@ fun CopyrightFooter(modifier: Modifier = Modifier) {
         pop()
         withStyle(
             style = SpanStyle(
-                color = Color.White,
+                color = MaterialTheme.colorScheme.onBackground,
             )
         ) {
         append(" -\nAll rights reserved.")}

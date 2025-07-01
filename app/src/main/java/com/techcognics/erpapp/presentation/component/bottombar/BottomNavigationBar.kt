@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.runtime.Composable
@@ -33,7 +34,7 @@ fun BottomNavigationBar(modifier: Modifier = Modifier, mainNavController: NavHos
     NavigationBar(
         modifier = modifier.windowInsetsPadding(WindowInsets.navigationBars).height(45.dp),
         tonalElevation = 10.dp,
-        containerColor = Color(0xFFF8F8F8),
+        containerColor = MaterialTheme.colorScheme.background,
         content = {
             val currentDestination =
                 mainNavController.currentBackStackEntryAsState().value?.destination?.route

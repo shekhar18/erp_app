@@ -1,6 +1,7 @@
 package com.techcognics.erpapp.presentation.component.charts
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.font.FontWeight
@@ -25,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import com.techcognics.erpapp.presentation.component.text.RichTextLeft
 
 @Composable
-fun CardChart(
+fun CardBarChart(
     title: String,
     amount: String,
     changePercentage: Double,
@@ -39,11 +41,16 @@ fun CardChart(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.background // Replace with your desired color
         ),
+
         shape = RoundedCornerShape(4.dp),
         elevation = CardDefaults.cardElevation(8.dp),
         modifier = modifier
             .padding(4.dp)
-            .background(MaterialTheme.colorScheme.background),
+            .background(MaterialTheme.colorScheme.background).shadow(
+                elevation = if (isSystemInDarkTheme()) 7.dp else 8.dp,
+                ambientColor = if (isSystemInDarkTheme()) Color.White.copy(alpha = 0.5f) else Color.Black.copy(alpha = 0.5f),
+                spotColor = if (isSystemInDarkTheme()) Color.White.copy(alpha = 0.5f) else Color.Black.copy(alpha = 0.5f)
+            ),
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
             Text(text = title, style = MaterialTheme.typography.titleMedium)

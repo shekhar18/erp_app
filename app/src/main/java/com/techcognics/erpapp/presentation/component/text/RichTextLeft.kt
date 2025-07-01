@@ -35,7 +35,7 @@ fun RichTextLeft(
         }
         withStyle(
             style = SpanStyle(
-                color = color, // Dark Blue
+                color = MaterialTheme.colorScheme.onBackground, // Dark Blue
                 fontWeight = FontWeight.W500
             )
         ) { append(text) }
