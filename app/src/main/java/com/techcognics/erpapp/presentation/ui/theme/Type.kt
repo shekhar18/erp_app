@@ -1,5 +1,7 @@
 package com.techcognics.erpapp.presentation.ui.theme
 
+import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -50,7 +52,7 @@ val Typography = Typography(
         fontFamily = FontFamily(Font(R.font.roboto)),
         fontWeight = FontWeight.Normal,
         fontSize = 12.sp,
-        lineHeight = 16.sp
+        lineHeight = 16.sp,
     ), titleSmall = TextStyle(
         fontFamily = FontFamily(Font(R.font.roboto)),
         fontWeight = FontWeight.Normal,

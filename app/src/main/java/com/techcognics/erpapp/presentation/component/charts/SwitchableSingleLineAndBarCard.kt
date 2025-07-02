@@ -10,7 +10,6 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -30,8 +29,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.techcognics.erpapp.data.BarDataCard
 import com.techcognics.erpapp.presentation.component.CustomSwitch
 import ir.ehsannarmani.compose_charts.ColumnChart
@@ -70,13 +71,23 @@ fun SwitchableSingleLineAndBar(
             .padding(4.dp)
             .height(300.dp)
             .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.background).shadow(
+            .background(MaterialTheme.colorScheme.background)
+            .shadow(
                 elevation = if (isSystemInDarkTheme()) 10.dp else 8.dp,
-                ambientColor = if (isSystemInDarkTheme()) Color.White.copy(alpha = 0.5f) else Color.Black.copy(alpha = 0.5f),
-                spotColor = if (isSystemInDarkTheme()) Color.White.copy(alpha = 0.5f) else Color.Black.copy(alpha = 0.5f)
+                ambientColor = if (isSystemInDarkTheme()) Color.White.copy(alpha = 0.5f) else Color.Black.copy(
+                    alpha = 0.5f
+                ),
+                spotColor = if (isSystemInDarkTheme()) Color.White.copy(alpha = 0.5f) else Color.Black.copy(
+                    alpha = 0.5f
+                )
             ),
     ) {
-        Column(modifier = modifier.padding(end = 5.dp, bottom = 5.dp, start = 5.dp).fillMaxWidth(), verticalArrangement = Arrangement.SpaceBetween) {
+        Column(
+            modifier = modifier
+                .padding(end = 5.dp, bottom = 5.dp, start = 5.dp)
+                .fillMaxWidth(),
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
             Row(
                 modifier = modifier
                     .fillMaxWidth()
@@ -95,7 +106,9 @@ fun SwitchableSingleLineAndBar(
                     indicatorProperties = HorizontalIndicatorProperties(
                         enabled = true,
                         position = IndicatorPosition.Horizontal.Start,
-                        textStyle = MaterialTheme.typography.labelSmall,
+                        textStyle = TextStyle(
+                            fontSize = 12.sp, color = MaterialTheme.colorScheme.onBackground
+                        ),
                     ),
                     dividerProperties = DividerProperties(
                         enabled = true,
@@ -193,11 +206,11 @@ fun SwitchableSingleLineAndBar(
                     ),
 
                     indicatorProperties = HorizontalIndicatorProperties(
-                        enabled = false,
+                        enabled = true,
                         position = IndicatorPosition.Horizontal.Start,
-                        textStyle = MaterialTheme.typography.labelSmall,
-
-                    ),
+                        textStyle = TextStyle(
+                            fontSize = 12.sp, color = MaterialTheme.colorScheme.onBackground
+                        ),),
                     labelHelperProperties = LabelHelperProperties(enabled = false),
                     data = remember {
                         listOfBarData.map {

@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -39,160 +40,198 @@ import com.techcognics.erpapp.presentation.component.charts.CardLineChart
 import com.techcognics.erpapp.presentation.component.charts.SwitchableSingleLineAndBar
 import com.techcognics.erpapp.util.extractTableData
 
-
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun CompanyDashboardScreen(
-    modifier: Modifier = Modifier, /*homeNavController: NavHostController*/
-    paddingValue: PaddingValues
+    modifier: Modifier = Modifier, paddingValue: PaddingValues
 ) {
     val viewModel: CompanyDashboardScreenViewModel = hiltViewModel()
-    val componyStateCards by viewModel.companyStatusCardList.observeAsState()
-    val companyLineChartCards by viewModel.companyLineChartCardList.observeAsState()
-    val switchableCard by viewModel.switchableCardList.observeAsState()
-    val companyDashboardResultState by viewModel.companyDashboardState.observeAsState()
+    val state by viewModel.companyDashboardState.observeAsState(Result.Idle)
 
-   when(companyDashboardResultState){
-       is Result.Idle -> LazyColumn(
-               modifier = modifier
-                   .padding(paddingValue)
-                   .fillMaxSize()
-           ) {
-               item {
-                   DateRangePicker(onDateRangeSelected = { start, end ->
-                       viewModel.updateStartDate(startDate = start.toString())
-                       viewModel.updateEndString(endDate = end.toString())
-                       viewModel.companyDashboardApiCalls()
-                   }, viewModel = viewModel)
-                   Spacer(modifier = modifier.height(10.dp))
-               }
-               item {
-                   CompanyDashboardTitle()
-               }
-               item {
-                   Box(
-                       modifier = Modifier
-                           .height(350.dp)
-                           .padding(horizontal = 8.dp)
-                   ) {
+    LaunchedEffect(true) {
+        viewModel.companyDashboardApiCalls()
+    }
 
-                       val cards: List<@Composable () -> Unit> = componyStateCards?.map {
-                           {
-                               CardBarChart(
-                                   title = it.title,
-                                   amount = it.totalAmount.toString(),
-                                   changePercentage = it.percentage,
-                                   isPositive = true,
-                                   barData = it.data,
-                                   color = it.color
-                               )
-                           }
-                       } ?: emptyList()
-                       AutoResponsiveCardGrid(columnsSize = 2, cards = cards)
-                   }
-               }
-               item {
-                   Box(
-                       modifier = Modifier
-                           .height(200.dp)
-                           .padding(horizontal = 8.dp)
-                   ) {
-                       val cards: List<@Composable () -> Unit> = companyLineChartCards?.map {
-                           @Composable {
-                               CardLineChart(
-                                   label = it.label.toString(),
-                                   modifier = Modifier,
-                                   dataList = it.dataList,
-                                   firstGradientFillColor = it.firstGradientFillColor,
-                                   secondGradientFillColor = it.secondGradientFillColor,
-                                   lineThickness = it.lineThickness,
-                               )
-                           }
-                       } ?: emptyList()
-                       Column {
-                           Row(
-                               modifier = modifier
-                                   .fillMaxWidth()
-                                   .height(32.dp),
-                               horizontalArrangement = Arrangement.Absolute.Center
-                           ) {
-                               Text(
-                                   text = "Sum of Account Receivable",
-                                   style = MaterialTheme.typography.bodySmall,
-                                   fontWeight = FontWeight.W900
-                               )
-                           }
-                           AutoResponsiveCardGrid(columnsSize = 2, cards = cards)
-                       }
+    when (state) {
+        is Result.Loading -> Loader()
 
-                   }
-               }
-               item {
-                   Box(
-                       modifier = Modifier
-                           .height(300.dp)
-                           .padding(horizontal = 8.dp, vertical = 10.dp)
-                   ) {
-                       val cards = switchableCard?.map {
-                           @Composable {
-                               var isLineChart by remember { mutableStateOf(true) }
-                               SwitchableSingleLineAndBar(
-                                   modifier = modifier,
-                                   showLine = isLineChart,
-                                   lineData = it.listLineData,
-                                   lineLabels = it.listLineLabel,
-                                   listOfBarData = it.barListDate,
-                               )
-                           }
-                       } ?: emptyList()
-                       Column {
-                           Row(
-                               modifier = modifier
-                                   .fillMaxWidth()
-                                   .height(22.dp),
-                               horizontalArrangement = Arrangement.Absolute.Center
-                           ) {
-                               Text(
-                                   text = "Sum of Sales by month",
-                                   style = MaterialTheme.typography.bodySmall,
-                                   fontWeight = FontWeight.W900
-                               )
-                           }
-                           AutoResponsiveCardGrid(
-                               cards = cards
-                           )
-                       }
-                   }
+        is Result.Error -> {
+            val message = (state as Result.Error).message
+            ErrorDialog(
+                onClick = {
+                    viewModel.companyDashboardApiCalls()
+                }, message = message
+            )
+        }
 
-               }
-               item {
-                   Box(
-                       modifier = Modifier
-                           .height(300.dp)
-                           .padding(horizontal = 8.dp, vertical = 10.dp)
-                   ) {
-                       DynamicTable(
-                           headers = viewModel.headers,
-                           data = extractTableData(viewModel.amountsByMonthList.observeAsState().value?.toList()),
-                           modifier = Modifier.padding(16.dp)
-                       )
-                   }
+        is Result.Idle, is Result.Success -> {
+            LazyColumn(
+                modifier = modifier
+                    .padding(paddingValue)
+                    .fillMaxSize()
+            ) {
+                item {
+                    DateRangePicker(
+                        onDateRangeSelected = { start, end ->
+                            viewModel.updateStartDate(start.toString())
+                            viewModel.updateEndDate(end.toString())
+                            viewModel.companyDashboardApiCalls()
+                        }, viewModel = viewModel
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
+                }
 
-               }
-               item {
-                   CopyrightFooter()
+                item { CompanyDashboardTitle() }
 
-               }
-           }
-       is Result.Loading -> Loader()
-       is Result.Error -> ErrorDialog { viewModel }
-       else -> {}
-   }
+                item {
+                    CompanyStatusCardSection(viewModel)
+                }
 
+                item {
+                    CompanyLineChartSection(viewModel)
+                }
 
+                item {
+                    SwitchableCardSection(viewModel)
+                }
 
+                item {
+                    AmountsTableSection(viewModel)
+                }
 
+                item { CopyrightFooter() }
+            }
+        }
+    }
 }
+
+@Composable
+fun CompanyStatusCardSection(viewModel: CompanyDashboardScreenViewModel) {
+    val cards = viewModel.companyStatusCardList.observeAsState().value.orEmpty()
+
+    Box(
+        modifier = Modifier
+            .height(350.dp)
+            .padding(horizontal = 8.dp)
+    ) {
+        val cardContent = cards.map {
+            @Composable {
+                CardBarChart(
+                    title = it.title,
+                    amount = it.totalAmount.toString(),
+                    changePercentage = it.percentage,
+                    isPositive = true,
+                    barData = it.data,
+                    color = it.color
+                )
+            }
+        }
+        AutoResponsiveCardGrid(columnsSize = 2, cards = cardContent)
+    }
+}
+
+@Composable
+fun CompanyLineChartSection(viewModel: CompanyDashboardScreenViewModel) {
+    val cards = viewModel.companyLineChartCardList.observeAsState().value.orEmpty()
+
+    Box(
+        modifier = Modifier
+            .height(200.dp)
+            .padding(horizontal = 8.dp)
+    ) {
+        Column {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(32.dp),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = "Sum of Account Receivable",
+                    style = MaterialTheme.typography.bodySmall,
+                    fontWeight = FontWeight.W900
+                )
+            }
+
+            val cardContent = cards.map {
+                @Composable {
+                    CardLineChart(
+                        label = it.label,
+                        modifier = Modifier,
+                        dataList = it.dataList,
+                        firstGradientFillColor = it.firstGradientFillColor,
+                        secondGradientFillColor = it.secondGradientFillColor,
+                        lineThickness = it.lineThickness
+                    )
+                }
+            }
+            AutoResponsiveCardGrid(columnsSize = 2, cards = cardContent)
+        }
+    }
+}
+
+@Composable
+fun SwitchableCardSection(viewModel: CompanyDashboardScreenViewModel) {
+    val switchableCards = viewModel.switchableCardList.observeAsState().value.orEmpty()
+
+    Box(
+        modifier = Modifier
+            .height(300.dp)
+            .padding(horizontal = 8.dp, vertical = 10.dp)
+    ) {
+        Column {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(22.dp),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = "Sum of Sales by month",
+                    style = MaterialTheme.typography.bodySmall,
+                    fontWeight = FontWeight.W900
+                )
+            }
+
+            val cards: List<@Composable () -> Unit> = switchableCards.map {
+                @Composable {
+                    var isLineChart by remember { mutableStateOf(true) }
+                    SwitchableSingleLineAndBar(
+                        modifier = Modifier,
+                        showLine = isLineChart,
+                        lineData = it.listLineData,
+                        lineLabels = it.listLineLabel,
+                        listOfBarData = it.barListDate
+                    )
+                }
+            }
+
+            if (cards.isNotEmpty()) {
+                Column {
+                    cards[0]()
+                }
+            }
+
+
+        }
+    }
+}
+
+@Composable
+fun AmountsTableSection(viewModel: CompanyDashboardScreenViewModel) {
+    val tableData = extractTableData(viewModel.amountsByMonthList.observeAsState().value.orEmpty())
+
+    Box(
+        modifier = Modifier
+            .height(300.dp)
+            .padding(horizontal = 8.dp, vertical = 10.dp)
+    ) {
+        DynamicTable(
+            headers = viewModel.headers, data = tableData, modifier = Modifier.padding(16.dp)
+        )
+    }
+}
+
 
 @Preview(showBackground = true, showSystemUi = false)
 @Composable

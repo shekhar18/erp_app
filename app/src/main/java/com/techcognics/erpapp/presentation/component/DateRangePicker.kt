@@ -98,7 +98,7 @@ fun DateRangePicker(
         horizontalArrangement = Arrangement.End
     ) {
         viewModel.updateStartDate(startDate = startDate.toString())
-        viewModel.updateEndString(endDate = endDate.toString())
+        viewModel.updateEndDate(endDate = endDate.toString())
         Icon(
             painter = painterResource(R.drawable.filter_icon),
             contentDescription = "Filter Icon",

@@ -83,7 +83,7 @@ fun LoginScreen(modifier: Modifier = Modifier, mainNavController: NavHostControl
                         }
 
                         is Result.Error -> {
-                            ErrorDialog(modifier, onClick = {viewModel.reset()})
+                            ErrorDialog(modifier, onClick = {viewModel.reset()},)
 
                         }
 

@@ -29,222 +29,156 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CompanyDashboardScreenViewModel @Inject constructor(
-    val getTokenUseCase: GetTokenUseCase,
-    val allSalesInvoiceByMonthUseCase: AllSalesInvoiceByMonthUseCase,
-    val totalIncomeAmountUseCase: TotalIncomeAmountUseCase,
-    val allTotalAmountsUseCase: AllTotalAmountsUseCase,
-    val amountsByMonthUseCase: AmountsByMonthUseCase
+    private val getTokenUseCase: GetTokenUseCase,
+    private val allSalesInvoiceByMonthUseCase: AllSalesInvoiceByMonthUseCase,
+    private val totalIncomeAmountUseCase: TotalIncomeAmountUseCase,
+    private val allTotalAmountsUseCase: AllTotalAmountsUseCase,
+    private val amountsByMonthUseCase: AmountsByMonthUseCase
 ) : ViewModel() {
 
-    private val _startDate: MutableLiveData<String> = MutableLiveData<String>()
+    private val _startDate = MutableLiveData<String>()
     val startDate: LiveData<String> = _startDate
 
-    private val _endDate: MutableLiveData<String> = MutableLiveData<String>()
+    private val _endDate = MutableLiveData<String>()
     val endDate: LiveData<String> = _endDate
 
-    private val _docNo: MutableLiveData<String> = MutableLiveData<String>("D09")
+    private val _docNo = MutableLiveData("D09")
     val docNo: LiveData<String> = _docNo
 
-    private val _docNoTwo: MutableLiveData<String> = MutableLiveData<String>("D06")
+    private val _docNoTwo = MutableLiveData("D06")
     val docNoTwo: LiveData<String> = _docNoTwo
 
-    private val _companyStatusCardList: MutableLiveData<List<CompanyStatusCard>> =
-        MutableLiveData<List<CompanyStatusCard>>(emptyList<CompanyStatusCard>())
+    private val _companyStatusCardList = MutableLiveData<List<CompanyStatusCard>>(emptyList())
     val companyStatusCardList: LiveData<List<CompanyStatusCard>> = _companyStatusCardList
 
-    private val _companyLineChartCardList: MutableLiveData<List<CompanyLineCard>> =
-        MutableLiveData<List<CompanyLineCard>>(emptyList<CompanyLineCard>())
+    private val _companyLineChartCardList = MutableLiveData<List<CompanyLineCard>>(emptyList())
     val companyLineChartCardList: LiveData<List<CompanyLineCard>> = _companyLineChartCardList
 
-    private val _switchableCardList: MutableLiveData<List<SwitchableSingleLineAndBarCard>> =
-        MutableLiveData<List<SwitchableSingleLineAndBarCard>>(emptyList<SwitchableSingleLineAndBarCard>())
-
+    private val _switchableCardList = MutableLiveData<List<SwitchableSingleLineAndBarCard>>(emptyList())
     val switchableCardList: LiveData<List<SwitchableSingleLineAndBarCard>> = _switchableCardList
 
-    val headers = listOf(
-        "Month",
-        "Cash at EOM",
-        "Account Payable",
-        "Account Receivable",
-        "Quick Ratio",
-        "Current Ratio"
-    )
-
-    private val _amountsByMonthList: MutableLiveData<List<AmountsByMonthResponse>> =
-        MutableLiveData<List<AmountsByMonthResponse>>(emptyList<AmountsByMonthResponse>())
-
+    private val _amountsByMonthList = MutableLiveData<List<AmountsByMonthResponse>>(emptyList())
     val amountsByMonthList: LiveData<List<AmountsByMonthResponse>> = _amountsByMonthList
 
-    private val _companyDashboardState =
-        MutableLiveData<Result<Result.Idle>>(
-            Result.Idle
-        )
-    val companyDashboardState: LiveData<Result<Result.Idle>> = _companyDashboardState
+    private val _companyDashboardState = MutableLiveData<Result<Unit>>(Result.Idle)
+    val companyDashboardState: LiveData<Result<Unit>> = _companyDashboardState
 
+    val headers = listOf(
+        "Month", "Cash at EOM", "Account Payable",
+        "Account Receivable", "Quick Ratio", "Current Ratio"
+    )
 
-    init {
+    /*init {
         companyDashboardApiCalls()
+    }*/
+
+    fun updateStartDate(startDate: String) {
+        _startDate.value = startDate
+    }
+
+    fun updateEndDate(endDate: String) {
+        _endDate.value = endDate
     }
 
     fun resetScreen() {
         _companyDashboardState.value = Result.Idle
     }
 
-    //implement api Call
-    @SuppressLint("DefaultLocale")
     fun companyDashboardApiCalls() {
         viewModelScope.launch {
+            _companyDashboardState.value = Result.Loading
+            try {
+                getTokenUseCase().collect { token ->
+                    val tokenStr = token.toString()
 
-            getTokenUseCase.invoke().collect { token ->
-                _companyDashboardState.value = Result.Loading
-                val totalIncomeAndExpenses = totalIncomeAmountUseCase.invoke(
-                    token = token.toString(),
-                    startDate = startDate.value.toString() ?: "",
-                    endDate = endDate.value.toString() ?: ""
-                ) ?: emptyList()
+                    val totalIncomeAndExpenses = totalIncomeAmountUseCase(
+                        token = tokenStr, startDate = _startDate.value.orEmpty(), endDate = _endDate.value.orEmpty()
+                    ) ?: emptyList()
 
-                val allSalesInvoiceByMonthD09Response = allSalesInvoiceByMonthUseCase.invoke(
-                    token = token.toString(),
-                    docNo = _docNo.value.toString(),
-                    startDate = _startDate.value.toString(),
-                    endDate = _endDate.value.toString()
-                ) ?: emptyList()
+                    val salesD09 = allSalesInvoiceByMonthUseCase(
+                        token = tokenStr, docNo = _docNo.value.orEmpty(),
+                        startDate = _startDate.value.orEmpty(), endDate = _endDate.value.orEmpty()
+                    ) ?: emptyList()
 
-                val allSalesInvoiceByMonthD06Response = allSalesInvoiceByMonthUseCase.invoke(
-                    token = token.toString(),
-                    docNo = _docNoTwo.value.toString(),
-                    startDate = _startDate.value.toString(),
-                    endDate = _endDate.value.toString()
-                ) ?: emptyList()
-                val allTotalAmountsResponse = allTotalAmountsUseCase.invoke(
-                    token = token.toString(),
-                    docNo = _docNo.value.toString(),
-                    startDate = _startDate.value.toString(),
-                    endDate = _endDate.value.toString()
-                ) ?: emptyList()
+                    val salesD06 = allSalesInvoiceByMonthUseCase(
+                        token = tokenStr, docNo = _docNoTwo.value.orEmpty(),
+                        startDate = _startDate.value.orEmpty(), endDate = _endDate.value.orEmpty()
+                    ) ?: emptyList()
 
-                _amountsByMonthList.value =
-                    (amountsByMonthList.value + amountsByMonthUseCase.invoke(
-                        token = token.toString(),
-                        docNo = _docNo.value.toString(),
-                        startDate = _startDate.value.toString(),
-                        endDate = _endDate.value.toString()
-                    )) ?: emptyList()
+                    val totalAmounts = allTotalAmountsUseCase(
+                        token = tokenStr, docNo = _docNo.value.orEmpty(),
+                        startDate = _startDate.value.orEmpty(), endDate = _endDate.value.orEmpty()
+                    ) ?: emptyList()
 
-                _companyDashboardState.value = Result.Idle
+                    val monthlyAmounts = amountsByMonthUseCase(
+                        token = tokenStr, docNo = _docNo.value.orEmpty(),
+                        startDate = _startDate.value.orEmpty(), endDate = _endDate.value.orEmpty()
+                    ) ?: emptyList()
 
-                val companyStatusCardOne = CompanyStatusCard(
-                    title = "Total Income",
-                    data = totalIncomeAndExpenses.map { it.totalIncome.toDouble() },
-                    totalAmount = String.format(
-                        "%.2f", totalIncomeAndExpenses.sumOf { it.totalIncome.toDouble() })
-                        .toDouble(),
-                    percentage = 0.0,
-                    color = Color(0xFFDE0A71)
-                )
+                    _amountsByMonthList.value = monthlyAmounts
 
-                val companyStatusCardTwo = CompanyStatusCard(
-                    title = "Total Expenses",
-                    data = totalIncomeAndExpenses.map { it.totalExpense.toDouble() },
-                    totalAmount = totalIncomeAndExpenses.sumOf { it.totalExpense.toDouble() },
-                    percentage = 0.0,
-                    color = Color(0xFF13C6C0)
-                )
+                    val statusCards = listOf(
+                        CompanyStatusCard("Total Income", totalIncomeAndExpenses.map { it.totalIncome.toDouble() },
+                            totalIncomeAndExpenses.sumOf { it.totalIncome.toDouble() }, 0.0, Color(0xFFDE0A71)),
 
-                val companyStatusCardThird = CompanyStatusCard(
-                    title = "ACCOUNTS RECEIVABLE",
-                    data = allSalesInvoiceByMonthD09Response.map { it.totalAmount.toDouble() },
-                    totalAmount = getAmountOfAccountReceivable(allTotalAmountsResponse).toDouble(),
-                    percentage = 0.0,
-                    color = Color(0xFFFFEB3B)
-                )
+                        CompanyStatusCard("Total Expenses", totalIncomeAndExpenses.map { it.totalExpense.toDouble() },
+                            totalIncomeAndExpenses.sumOf { it.totalExpense.toDouble() }, 0.0, Color(0xFF13C6C0)),
 
-                val companyStatusCardForth = CompanyStatusCard(
-                    title = "ACCOUNTS PAYABLE",
-                    data = allSalesInvoiceByMonthD06Response.map { it.totalAmount.toDouble() },
-                    totalAmount = allSalesInvoiceByMonthD06Response.sumOf { it.totalAmount.toDouble() },
-                    percentage = 0.0,
-                    color = Color(0xFFF44336)
-                )
-                _companyStatusCardList.value = emptyList<CompanyStatusCard>()
-                _companyStatusCardList.value = _companyStatusCardList.value + listOf(
-                    companyStatusCardOne,
-                    companyStatusCardTwo,
-                    companyStatusCardThird,
-                    companyStatusCardForth
-                )
+                        CompanyStatusCard("ACCOUNTS RECEIVABLE", salesD09.map { it.totalAmount.toDouble() },
+                            getAccountAmount(totalAmounts, "Account Receivable"), 0.0, Color(0xFFFFEB3B)),
 
-
-                val companyLineCardOne = CompanyLineCard(
-                    label = String.format(
-                        "%.2f", getAmountOfAccountReceivable(allTotalAmountsResponse).toDouble()
-                    ),
-                    dataList = allSalesInvoiceByMonthD09Response.map { it.totalAmount.toDouble() },
-                    firstGradientFillColor = Color(0xFF2942BB),
-                    secondGradientFillColor = Color.Transparent,
-                    lineThickness = 2.5.dp
-                )
-                val companyLineCardTwo = CompanyLineCard(
-                    label = "Sum of Cash EOM  " + String.format(
-                        "%.2f", getAmountOfAccountReceivable(allTotalAmountsResponse).toDouble()
-                    ),
-                    dataList = allSalesInvoiceByMonthD09Response.map { it.totalAmount.toDouble() },
-                    firstGradientFillColor = Color(0xFFBB3F29),
-                    secondGradientFillColor = Color.Transparent,
-                    lineThickness = .5.dp
-                )
-
-
-                _companyLineChartCardList.value = emptyList<CompanyLineCard>()
-                _companyLineChartCardList.value =
-                    _companyLineChartCardList.value + listOf<CompanyLineCard>(
-                        companyLineCardOne, companyLineCardTwo,
-
-                        )
-
-                val switchableCardOne = SwitchableSingleLineAndBarCard(
-                    listLineData = totalIncomeAndExpenses.map { it.totalIncome.toDouble() },
-                    listLineLabel = totalIncomeAndExpenses.map { it.month },
-                    barListDate = totalIncomeAndExpenses.map {
-                        BarDataCard(
-                            label = it.month, data = listOf(
-                                Bars.Data(
-                                    value = it.totalIncome.toDouble(),
-                                    label = it.totalIncome,
-                                    color = SolidColor(Color(0xFF2942BB))
-                                )
-                            )
-                        )
-                    })
-
-                _switchableCardList.value = emptyList<SwitchableSingleLineAndBarCard>()
-                _switchableCardList.value =
-                    _switchableCardList.value + listOf<SwitchableSingleLineAndBarCard>(
-                        switchableCardOne
+                        CompanyStatusCard("ACCOUNTS PAYABLE", salesD06.map { it.totalAmount.toDouble() },
+                            salesD06.sumOf { it.totalAmount.toDouble() }, 0.0, Color(0xFFF44336))
                     )
 
+                    _companyStatusCardList.value = statusCards
 
+                    val lineCards = listOf(
+                        CompanyLineCard(
+                            label = getAccountAmount(totalAmounts, "Account Receivable").toString(),
+                            dataList = salesD09.map { it.totalAmount.toDouble() },
+                            firstGradientFillColor = Color(0xFF2942BB),
+                            secondGradientFillColor = Color.Transparent,
+                            lineThickness = 2.5.dp
+                        ),
+                        CompanyLineCard(
+                            label = "Sum of Cash EOM ${salesD09.sumOf { it.totalAmount.toDouble() }}",
+                            dataList = salesD09.map { it.totalAmount.toDouble() },
+                            firstGradientFillColor = Color(0xFFBB3F29),
+                            secondGradientFillColor = Color.Transparent,
+                            lineThickness = 0.5.dp
+                        )
+                    )
+                    _companyLineChartCardList.value = lineCards
+
+                    val switchableCards = listOf(
+                        SwitchableSingleLineAndBarCard(
+                            listLineData = totalIncomeAndExpenses.map { it.totalIncome.toDouble() },
+                            listLineLabel = totalIncomeAndExpenses.map { it.month },
+                            barListDate = totalIncomeAndExpenses.map {
+                                BarDataCard(
+                                    label = it.month, data = listOf(
+                                        Bars.Data(
+                                            value = it.totalIncome.toDouble(),
+                                            label = it.totalIncome,
+                                            color = SolidColor(Color(0xFF2942BB))
+                                        )
+                                    )
+                                )
+                            }
+                        )
+                    )
+                    _switchableCardList.value = switchableCards
+
+                    _companyDashboardState.value = Result.Success(Unit)
+                }
+            } catch (e: Exception) {
+                _companyDashboardState.value = Result.Error(e.localizedMessage ?: "Unknown error")
             }
-
         }
     }
 
-
-    fun getAmountOfAccountReceivable(allTotalAmountsResponse: List<AllTotalAmountResponse>): String {
-        val dataObject = allTotalAmountsResponse.find { it.accountName == "Account Receivable" }
-
-        return dataObject?.totalAmount.toString()
+    private fun getAccountAmount(list: List<AllTotalAmountResponse>, accountName: String): Double {
+        return list.find { it.accountName == accountName }?.totalAmount?.toDoubleOrNull() ?: 0.0
     }
-
-    fun updateStartDate(startDate: String) {
-        Log.d("CDVMS", startDate)
-        _startDate.value = startDate
-    }
-
-    fun updateEndString(endDate: String) {
-        Log.d("CDVMS", endDate)
-        _endDate.value = endDate
-    }
-
-
 }

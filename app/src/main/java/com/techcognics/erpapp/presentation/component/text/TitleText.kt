@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
 @Composable
-fun TitleText(text: String, color: Color = Color.Black) {
+fun TitleText(text: String, color: Color = MaterialTheme.colorScheme.onBackground) {
     Text(
         text = text, style = MaterialTheme.typography.headlineSmall, color = color
     )

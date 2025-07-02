@@ -62,6 +62,6 @@ class MainActivity : ComponentActivity() {
 @Preview
 @Composable
 private fun ShowErrorScreen() {
-    ErrorDialog {  }
+    ErrorDialog(onClick = {  },)
 
 }

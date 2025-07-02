@@ -27,11 +27,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun IconInputField(
@@ -53,7 +56,7 @@ fun IconInputField(
     Box(
         modifier = modifier
             .height(28.dp)
-            .padding(start = 10.dp, end = 10.dp)
+            .padding(start = 10.dp, end = 20.dp)
             .fillMaxWidth()
             .border(
                 width = 1.dp,
@@ -71,7 +74,7 @@ fun IconInputField(
                 Icon(
                     painter = painterResource(icon),
                     contentDescription = contentDescription,
-                    tint = Color.Black,
+                    tint = MaterialTheme.colorScheme.onBackground,
                     modifier = Modifier.size(15.dp)
                 )
             }
@@ -93,7 +96,11 @@ fun IconInputField(
 
                 singleLine = true,
                 visualTransformation = if (isPasswordField) PasswordVisualTransformation() else VisualTransformation.None,
-                textStyle = MaterialTheme.typography.labelMedium,
+                textStyle = TextStyle(
+                    fontSize = 12.sp,
+                    color = MaterialTheme.colorScheme.onBackground
+                ),
+                cursorBrush = SolidColor(MaterialTheme.colorScheme.onBackground),
                 decorationBox = { innerTextField ->
                     if (value.isEmpty() && isFocused != true) {
                         Row {
@@ -103,7 +110,6 @@ fun IconInputField(
                                 color = MaterialTheme.colorScheme.onBackground,
                             )
                             Text(
-
                                 text = "*",
                                 style = MaterialTheme.typography.labelMedium,
                                 color = MaterialTheme.colorScheme.error
@@ -122,7 +128,7 @@ fun IconInputField(
                             )
                             Text(
                                 modifier = modifier
-                                    .background(Color.White)
+                                    .background(MaterialTheme.colorScheme.background)
                                     .offset(y = if (isFocused) labelOffsetY.dp else 0.dp),
                                 text = "*",
                                 style = MaterialTheme.typography.labelMedium,

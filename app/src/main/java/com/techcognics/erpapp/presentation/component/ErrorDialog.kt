@@ -28,7 +28,7 @@ import com.techcognics.erpapp.R
 
 
 @Composable
-fun ErrorDialog(modifier: Modifier = Modifier, onClick: () -> Unit) {
+fun ErrorDialog(modifier: Modifier = Modifier, onClick: () -> Unit, message: String="") {
     Column(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,

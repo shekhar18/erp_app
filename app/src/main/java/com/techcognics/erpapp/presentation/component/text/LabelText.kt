@@ -8,7 +8,7 @@ import androidx.compose.ui.graphics.Color
 
 
 @Composable
-fun LabelText(text: String, color: Color = Color.Black) {
+fun LabelText(text: String, color: Color = MaterialTheme.colorScheme.onBackground) {
     Text(
         text = text, style = MaterialTheme.typography.labelMedium, color = color
     )

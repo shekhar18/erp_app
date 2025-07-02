@@ -34,9 +34,9 @@ fun RememberMeRow(checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
                 checked = checked,
                 onCheckedChange = onCheckedChange,
                 colors = CheckboxDefaults.colors(
-                    checkedColor = colorResource(R.color.card_border_color),
-                    checkmarkColor = Color.Black,
-                    uncheckedColor = Color.Black
+                    checkedColor = MaterialTheme.colorScheme.onBackground,
+                    checkmarkColor = MaterialTheme.colorScheme.primary,
+                    uncheckedColor = MaterialTheme.colorScheme.onBackground
                 ),
                 modifier = Modifier
                     .scale(0.7f)
