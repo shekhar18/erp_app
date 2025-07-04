@@ -1,6 +1,5 @@
 package com.techcognics.erpapp.presentation.component.charts
 
-
 import androidx.compose.animation.core.EaseInOutCubic
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
@@ -35,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.techcognics.erpapp.data.BarDataCard
 import com.techcognics.erpapp.presentation.component.CustomSwitch
+import com.techcognics.erpapp.util.getRandomColor
 import ir.ehsannarmani.compose_charts.ColumnChart
 import ir.ehsannarmani.compose_charts.LineChart
 import ir.ehsannarmani.compose_charts.models.BarProperties
@@ -51,17 +51,15 @@ import ir.ehsannarmani.compose_charts.models.Line
 import ir.ehsannarmani.compose_charts.models.LineProperties
 
 @Composable
-fun SwitchableSingleLineAndBar(
-    modifier: Modifier = Modifier,
-    showLine: Boolean = true,
-    lineData: List<Double>,
-    lineLabels: List<String>,
-    listOfBarData: List<BarDataCard>,
-    color: Color
+fun SwitchableMultipleLineAndBarCard(modifier: Modifier = Modifier, showLine: Boolean,
+                                     listOfIncome:List<Double>,
+                                     listOfExpenses:List<Double>,
+                                     listOfMonth:List<String>,
+                                     listOfBarData: List<BarDataCard>,
+                                     incomeColor:Color,
+                                     expensesColor:Color
 ) {
-
     var showLineState by rememberSaveable { mutableStateOf(showLine) }
-
     Card(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.background
@@ -101,7 +99,6 @@ fun SwitchableSingleLineAndBar(
                 }
             }
             if (showLineState) {
-                //show line chart
                 LineChart(
                     curvedEdges = false,
                     indicatorProperties = HorizontalIndicatorProperties(
@@ -119,7 +116,7 @@ fun SwitchableSingleLineAndBar(
                     labelProperties = LabelProperties(
                         padding = 2.dp,
                         enabled = true,
-                        labels = lineLabels,
+                        labels = listOfMonth,//lineLabels
                         builder = { modifier, label, shouldRotate, index ->
                             Text(
                                 modifier = modifier,
@@ -130,7 +127,8 @@ fun SwitchableSingleLineAndBar(
                         },
                         rotation = LabelProperties.Rotation(
                             mode = LabelProperties.Rotation.Mode.Force,
-                            degree = if (lineData.size > 5) {
+                            degree = if (listOfMonth.size > 5
+                            ) {
                                 -45f
                             } else {
                                 0f
@@ -150,11 +148,12 @@ fun SwitchableSingleLineAndBar(
                         .fillMaxSize()
                         .padding(end = 5.dp),
                     data = remember {
+
                         listOf(
                             Line(
                                 label = "",
-                                values = lineData,
-                                color = SolidColor(color),
+                                values = listOfIncome,
+                                color = SolidColor(incomeColor),
                                 firstGradientFillColor = Color.Transparent,
                                 secondGradientFillColor = Color.Transparent,
                                 strokeAnimationSpec = tween(2000, easing = EaseInOutCubic),
@@ -165,13 +164,28 @@ fun SwitchableSingleLineAndBar(
                                     radius = 1.dp,
                                     enabled = true,
                                     color = SolidColor(Color.White),
-                                    strokeColor = SolidColor(color),
+                                    strokeColor = SolidColor(incomeColor),
+                                )
+                            ), Line(
+                                label = "",
+                                values = listOfExpenses,
+                                color = SolidColor(expensesColor),
+                                firstGradientFillColor = Color.Transparent,
+                                secondGradientFillColor = Color.Transparent,
+                                strokeAnimationSpec = tween(2000, easing = EaseInOutCubic),
+                                gradientAnimationDelay = 1000,
+
+                                drawStyle = DrawStyle.Stroke(width = 1.dp),
+                                dotProperties = DotProperties(
+                                    radius = 1.dp,
+                                    enabled = true,
+                                    color = SolidColor(Color.White),
+                                    strokeColor = SolidColor(expensesColor),
                                 )
                             )
                         )
                     })
             } else {
-                //show Bar chart
                 ColumnChart(
                     animationSpec = spring(
                         dampingRatio = Spring.DampingRatioMediumBouncy,
@@ -187,7 +201,7 @@ fun SwitchableSingleLineAndBar(
                     labelProperties = LabelProperties(
                         padding = 2.dp,
                         enabled = true,
-                        labels = lineLabels,
+                        labels = listOfMonth,
                         builder = { modifier, label, shouldRotate, index ->
                             Text(
                                 modifier = modifier,
@@ -197,7 +211,8 @@ fun SwitchableSingleLineAndBar(
                         },
                         rotation = LabelProperties.Rotation(
                             mode = LabelProperties.Rotation.Mode.Force,
-                            degree = if (lineData.size > 5) {
+                            degree = if (listOfMonth.size > 5
+                            ) {
                                 -45f
                             } else {
                                 0f
@@ -217,16 +232,15 @@ fun SwitchableSingleLineAndBar(
                     data = remember {
                         listOfBarData.map {
                             Bars(
-                                label = it.label, values = it.data
+                                label = it.label, values = it.data,
                             )
-                        }.toList()
+                        }
                     },
                     barProperties = BarProperties(
                         spacing = 2.dp, thickness = 8.dp
                     ),
                 )
             }
-
         }
     }
 
@@ -235,6 +249,10 @@ fun SwitchableSingleLineAndBar(
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-private fun ShowSwitchableSingleLineAndBar() {
-    // SwitchableSingleLineAndBar()
+private fun ShowSwitchableMultipleLineAndBarCard() {
+
+
+   // SwitchableMultipleLineAndBarCard(showLine = true)
+
+
 }

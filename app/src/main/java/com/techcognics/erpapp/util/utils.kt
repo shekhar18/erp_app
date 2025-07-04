@@ -1,12 +1,14 @@
 package com.techcognics.erpapp.util
 
 import android.icu.text.SimpleDateFormat
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
 import com.techcognics.erpapp.data.company_dashboard_data.AmountsByMonthResponse
 import java.util.Locale
+import kotlin.random.Random
 
 class CustomPasswordTransformation(
     private val dotChar: Char = '◉'
@@ -44,5 +46,14 @@ fun extractTableData(input: List<AmountsByMonthResponse>?): List<List<String>> {
 
             row
         }
+}
+
+fun getRandomColor(): Color {
+    return Color(
+        red = Random.nextFloat(),
+        green = Random.nextFloat(),
+        blue = Random.nextFloat(),
+        alpha = 1f // Full opacity
+    )
 }
 

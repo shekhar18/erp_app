@@ -55,7 +55,6 @@ fun CardLineChart(
             ),
 
             shape = RoundedCornerShape(4.dp),
-           /* elevation = CardDefaults.cardElevation(10.dp),*/
             modifier = modifier
                 .padding(4.dp)
                 .height(160.dp)
@@ -69,9 +68,9 @@ fun CardLineChart(
             Column(
                 modifier = Modifier.padding(
                     top = 70.dp,
-                    start = 5.dp,
+                   /* start = 5.dp,
                     end = 5.dp,
-                    bottom = 5.dp
+                    bottom = 5.dp*/
                 )
             ) {
                 LineChart(
@@ -91,17 +90,17 @@ fun CardLineChart(
                             Line(
                                 label = "",
                                 values = dataList,
-                                color = SolidColor(Color(0xFF2352AF)),
-                                firstGradientFillColor = firstGradientFillColor,
-                                secondGradientFillColor = secondGradientFillColor,
+                                color = SolidColor(firstGradientFillColor),
+                                firstGradientFillColor = firstGradientFillColor.copy(0.5f),
+                                secondGradientFillColor = secondGradientFillColor.copy(-0.5f),
                                 strokeAnimationSpec = tween(2000, easing = EaseInOutCubic),
                                 gradientAnimationDelay = 1000,
                                 drawStyle = DrawStyle.Stroke(width = lineThickness),
-                                dotProperties = DotProperties(
+                                /*dotProperties = DotProperties(
                                     enabled = true,
                                     color = SolidColor(Color.White),
                                     strokeColor = SolidColor(firstGradientFillColor),
-                                )
+                                )*/
                             )
                         )
                     },

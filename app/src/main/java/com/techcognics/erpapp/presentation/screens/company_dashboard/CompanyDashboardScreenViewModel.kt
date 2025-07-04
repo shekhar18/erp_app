@@ -1,7 +1,5 @@
 package com.techcognics.erpapp.presentation.screens.company_dashboard
 
-import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.unit.dp
@@ -12,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import com.techcognics.erpapp.data.BarDataCard
 import com.techcognics.erpapp.data.CompanyLineCard
 import com.techcognics.erpapp.data.CompanyStatusCard
+import com.techcognics.erpapp.data.SwitchableMultipleLineAndBar
 import com.techcognics.erpapp.data.SwitchableSingleLineAndBarCard
 import com.techcognics.erpapp.data.company_dashboard_data.AllTotalAmountResponse
 import com.techcognics.erpapp.data.company_dashboard_data.AmountsByMonthResponse
@@ -21,6 +20,7 @@ import com.techcognics.erpapp.domain.usecase.company_dashboard_usecase.AllTotalA
 import com.techcognics.erpapp.domain.usecase.company_dashboard_usecase.AmountsByMonthUseCase
 import com.techcognics.erpapp.domain.usecase.company_dashboard_usecase.TotalIncomeAmountUseCase
 import com.techcognics.erpapp.presentation.base.Result
+import com.techcognics.erpapp.util.getRandomColor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.ehsannarmani.compose_charts.models.Bars
 import kotlinx.coroutines.launch
@@ -57,6 +57,8 @@ class CompanyDashboardScreenViewModel @Inject constructor(
     private val _switchableCardList = MutableLiveData<List<SwitchableSingleLineAndBarCard>>(emptyList())
     val switchableCardList: LiveData<List<SwitchableSingleLineAndBarCard>> = _switchableCardList
 
+    private val _switchableMultiLineAndBarCardList = MutableLiveData<List<SwitchableMultipleLineAndBar>>(emptyList())
+    val switchableMultiLineAndBarCardList: LiveData<List<SwitchableMultipleLineAndBar>> = _switchableMultiLineAndBarCardList
     private val _amountsByMonthList = MutableLiveData<List<AmountsByMonthResponse>>(emptyList())
     val amountsByMonthList: LiveData<List<AmountsByMonthResponse>> = _amountsByMonthList
 
@@ -144,7 +146,7 @@ class CompanyDashboardScreenViewModel @Inject constructor(
                         CompanyLineCard(
                             label = "Sum of Cash EOM ${salesD09.sumOf { it.totalAmount.toDouble() }}",
                             dataList = salesD09.map { it.totalAmount.toDouble() },
-                            firstGradientFillColor = Color(0xFFBB3F29),
+                            firstGradientFillColor = Color(0xFF673AB7),
                             secondGradientFillColor = Color.Transparent,
                             lineThickness = 0.5.dp
                         )
@@ -161,14 +163,43 @@ class CompanyDashboardScreenViewModel @Inject constructor(
                                         Bars.Data(
                                             value = it.totalIncome.toDouble(),
                                             label = it.totalIncome,
-                                            color = SolidColor(Color(0xFF2942BB))
+                                            color = SolidColor(getRandomColor())
                                         )
                                     )
                                 )
-                            }
+                            },
+                            color =getRandomColor()
                         )
                     )
                     _switchableCardList.value = switchableCards
+
+                    val incomeAndExpensesList = listOf(
+                        SwitchableMultipleLineAndBar(
+                            listOfIncome = totalIncomeAndExpenses.map { it.totalIncome.toDouble() },
+                            listOfExpenses = totalIncomeAndExpenses.map { it.totalExpense.toDouble() },
+                            listOfMonths = totalIncomeAndExpenses.map { it.month },
+                            listOfBarData = totalIncomeAndExpenses.map {
+                                BarDataCard(
+                                    label = it.month, data = listOf(
+                                        Bars.Data(
+                                            value = it.totalIncome.toDouble(),
+                                            label = it.totalIncome,
+                                            color = SolidColor(getRandomColor())
+                                        ),
+                                        Bars.Data(
+                                            value = it.totalExpense.toDouble(),
+                                            label = it.totalExpense,
+                                            color = SolidColor(getRandomColor())
+                                        )
+                                    )
+                                )
+                            },
+
+                        )
+                    )
+
+                    _switchableMultiLineAndBarCardList.value = incomeAndExpensesList
+
 
                     _companyDashboardState.value = Result.Success(Unit)
                 }

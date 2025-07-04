@@ -37,8 +37,10 @@ import com.techcognics.erpapp.presentation.component.ErrorDialog
 import com.techcognics.erpapp.presentation.component.Loader
 import com.techcognics.erpapp.presentation.component.charts.CardBarChart
 import com.techcognics.erpapp.presentation.component.charts.CardLineChart
+import com.techcognics.erpapp.presentation.component.charts.SwitchableMultipleLineAndBarCard
 import com.techcognics.erpapp.presentation.component.charts.SwitchableSingleLineAndBar
 import com.techcognics.erpapp.util.extractTableData
+import com.techcognics.erpapp.util.getRandomColor
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -93,6 +95,9 @@ fun CompanyDashboardScreen(
 
                 item {
                     SwitchableCardSection(viewModel)
+                }
+                item {
+                    SwitchableMultiLineAndBarCardSection(viewModel)
                 }
 
                 item {
@@ -201,7 +206,8 @@ fun SwitchableCardSection(viewModel: CompanyDashboardScreenViewModel) {
                         showLine = isLineChart,
                         lineData = it.listLineData,
                         lineLabels = it.listLineLabel,
-                        listOfBarData = it.barListDate
+                        listOfBarData = it.barListDate,
+                        color = it.color,
                     )
                 }
             }
@@ -215,6 +221,55 @@ fun SwitchableCardSection(viewModel: CompanyDashboardScreenViewModel) {
 
         }
     }
+}
+
+
+@Composable
+fun SwitchableMultiLineAndBarCardSection(viewModel: CompanyDashboardScreenViewModel) {
+    val cardList = viewModel.switchableMultiLineAndBarCardList.observeAsState().value.orEmpty()
+    Box(
+        modifier = Modifier
+            .height(300.dp)
+            .padding(horizontal = 8.dp, vertical = 10.dp)
+    ) {
+        Column {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(22.dp),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = "Sum of income and sum of expenses by month",
+                    style = MaterialTheme.typography.bodySmall,
+                    fontWeight = FontWeight.W900
+                )
+            }
+            val cards: List<@Composable () -> Unit> = cardList.map {
+                @Composable {
+                    var isLineChart by remember { mutableStateOf(true) }
+                    SwitchableMultipleLineAndBarCard(
+                        listOfIncome = it.listOfIncome,
+                        listOfExpenses = it.listOfExpenses,
+                        listOfMonth = it.listOfMonths,
+                        listOfBarData = it.listOfBarData,
+                        incomeColor = getRandomColor(),
+                        expensesColor = getRandomColor(),
+                        showLine = isLineChart
+                    )
+
+                }
+            }
+            if (cards.isNotEmpty()) {
+                Column {
+                    cards[0]()
+                }
+            }
+
+
+        }
+    }
+
 }
 
 @Composable
