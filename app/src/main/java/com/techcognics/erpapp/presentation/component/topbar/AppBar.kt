@@ -46,7 +46,8 @@ fun AppBar(
     mainNavController: NavHostController,
     scope: CoroutineScope,
     drawerState: DrawerState,
-    homeNavController: NavHostController
+    homeNavController: NavHostController,
+    onCLickSignOut:()-> Unit
 ) {
     val context = LocalContext.current
     val profileBorderColor = MaterialTheme.colorScheme.primary
@@ -142,13 +143,10 @@ fun AppBar(
                         }
 
                         "SignOut" -> {
-                           /* navController.popBackStack(
-                                route = Constant.LOGIN_SCREEN,
-                                inclusive = false
-                            )*/
+                            expanded = true
                             mainNavController.popBackStack()
                             mainNavController.navigate(Constant.LOGIN_SCREEN)
-
+                            onCLickSignOut()
                         }
 
                     }
