@@ -12,6 +12,7 @@ import com.techcognics.erpapp.data.network.api_service.AppApiService
 import com.techcognics.erpapp.data.profile_data.UserProfileResponse
 import com.techcognics.erpapp.data.registration_data.RegistrationRequest
 import com.techcognics.erpapp.data.registration_data.RegistrationResponse
+import com.techcognics.erpapp.data.user_roles.MenuResponseItem
 import com.techcognics.erpapp.domain.repository.UserRepository
 import javax.inject.Inject
 
@@ -31,7 +32,9 @@ class UserRepositoryImpl @Inject constructor(val appApiService: AppApiService) :
         return appApiService.getUserProfile(token = token)
     }
 
-
+    override suspend fun getUserRoles(token: String): List<MenuResponseItem> {
+        return appApiService.getUserRole(token = token)
+    }
 
 
 }

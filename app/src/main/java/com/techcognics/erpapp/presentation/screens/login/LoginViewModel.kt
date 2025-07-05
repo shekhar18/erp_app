@@ -6,19 +6,26 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.techcognics.erpapp.data.login_data.LoginResponse
+import com.techcognics.erpapp.domain.usecase.GetSaveUserRoleUseCase
 import com.techcognics.erpapp.domain.usecase.GetTokenUseCase
+import com.techcognics.erpapp.domain.usecase.GetUserProfileUseCase
 import com.techcognics.erpapp.domain.usecase.LoginUseCase
 import com.techcognics.erpapp.domain.usecase.SaveTokenUseCase
+import com.techcognics.erpapp.domain.usecase.SaveUserRoleUseCase
 import com.techcognics.erpapp.presentation.base.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     val loginUseCase: LoginUseCase,
     val saveTokenUseCase: SaveTokenUseCase,
+    val getUserProfileUseCase: GetUserProfileUseCase,
+    val saveUserRoleUseCase: SaveUserRoleUseCase,
 ) : ViewModel() {
 
     private val LOGIN_TAG = "LoginViewModel"
@@ -66,6 +73,16 @@ class LoginViewModel @Inject constructor(
                 )
                 Log.d(LOGIN_TAG, response.tokenId)
                 saveTokenUseCase.invoke("Bearer ${response.tokenId}")
+
+
+                val userRoles = getUserProfileUseCase("Bearer ${response.tokenId}").authorities
+
+                saveUserRoleUseCase(userRoleList = userRoles)
+
+
+
+
+
                 _loginState.postValue(Result.Success(response))
 
             } catch (e: Exception) {

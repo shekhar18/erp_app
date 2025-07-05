@@ -13,6 +13,7 @@ import com.techcognics.erpapp.data.login_data.LoginResponse
 import com.techcognics.erpapp.data.profile_data.UserProfileResponse
 import com.techcognics.erpapp.data.registration_data.RegistrationRequest
 import com.techcognics.erpapp.data.registration_data.RegistrationResponse
+import com.techcognics.erpapp.data.user_roles.MenuResponseItem
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -29,6 +30,9 @@ interface AppApiService {
 
     @GET("account")
     suspend fun getUserProfile(@Header("Authorization") token: String): UserProfileResponse
+
+    @GET("entitlements/userEntitlements")
+    suspend fun getUserRole(@Header("Authorization") token: String):List<MenuResponseItem>
 
 
     //Company Dashboard

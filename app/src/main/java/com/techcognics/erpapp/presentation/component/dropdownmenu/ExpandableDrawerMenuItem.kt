@@ -25,13 +25,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.techcognics.erpapp.data.DrawerMenu
+import com.techcognics.erpapp.R
+import com.techcognics.erpapp.data.user_roles.Children
 
 @Composable
 fun ExpandableDrawerMenuItem(
     title: String,
     icon: Int,
-    children: List<DrawerMenu> = emptyList(),
+    children: List<Children> = emptyList(),
     onChildClick: (String) -> Unit = {}
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -71,9 +72,9 @@ fun ExpandableDrawerMenuItem(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
                             .height(25.dp)
-                            .clickable { onChildClick(child.title) }) {
+                            .clickable { onChildClick(child.name) }) {
                         Icon(
-                            painter = painterResource(child.icon),
+                            painter = painterResource(R.drawable.home_icon),
                             contentDescription = "text",
                             tint = contentColor,
                             modifier = Modifier
@@ -82,7 +83,7 @@ fun ExpandableDrawerMenuItem(
                         )
                         Spacer(modifier = Modifier.width(16.dp))
                         Text(
-                            text = child.title,
+                            text = child.name,
                             style = MaterialTheme.typography.bodyMedium,
                             modifier = Modifier.fillMaxWidth()
                         )

@@ -10,11 +10,13 @@ import com.techcognics.erpapp.data.login_data.LoginResponse
 import com.techcognics.erpapp.data.profile_data.UserProfileResponse
 import com.techcognics.erpapp.data.registration_data.RegistrationRequest
 import com.techcognics.erpapp.data.registration_data.RegistrationResponse
+import com.techcognics.erpapp.data.user_roles.MenuResponseItem
 
 interface UserRepository {
     suspend fun login(request: LoginRequest): LoginResponse
     suspend fun doRegistration(registrationRequest: RegistrationRequest): RegistrationResponse
     suspend fun getUserProfile(token: String): UserProfileResponse
 
+    suspend fun getUserRoles(token:String): List<MenuResponseItem>
 
 }

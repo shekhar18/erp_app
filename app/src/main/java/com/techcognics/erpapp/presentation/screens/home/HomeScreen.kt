@@ -12,6 +12,7 @@ import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -37,16 +38,18 @@ fun HomeScreen(modifier: Modifier = Modifier, mainNavController: NavHostControll
     val scope = rememberCoroutineScope()
 
 
+
+
     ModalNavigationDrawer(
         drawerState = drawerState, drawerContent = {
             AppDrawer(
                 modifier,
+                menuList = homeViewModel.drawerMenuList.observeAsState().value,
                 mainNavController = mainNavController,
                 homeNavController = homeNavController,
                 onClickClose = { scope.launch { if (drawerState.isOpen == true) drawerState.close() else drawerState.open() } },
                 onClickMenu = {},
                 onClickSignOut = {
-
                     mainNavController.navigate(Constant.LOGIN_SCREEN)
                 })
         }) {
@@ -57,7 +60,6 @@ fun HomeScreen(modifier: Modifier = Modifier, mainNavController: NavHostControll
                     scope = scope,
                     drawerState = drawerState,
                     homeNavController = homeNavController,
-
                     onCLickSignOut = {
                         homeViewModel.getSignOut()
                     }
