@@ -20,7 +20,6 @@ import kotlinx.coroutines.withContext
 class MainViewModel @Inject constructor(
     val getTokenUseCase: GetTokenUseCase,
     getUserProfileUseCase: GetUserProfileUseCase,
-    val sessionUseCase: ClearSessionUseCase
 ) : ViewModel() {
     private val _isReady = MutableStateFlow(false)
     val isReady = _isReady.asStateFlow()
@@ -61,10 +60,5 @@ class MainViewModel @Inject constructor(
 
     }
 
-    fun getSignOut() {
-        viewModelScope.launch {
-            sessionUseCase.invoke()
-        }
-    }
 
 }

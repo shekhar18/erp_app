@@ -55,17 +55,6 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-
-    override fun onStop() {
-        super.onStop()
-        viewModel.getSignOut()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        viewModel.getSignOut()
-    }
 }
 
 @Preview
