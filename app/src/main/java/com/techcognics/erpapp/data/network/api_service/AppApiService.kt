@@ -14,12 +14,19 @@ import com.techcognics.erpapp.data.profile_data.UserProfileResponse
 import com.techcognics.erpapp.data.registration_data.RegistrationRequest
 import com.techcognics.erpapp.data.registration_data.RegistrationResponse
 import com.techcognics.erpapp.data.user_roles.MenuResponseItem
+
+import com.techcognics.erpapp.data.sales_dashboard_data
+
+
+
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
+
+
 
 interface AppApiService {
     @POST("authenticate")
@@ -43,7 +50,7 @@ interface AppApiService {
         @Query("docNo") pDocNo: String,
         @Query("startDate") startDate: String,
         @Query("endDate") endDate: String
-    ): List<SalesInvoiceByMonthResponse>
+    ): List<AllSalesInvoiceByMonthResponse>
 
     @GET("dashboard/fetchAmountsByMonth")
     suspend fun getFetchAmountsByMonth(
@@ -75,5 +82,76 @@ interface AppApiService {
         @Query("docNo") pDocNo: String,
         @Query("startDate") startDate: String,
         @Query("endDate") endDate: String
-    ): List<AllTotalAmountResponse>
+    ): List<>
+
+    //sales dashboard
+    @GET("salesDashboard/fetchAllTotalAmounts")
+    suspend fun getfetchAllTotalAmountSales(
+        @Header("Authorization") token: String,
+        @Query("docNo") pDocNo: String,
+        @Query("startDate") startDate: String,
+        @Query("endDate") endDate: String
+    ):  List<>
+
+    @GET("api/salesDashboard/fetchAllSalesInvoiceByQuarterly)
+            suspend fun getfetchAllSalesInvoiceByQuarterly(
+                @Header("Authorization") token: String,
+                @Query("docNo") pDocNo: String,
+                @Query("startDate") startDate: String,
+                @Query("endDate") endDate: String
+            ): List<>
+
+    @GET("salesDashboard/fetchAllSalesInvoiceByYear")
+    suspend fun getfetchAllSalesInvoiceByYear(
+        @Header("Authorization") token: String,
+        @Query("docNo") pDocNo: String,
+        @Query("startDate") startDate: String,
+        @Query("endDate") endDate: String
+    ): List<>
+
+    @GET("salesDashboard/fetchExpectedRevenueByMonth")
+    suspend fun getfetchExpectedRevenueByMonth(
+        @Header("Authorization") token: String,
+        @Query("docNo") pDocNo: String,
+        @Query("startDate") startDate: String,
+        @Query("endDate") endDate: String
+
+    ): List<>
+
+    @GET("salesDashboard/fetchAllSalesByGrowth")
+    suspend fun fetchAllSalesByGrowth(
+        @Header("Authorization") token: String,
+        @Query("docNo") pDocNo: String,
+        @Query("startDate") startDate: String,
+        @Query("endDate") endDate: String
+    ): List<>
+
+    @GET("salesDashboard/fetchStateWiseSalesInvoiceDetails")
+    suspend fun fetchStateWiseSalesInvoiceDetails(
+        @Header("Authorization") token: String,
+        @Query("docNo") pDocNo: String,
+        @Query("startDate") startDate: String,
+        @Query("endDate") endDate: String
+    ): List<>
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

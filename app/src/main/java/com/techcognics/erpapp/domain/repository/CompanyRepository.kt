@@ -33,3 +33,8 @@ interface CompanyRepository {
         endDate: String
     ): List<AllTotalAmountResponse>
 }
+
+
+
+
+
