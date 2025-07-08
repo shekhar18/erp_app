@@ -16,23 +16,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.techcognics.erpapp.R
+import kotlin.math.ceil
 
 @Composable
-fun SalesComparisonCard(modifier: Modifier = Modifier) {
+fun SalesComparisonCard(
+    modifier: Modifier = Modifier, salseCount: Double, persentage: Double, previousYear: String
+) {
     Row(modifier = modifier.padding(start = 10.dp, end = 10.dp)) {
         Card(
-            modifier = modifier.height(40.dp),
+            modifier = modifier.height(60.dp),
             shape = RoundedCornerShape(5.dp),
             elevation = CardDefaults.cardElevation(4.dp),
             colors = CardDefaults.cardColors(containerColor = Color.White)
@@ -42,7 +40,11 @@ fun SalesComparisonCard(modifier: Modifier = Modifier) {
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(text = "16,461 Sales", fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                Text(
+                    text = "${ceil(salseCount).toInt()} Sales",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 14.sp
+                )
 
                 val annotatedText = buildAnnotatedString {
 
@@ -54,30 +56,25 @@ fun SalesComparisonCard(modifier: Modifier = Modifier) {
                             fontWeight = FontWeight.W200,
                         )
                     ) {
-                        append("43%")
+                        append("${ceil(persentage).toInt()} %")
                     }
                     withStyle(
                         style = SpanStyle(
                             color = Color.Gray, // Dark Blue
                             fontWeight = FontWeight.W200
                         )
-                    ){append(" higher vs previous Year 2024")}
+                    ) { append(" higher vs previous Year ${previousYear}") }
                     pop()
                 }
 
                 ClickableText(
-                    text = annotatedText,
-                    onClick = { offset ->
-                        annotatedText.getStringAnnotations(tag = "percentage", start = offset, end = offset)
-                            .firstOrNull()?.let {
+                    text = annotatedText, onClick = { offset ->
+                        annotatedText.getStringAnnotations(
+                            tag = "percentage", start = offset, end = offset
+                        ).firstOrNull()?.let {
 
-                            }
-                    },
-                    style = TextStyle(
-                        fontSize = 12.sp,
-                        color = Color.Black,
-                        textAlign = TextAlign.Start
-                    )
+                        }
+                    }, style = MaterialTheme.typography.titleSmall
                 )
             }
         }

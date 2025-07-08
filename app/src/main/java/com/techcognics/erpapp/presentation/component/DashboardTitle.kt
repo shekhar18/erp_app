@@ -17,7 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun CompanyDashboardTitle(modifier: Modifier = Modifier) {
+fun DashboardTitle(modifier: Modifier = Modifier, label: String) {
     Row(
         modifier = modifier
             .height(30.dp)
@@ -25,7 +25,7 @@ fun CompanyDashboardTitle(modifier: Modifier = Modifier) {
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
-            text = "COMPANY DASHBOARD",
+            text = label,
             color = MaterialTheme.colorScheme.primary,
             style = MaterialTheme.typography.bodySmall,
             fontWeight = FontWeight.Bold

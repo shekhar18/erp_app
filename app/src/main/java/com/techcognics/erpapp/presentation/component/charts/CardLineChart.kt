@@ -42,6 +42,7 @@ import ir.ehsannarmani.compose_charts.models.LineProperties
 @Composable
 fun CardLineChart(
     label: String = "00.00",
+    lineCurve: Boolean = true,
     modifier: Modifier = Modifier,
     dataList: List<Double> = emptyList<Double>(),
     firstGradientFillColor: Color,
@@ -53,7 +54,6 @@ fun CardLineChart(
             colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.background
             ),
-
             shape = RoundedCornerShape(4.dp),
             modifier = modifier
                 .padding(4.dp)
@@ -74,6 +74,7 @@ fun CardLineChart(
                 )
             ) {
                 LineChart(
+                    curvedEdges = lineCurve,
                     indicatorProperties = HorizontalIndicatorProperties(
                         enabled = false, position = IndicatorPosition.Horizontal.Start,
                     ),

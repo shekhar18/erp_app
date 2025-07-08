@@ -1,18 +1,18 @@
 package com.techcognics.erpapp.data.network.api_service
 
 import com.techcognics.erpapp.data.company_dashboard_data.AllAmountByMonthListResponse
-import com.techcognics.erpapp.data.company_dashboard_data.AllTotalAmountListResponse
 import com.techcognics.erpapp.data.company_dashboard_data.AllTotalAmountResponse
-import com.techcognics.erpapp.data.company_dashboard_data.AmountsByMonthListResponse
 import com.techcognics.erpapp.data.company_dashboard_data.AmountsByMonthResponse
 import com.techcognics.erpapp.data.company_dashboard_data.SalesInvoiceByMonthResponse
-import com.techcognics.erpapp.data.company_dashboard_data.TotalIncomeAmountListResponse
 import com.techcognics.erpapp.data.company_dashboard_data.TotalIncomeAmountResponse
 import com.techcognics.erpapp.data.login_data.LoginRequest
 import com.techcognics.erpapp.data.login_data.LoginResponse
 import com.techcognics.erpapp.data.profile_data.UserProfileResponse
 import com.techcognics.erpapp.data.registration_data.RegistrationRequest
 import com.techcognics.erpapp.data.registration_data.RegistrationResponse
+import com.techcognics.erpapp.data.sales_dashboard_data.AllTotalAmountsOfSalesResponse
+import com.techcognics.erpapp.data.sales_dashboard_data.FiscalYearOfSalesResponse
+import com.techcognics.erpapp.data.sales_dashboard_data.SalesInvoiceByYearResponse
 import com.techcognics.erpapp.data.user_roles.MenuResponseItem
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -32,7 +32,7 @@ interface AppApiService {
     suspend fun getUserProfile(@Header("Authorization") token: String): UserProfileResponse
 
     @GET("entitlements/userEntitlements")
-    suspend fun getUserRole(@Header("Authorization") token: String):List<MenuResponseItem>
+    suspend fun getUserRole(@Header("Authorization") token: String): List<MenuResponseItem>
 
 
     //Company Dashboard
@@ -76,4 +76,24 @@ interface AppApiService {
         @Query("startDate") startDate: String,
         @Query("endDate") endDate: String
     ): List<AllTotalAmountResponse>
+
+
+    //sales Dashboard
+    @GET("salesDashboard/fetchAllTotalAmounts")
+    suspend fun getFetchAllTotalAmountsOfSales(
+        @Header("Authorization") token: String,
+        @Query("startDate") startDate: String,
+        @Query("endDate") endDate: String
+    ): List<AllTotalAmountsOfSalesResponse>
+
+    @GET("fiscalYear/fetchAllFiscalYears")
+    suspend fun getYearsForSales(@Header("Authorization") token: String): List<FiscalYearOfSalesResponse>
+
+    @GET("salesDashboard/fetchAllSalesInvoiceByYear")
+    suspend fun getFetchSalseInvoiceByYear(
+        @Header("Authorization") token: String,
+        @Query("startDate") startDate: String,
+        @Query("endDate") endDate: String
+    ): List<SalesInvoiceByYearResponse>
+
 }

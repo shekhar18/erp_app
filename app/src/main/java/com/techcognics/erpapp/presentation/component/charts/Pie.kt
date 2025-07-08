@@ -81,7 +81,19 @@ fun Pie(modifier: Modifier = Modifier) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(text = "Sales(Amount) by State", style = MaterialTheme.typography.bodyLarge)
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 5.dp, top = 10.dp, end = 5.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    "Salse(Amt) By State",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
             Spacer(modifier = modifier.height(10.dp))
 
             PieChart(

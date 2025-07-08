@@ -1,5 +1,6 @@
 package com.techcognics.erpapp.presentation.activity
 
+import android.content.pm.ActivityInfo
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -32,6 +33,7 @@ class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         installSplashScreen().apply {
             lifecycleScope.launch {
                 viewModel.isLogin.collect { login ->
