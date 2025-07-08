@@ -2,11 +2,10 @@ package com.techcognics.erpapp.presentation.screens.sales_dashboard
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,7 +16,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -25,8 +23,8 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -213,6 +211,7 @@ fun SalesStatusCardSection(viewModel: SalesDashboardViewModel) {
                 CardLineChart(
                     label = "${it.displayName} \n ₹ ${it.totalAmount}",
                     lineCurve = false,
+                    showBorder = true,
                     modifier = Modifier,
                     dataList = listOf(0.0, it.totalAmount),
                     firstGradientFillColor = getRandomColor(),
@@ -257,12 +256,18 @@ fun SalesByStateCardSection(viewModel: SalesDashboardViewModel) {
         Card(
             modifier = Modifier
                 .height(500.dp)
-                .fillMaxWidth(),
-            shape = RoundedCornerShape(4.dp),
-            elevation = CardDefaults.cardElevation(
+                .fillMaxWidth()
+                .shadow(
+                    elevation = if (isSystemInDarkTheme()) 10.dp else 8.dp,
+                    ambientColor = if (isSystemInDarkTheme()) Color.White.copy(alpha = 0.5f) else Color.Black.copy(
+                        alpha = 0.5f
+                    ),
+                    spotColor = if (isSystemInDarkTheme()) Color.White.copy(alpha = 0.5f) else Color.Black.copy(
+                        alpha = 0.5f
+                    )
+                ), shape = RoundedCornerShape(4.dp), elevation = CardDefaults.cardElevation(
                 defaultElevation = 8.dp,
-            ),
-            colors = CardDefaults.cardColors(
+            ), colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.background
             )
         ) {

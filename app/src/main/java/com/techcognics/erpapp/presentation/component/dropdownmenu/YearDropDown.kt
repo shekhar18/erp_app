@@ -55,7 +55,7 @@ fun YearDropdown(
                 value = currentYear?.toString() ?: "",
                 onValueChange = {},
                 readOnly = true,
-                label = { Text("Fiscal Year", style = MaterialTheme.typography.labelLarge) },
+               // label = { Text("Fiscal Year", style = MaterialTheme.typography.labelLarge) },
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
                 modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryEditable, true)
             )

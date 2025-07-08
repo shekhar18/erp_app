@@ -4,6 +4,7 @@ package com.techcognics.erpapp.presentation.component.charts
 import androidx.compose.animation.core.EaseInOutCubic
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -22,6 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,7 +31,6 @@ import androidx.compose.ui.unit.dp
 import ir.ehsannarmani.compose_charts.LineChart
 import ir.ehsannarmani.compose_charts.models.AnimationMode
 import ir.ehsannarmani.compose_charts.models.DividerProperties
-import ir.ehsannarmani.compose_charts.models.DotProperties
 import ir.ehsannarmani.compose_charts.models.DrawStyle
 import ir.ehsannarmani.compose_charts.models.GridProperties
 import ir.ehsannarmani.compose_charts.models.HorizontalIndicatorProperties
@@ -47,7 +47,8 @@ fun CardLineChart(
     dataList: List<Double> = emptyList<Double>(),
     firstGradientFillColor: Color,
     secondGradientFillColor: Color,
-    lineThickness: Dp
+    lineThickness: Dp,
+    showBorder: Boolean
 ) {
     Box {
         Card(
@@ -59,18 +60,28 @@ fun CardLineChart(
                 .padding(4.dp)
                 .height(160.dp)
                 .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.background).shadow(
+                .border(
+                    width = if (showBorder) 1.dp else 0.dp,
+                    color = firstGradientFillColor,
+                    shape = RoundedCornerShape(4.dp)
+                )
+                .background(MaterialTheme.colorScheme.background)
+                .shadow(
                     elevation = if (isSystemInDarkTheme()) 10.dp else 8.dp,
-                    ambientColor = if (isSystemInDarkTheme()) Color.White.copy(alpha = 0.5f) else Color.Black.copy(alpha = 0.5f),
-                    spotColor = if (isSystemInDarkTheme()) Color.White.copy(alpha = 0.5f) else Color.Black.copy(alpha = 0.5f)
+                    ambientColor = if (isSystemInDarkTheme()) Color.White.copy(alpha = 0.5f) else Color.Black.copy(
+                        alpha = 0.5f
+                    ),
+                    spotColor = if (isSystemInDarkTheme()) Color.White.copy(alpha = 0.5f) else Color.Black.copy(
+                        alpha = 0.5f
+                    )
                 ),
         ) {
             Column(
                 modifier = Modifier.padding(
                     top = 70.dp,
-                   /* start = 5.dp,
-                    end = 5.dp,
-                    bottom = 5.dp*/
+                    /* start = 5.dp,
+                     end = 5.dp,
+                     bottom = 5.dp*/
                 )
             ) {
                 LineChart(
@@ -133,5 +144,6 @@ private fun ShowCardLineChart() {
         firstGradientFillColor = Color(0xFF2F4C96).copy(alpha = .5f),
         secondGradientFillColor = Color.Transparent,
         lineThickness = 1.dp,
+        showBorder = true
     )
 }

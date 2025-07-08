@@ -166,7 +166,8 @@ fun CompanyLineChartSection(viewModel: CompanyDashboardScreenViewModel) {
                         dataList = it.dataList,
                         firstGradientFillColor = it.firstGradientFillColor,
                         secondGradientFillColor = it.secondGradientFillColor,
-                        lineThickness = it.lineThickness
+                        lineThickness = it.lineThickness,
+                        showBorder = false
                     )
                 }
             }

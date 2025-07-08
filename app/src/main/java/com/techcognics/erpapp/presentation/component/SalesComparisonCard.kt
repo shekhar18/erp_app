@@ -1,5 +1,6 @@
 package com.techcognics.erpapp.presentation.component
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -30,10 +32,20 @@ fun SalesComparisonCard(
 ) {
     Row(modifier = modifier.padding(start = 10.dp, end = 10.dp)) {
         Card(
-            modifier = modifier.height(60.dp),
+            modifier = modifier
+                .height(60.dp)
+                .shadow(
+                    elevation = if (isSystemInDarkTheme()) 10.dp else 8.dp,
+                    ambientColor = if (isSystemInDarkTheme()) Color.White.copy(alpha = 0.5f) else Color.Black.copy(
+                        alpha = 0.5f
+                    ),
+                    spotColor = if (isSystemInDarkTheme()) Color.White.copy(alpha = 0.5f) else Color.Black.copy(
+                        alpha = 0.5f
+                    )
+                ),
             shape = RoundedCornerShape(5.dp),
             elevation = CardDefaults.cardElevation(4.dp),
-            colors = CardDefaults.cardColors(containerColor = Color.White)
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
         ) {
             Column(
                 modifier = modifier.fillMaxWidth(),
@@ -60,7 +72,7 @@ fun SalesComparisonCard(
                     }
                     withStyle(
                         style = SpanStyle(
-                            color = Color.Gray, // Dark Blue
+                            color = MaterialTheme.colorScheme.onBackground, // Dark Blue
                             fontWeight = FontWeight.W200
                         )
                     ) { append(" higher vs previous Year ${previousYear}") }
