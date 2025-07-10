@@ -243,19 +243,19 @@ fun SalesComparisonCardSection(viewModel: SalesDashboardViewModel) {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun SalesByStateCardSection(viewModel: SalesDashboardViewModel) {
+    val buttonState by viewModel.buttonTag.observeAsState()
 
     Column(
         modifier = Modifier
-            .height(500.dp)
-            .fillMaxWidth(),
+            .height(250.dp)
+            .fillMaxWidth()
+            .padding(16.dp),
     ) {
-
-
         Card(
             modifier = Modifier
-                .height(500.dp)
                 .fillMaxWidth()
                 .shadow(
                     elevation = if (isSystemInDarkTheme()) 10.dp else 8.dp,
@@ -271,7 +271,13 @@ fun SalesByStateCardSection(viewModel: SalesDashboardViewModel) {
                 containerColor = MaterialTheme.colorScheme.background
             )
         ) {
-            Pie()
+            Pie(
+                modifier = Modifier, buttonState = buttonState, onclick = { buttonTag ->
+                    viewModel.updateButtonTag(buttonTag)
+                    viewModel.getButtonTagWiseDate()
+
+                }, data = viewModel.stateWiseSalesInvoiceDetailList.observeAsState().value ?: emptyList()
+            )
         }
     }
 

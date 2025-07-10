@@ -13,6 +13,7 @@ import com.techcognics.erpapp.data.registration_data.RegistrationResponse
 import com.techcognics.erpapp.data.sales_dashboard_data.AllTotalAmountsOfSalesResponse
 import com.techcognics.erpapp.data.sales_dashboard_data.FiscalYearOfSalesResponse
 import com.techcognics.erpapp.data.sales_dashboard_data.SalesInvoiceByYearResponse
+import com.techcognics.erpapp.data.sales_dashboard_data.StateWiseSalesInvoiceDetailsResponse
 import com.techcognics.erpapp.data.user_roles.MenuResponseItem
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -95,5 +96,12 @@ interface AppApiService {
         @Query("startDate") startDate: String,
         @Query("endDate") endDate: String
     ): List<SalesInvoiceByYearResponse>
+
+    @GET("salesDashboard/fetchStateWiseSalesInvoiceDetails")
+    suspend fun getFetchStateWiseSalesInvoiceDetails(
+        @Header("Authorization") token: String,
+        @Query("startDate") startDate: String,
+        @Query("endDate") endDate: String
+    ): List<StateWiseSalesInvoiceDetailsResponse>
 
 }

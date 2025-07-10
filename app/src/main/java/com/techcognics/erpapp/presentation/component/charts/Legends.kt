@@ -22,12 +22,12 @@ fun Legends(modifier: Modifier = Modifier, color: Color, text: String) {
     ) {
         Box(
             modifier = modifier
-                .size(16.dp)
+                .size(10.dp)
                 .background(color, CircleShape)
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(
-            text = text, style = MaterialTheme.typography.labelLarge
+            text = text, style = MaterialTheme.typography.titleSmall
         )
     }
 }
