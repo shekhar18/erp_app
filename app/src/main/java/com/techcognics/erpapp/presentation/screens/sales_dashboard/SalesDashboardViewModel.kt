@@ -3,21 +3,29 @@ package com.techcognics.erpapp.presentation.screens.sales_dashboard
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.compose.ui.graphics.SolidColor
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.techcognics.erpapp.data.BarDataCard
+import com.techcognics.erpapp.data.RowBarData
 import com.techcognics.erpapp.data.sales_dashboard_data.AllTotalAmountsOfSalesResponse
+import com.techcognics.erpapp.data.sales_dashboard_data.FetchItemGroupDetailsPercentageResponse
 import com.techcognics.erpapp.data.sales_dashboard_data.FiscalYearOfSalesResponse
 import com.techcognics.erpapp.data.sales_dashboard_data.SalesInvoiceByYearResponse
 import com.techcognics.erpapp.data.sales_dashboard_data.StateWiseSalesInvoiceDetailsResponse
 import com.techcognics.erpapp.domain.usecase.GetTokenUseCase
 import com.techcognics.erpapp.domain.usecase.sales_dashboard_usecase.AllTotalAmountsOfSalesUseCase
+import com.techcognics.erpapp.domain.usecase.sales_dashboard_usecase.FetchItemGroupDetailsPercentageUseCase
+import com.techcognics.erpapp.domain.usecase.sales_dashboard_usecase.FetchSalesByTopCustomerUseCase
 import com.techcognics.erpapp.domain.usecase.sales_dashboard_usecase.FetchStateWiseSalesInvoiceDetailsUseCase
 import com.techcognics.erpapp.domain.usecase.sales_dashboard_usecase.GetSalesYearUseCase
 import com.techcognics.erpapp.domain.usecase.sales_dashboard_usecase.GetSalseInvoiceByYearUseCase
 import com.techcognics.erpapp.presentation.base.Result
+import com.techcognics.erpapp.util.getRandomColor
 import dagger.hilt.android.lifecycle.HiltViewModel
+import ir.ehsannarmani.compose_charts.models.Bars
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -32,7 +40,9 @@ class SalesDashboardViewModel @Inject constructor(
     private val allTotalAmountsOfSaleUseCase: AllTotalAmountsOfSalesUseCase,
     private val salseInvoiceByYearUseCase: GetSalseInvoiceByYearUseCase,
     private val getTokenUseCase: GetTokenUseCase,
-    private val fetchStateWiseSalesInvoiceDetailsUseCase: FetchStateWiseSalesInvoiceDetailsUseCase
+    private val fetchStateWiseSalesInvoiceDetailsUseCase: FetchStateWiseSalesInvoiceDetailsUseCase,
+    private val fetchItemGroupDetailsPercentageUseCase: FetchItemGroupDetailsPercentageUseCase,
+    private val fetchSalesByTopCustomerUseCase: FetchSalesByTopCustomerUseCase
 ) : ViewModel() {
 
     private val _salesDashboardState = MutableLiveData<Result<Unit>>(
@@ -73,6 +83,16 @@ class SalesDashboardViewModel @Inject constructor(
     private val _buttonTag = MutableLiveData<String>("1Y")
     val buttonTag: LiveData<String> = _buttonTag
 
+    private val _buttonTagByGroupOrCustomer = MutableLiveData<String>("Item Group Wise sales")
+    val buttonTagByGroupOrCustomer: LiveData<String> = _buttonTagByGroupOrCustomer
+
+    private val _groupByDetails: MutableLiveData<List<FetchItemGroupDetailsPercentageResponse>> =
+        MutableLiveData<List<FetchItemGroupDetailsPercentageResponse>>()
+    val groupByDetails: LiveData<List<FetchItemGroupDetailsPercentageResponse>> = _groupByDetails
+
+    private val _topCustomer: MutableLiveData<List<RowBarData>> =
+        MutableLiveData<List<RowBarData>>(emptyList<RowBarData>())
+    val topCustomer: LiveData<List<RowBarData>> = _topCustomer
 
     fun getFiscalYear() {
         viewModelScope.launch {
@@ -124,7 +144,43 @@ class SalesDashboardViewModel @Inject constructor(
                             endDate = _endDateChart.value.orEmpty()
                         )
                         _stateWiseSalesInvoiceDetailList.postValue(stateWiseSalesDetails)
-                        Log.d("SALES", stateWiseSalesDetails.toString())
+
+
+                        val getGroupItem = fetchItemGroupDetailsPercentageUseCase(
+                            token = token.toString(),
+                            startDate = _startDate.value.orEmpty(),
+                            endDate = _endDate.value.orEmpty()
+                        )
+                        _groupByDetails.postValue(getGroupItem)
+
+                        val topCustomer = fetchSalesByTopCustomerUseCase(
+                            token = token.toString(),
+                            startDate = _startDate.value.orEmpty(),
+                            endDate = _endDate.value.orEmpty()
+                        )
+                        Log.d("SALES", topCustomer.toString())
+
+
+                        if (topCustomer.isNotEmpty()) {
+                            val rowData = listOf(
+                                RowBarData(
+                                    barListDate = topCustomer.map {
+                                        BarDataCard(
+                                            label = it.customerName, data = listOf(
+                                                Bars.Data(
+                                                    value = it.totalAmount.toDouble(),
+                                                    label = it.customerName.toString(),
+                                                    color = SolidColor(getRandomColor())
+                                                )
+                                            )
+                                        )
+                                    }, color = getRandomColor()
+                                )
+                            )
+                            _topCustomer.postValue(rowData)
+                        }
+
+
                     }
                     withContext(Dispatchers.Main) {
                         _salesDashboardState.value = Result.Idle
@@ -146,6 +202,10 @@ class SalesDashboardViewModel @Inject constructor(
 
     fun updateButtonTag(buttonTag: String) {
         _buttonTag.value = buttonTag
+    }
+
+    fun updateButtonTagByGroupOrCustomer(buttonTag: String) {
+        _buttonTagByGroupOrCustomer.value = buttonTag
     }
 
 
@@ -274,10 +334,7 @@ class SalesDashboardViewModel @Inject constructor(
 
                 }
             }
-
         }
-
-
     }
 
 

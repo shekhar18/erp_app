@@ -2,6 +2,8 @@ package com.techcognics.erpapp.data.repository
 
 import com.techcognics.erpapp.data.network.api_service.AppApiService
 import com.techcognics.erpapp.data.sales_dashboard_data.AllTotalAmountsOfSalesResponse
+import com.techcognics.erpapp.data.sales_dashboard_data.FetchItemGroupDetailsPercentageResponse
+import com.techcognics.erpapp.data.sales_dashboard_data.FetchSalesByTopCustomerResponse
 import com.techcognics.erpapp.data.sales_dashboard_data.FiscalYearOfSalesResponse
 import com.techcognics.erpapp.data.sales_dashboard_data.SalesInvoiceByYearResponse
 import com.techcognics.erpapp.data.sales_dashboard_data.StateWiseSalesInvoiceDetailsResponse
@@ -33,9 +35,25 @@ class SalesRepositoryImpl @Inject constructor(val appApiService: AppApiService) 
         token: String, startDate: String, endDate: String
     ): List<StateWiseSalesInvoiceDetailsResponse> {
         return appApiService.getFetchStateWiseSalesInvoiceDetails(
-            token = token,
-            startDate = startDate,
-            endDate = endDate
+            token = token, startDate = startDate, endDate = endDate
+        )
+    }
+
+    override suspend fun fetchItemGroupDetailsPercentage(
+        token: String, startDate: String, endDate: String
+    ): List<FetchItemGroupDetailsPercentageResponse> {
+        return appApiService.getFetchItemGroupDetailsPercentage(
+            token = token, startDate = startDate, endDate = endDate
+        )
+    }
+
+    override suspend fun fetchSalesByTopCustomer(
+        token: String,
+        startDate: String,
+        endDate: String
+    ): List<FetchSalesByTopCustomerResponse> {
+       return appApiService.getFetchSalesByTopCustomer(
+            token = token, startDate = startDate, endDate = endDate
         )
     }
 

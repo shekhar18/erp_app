@@ -3,7 +3,7 @@ package com.techcognics.erpapp.presentation.component.button
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -20,8 +20,8 @@ fun BoarderButton(
     TextButton(
         modifier = modifier
             .height(15.dp)
-            .width(35.dp),
-        contentPadding = PaddingValues(0.dp),
+            .widthIn(min = 35.dp, max = 160.dp),
+        contentPadding = PaddingValues(start = 5.dp, end = 5.dp),
         onClick = { onclick() },
         shape = RoundedCornerShape(20.dp), // Rounded border
         colors = ButtonDefaults.buttonColors(

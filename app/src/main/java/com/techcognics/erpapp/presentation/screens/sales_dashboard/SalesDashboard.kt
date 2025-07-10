@@ -3,19 +3,24 @@ package com.techcognics.erpapp.presentation.screens.sales_dashboard
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -23,11 +28,14 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.techcognics.erpapp.presentation.base.Result
 import com.techcognics.erpapp.presentation.component.AutoResponsiveCardGrid
@@ -35,8 +43,10 @@ import com.techcognics.erpapp.presentation.component.DashboardTitle
 import com.techcognics.erpapp.presentation.component.ErrorDialog
 import com.techcognics.erpapp.presentation.component.Loader
 import com.techcognics.erpapp.presentation.component.SalesComparisonCard
+import com.techcognics.erpapp.presentation.component.button.BoarderButton
 import com.techcognics.erpapp.presentation.component.charts.CardLineChart
 import com.techcognics.erpapp.presentation.component.charts.Pie
+import com.techcognics.erpapp.presentation.component.charts.RowBar
 import com.techcognics.erpapp.presentation.component.dropdownmenu.YearDropdown
 import com.techcognics.erpapp.util.getRandomColor
 import java.time.LocalDate
@@ -96,6 +106,10 @@ fun SalesDashboard(modifier: Modifier = Modifier, paddingValue: PaddingValues) {
                 }
                 item {
                     SalesByStateCardSection(viewModel)
+                }
+
+                item {
+                    SalesByGroupAndTopCustomerCardSection(viewModel)
                 }
             }
         }
@@ -271,13 +285,151 @@ fun SalesByStateCardSection(viewModel: SalesDashboardViewModel) {
                 containerColor = MaterialTheme.colorScheme.background
             )
         ) {
-            Pie(
-                modifier = Modifier, buttonState = buttonState, onclick = { buttonTag ->
-                    viewModel.updateButtonTag(buttonTag)
-                    viewModel.getButtonTagWiseDate()
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 5.dp, top = 10.dp, end = 5.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
 
-                }, data = viewModel.stateWiseSalesInvoiceDetailList.observeAsState().value ?: emptyList()
+                Text(
+                    text = "Salse(Amt) By State",
+                    style = MaterialTheme.typography.titleSmall,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.W600,
+                    color = MaterialTheme.colorScheme.primary
+                )
+                Spacer(modifier = Modifier.width(25.dp))
+                Row(
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    BoarderButton(
+                        modifier = Modifier,
+                        onclick = {
+                            viewModel.updateButtonTag("1M")
+                            viewModel.getButtonTagWiseDate()
+
+                        },
+                        label = "1M",
+                        buttonState = buttonState,
+                    )
+                    Spacer(modifier = Modifier.width(5.dp))
+                    BoarderButton(
+                        modifier = Modifier,
+                        onclick = {
+                            viewModel.updateButtonTag("3M")
+                            viewModel.getButtonTagWiseDate()
+
+                        },
+                        label = "3M",
+                        buttonState = buttonState,
+                    )
+                    Spacer(modifier = Modifier.width(5.dp))
+                    BoarderButton(
+                        modifier = Modifier,
+                        onclick = {
+                            viewModel.updateButtonTag("6M")
+                            viewModel.getButtonTagWiseDate()
+
+                        },
+                        label = "6M",
+                        buttonState = buttonState,
+                    )
+                    Spacer(modifier = Modifier.width(5.dp))
+                    BoarderButton(
+                        modifier = Modifier, buttonState = buttonState, onclick = {
+                        viewModel.updateButtonTag("1Y")
+                        viewModel.getButtonTagWiseDate()
+
+                    }, label = "1Y")
+
+                }
+            }
+
+
+            Pie(
+                data = viewModel.stateWiseSalesInvoiceDetailList.observeAsState().value
+                    ?: emptyList(),
             )
+        }
+    }
+
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+fun SalesByGroupAndTopCustomerCardSection(viewModel: SalesDashboardViewModel) {
+    val buttonState by viewModel.buttonTagByGroupOrCustomer.observeAsState()
+    val customer = viewModel.topCustomer.observeAsState().value
+
+    Column(
+        modifier = Modifier
+            .height(300.dp)
+            .fillMaxWidth()
+            .padding(16.dp),
+    ) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .shadow(
+                    elevation = if (isSystemInDarkTheme()) 10.dp else 8.dp,
+                    ambientColor = if (isSystemInDarkTheme()) Color.White.copy(alpha = 0.5f) else Color.Black.copy(
+                        alpha = 0.5f
+                    ),
+                    spotColor = if (isSystemInDarkTheme()) Color.White.copy(alpha = 0.5f) else Color.Black.copy(
+                        alpha = 0.5f
+                    )
+                ), shape = RoundedCornerShape(4.dp), elevation = CardDefaults.cardElevation(
+                defaultElevation = 8.dp,
+            ), colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.background
+            )
+        ) {
+            Column(modifier = Modifier.fillMaxSize()) {
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
+                    BoarderButton(label = "Item Group Wise sales", onclick = {
+                        viewModel.updateButtonTagByGroupOrCustomer("Item Group Wise sales")
+                    }, buttonState = buttonState)
+                    Spacer(modifier = Modifier.width(10.dp))
+                    BoarderButton(label = "Sales by Top 5 Customer", onclick = {
+                        viewModel.updateButtonTagByGroupOrCustomer("Sales by Top 5 Customer")
+
+                    }, buttonState = buttonState)
+                }
+                if (buttonState != "Sales by Top 5 Customer") {
+                    Pie(
+                        modifier = Modifier,
+                        data = viewModel.groupByDetails.observeAsState().value ?: emptyList()
+                    )
+                } else {
+
+
+                    Column {
+                        if (customer?.isEmpty() == true) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth().padding(top=25.dp),
+                                horizontalArrangement = Arrangement.Absolute.Center,
+
+                            ) {
+                                Text(
+                                    "No Data Found",
+                                    style = MaterialTheme.typography.titleSmall,
+                                    fontSize = 14.sp,
+                                    color = MaterialTheme.colorScheme.onBackground
+                                )
+                            }
+                        } else {
+                            customer?.forEach { customerData ->
+                                RowBar(modifier = Modifier, list = customerData.barListDate)
+                            }
+                        }
+
+                    }
+
+                }
+
+            }
+
         }
     }
 

@@ -11,6 +11,8 @@ import com.techcognics.erpapp.data.profile_data.UserProfileResponse
 import com.techcognics.erpapp.data.registration_data.RegistrationRequest
 import com.techcognics.erpapp.data.registration_data.RegistrationResponse
 import com.techcognics.erpapp.data.sales_dashboard_data.AllTotalAmountsOfSalesResponse
+import com.techcognics.erpapp.data.sales_dashboard_data.FetchItemGroupDetailsPercentageResponse
+import com.techcognics.erpapp.data.sales_dashboard_data.FetchSalesByTopCustomerResponse
 import com.techcognics.erpapp.data.sales_dashboard_data.FiscalYearOfSalesResponse
 import com.techcognics.erpapp.data.sales_dashboard_data.SalesInvoiceByYearResponse
 import com.techcognics.erpapp.data.sales_dashboard_data.StateWiseSalesInvoiceDetailsResponse
@@ -103,5 +105,21 @@ interface AppApiService {
         @Query("startDate") startDate: String,
         @Query("endDate") endDate: String
     ): List<StateWiseSalesInvoiceDetailsResponse>
+
+    @GET("salesDashboard/fetchItemGroupDetailsPercentage")
+    suspend fun getFetchItemGroupDetailsPercentage(
+        @Header("Authorization") token: String,
+        @Query("startDate") startDate: String,
+        @Query("endDate") endDate: String
+    ): List<FetchItemGroupDetailsPercentageResponse>
+
+    //salesDashboard/fetchSalesByTopCustomer
+
+    @GET("salesDashboard/fetchSalesByTopCustomer")
+    suspend fun getFetchSalesByTopCustomer(
+        @Header("Authorization") token: String,
+        @Query("startDate") startDate: String,
+        @Query("endDate") endDate: String
+    ): List<FetchSalesByTopCustomerResponse>
 
 }

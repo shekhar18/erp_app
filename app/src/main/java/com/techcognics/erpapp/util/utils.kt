@@ -1,7 +1,14 @@
 package com.techcognics.erpapp.util
 
+import android.R.attr.onClick
 import android.icu.text.SimpleDateFormat
+import android.util.Log
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.changedToDown
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
@@ -9,6 +16,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import com.techcognics.erpapp.data.company_dashboard_data.AmountsByMonthResponse
 import java.util.Locale
 import kotlin.random.Random
+
 
 class CustomPasswordTransformation(
     private val dotChar: Char = '◉'
@@ -46,6 +54,20 @@ fun extractTableData(input: List<AmountsByMonthResponse>?): List<List<String>> {
 
             row
         }
+}
+
+fun Modifier.listenTapOffset(
+    onTap: (Offset) -> Unit
+): Modifier = pointerInput(Unit) {
+    awaitPointerEventScope {
+        while (true) {
+            val event = awaitPointerEvent()
+            val down = event.changes.firstOrNull { it.changedToDown() }
+            if (down != null) {
+                onTap(down.position)
+            }
+        }
+    }
 }
 
 fun getRandomColor(): Color {
