@@ -12,6 +12,7 @@ import com.techcognics.erpapp.domain.usecase.GetSaveUserRoleUseCase
 import com.techcognics.erpapp.domain.usecase.GetSavedUserDetailsUseCase
 import com.techcognics.erpapp.domain.usecase.GetTokenUseCase
 import com.techcognics.erpapp.domain.usecase.GetUserRolesUseCase
+import com.techcognics.erpapp.domain.usecase.sales_dashboard_usecase.GetTopSalesDetailsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -23,7 +24,8 @@ class HomeViewModel @Inject constructor(
     val getSaveUserRoleUseCase: GetSaveUserRoleUseCase,
     val getUserRolesUseCase: GetUserRolesUseCase,
     val getTokenUseCase: GetTokenUseCase,
-    val getSavedUserDetailsUseCase: GetSavedUserDetailsUseCase
+    val getSavedUserDetailsUseCase: GetSavedUserDetailsUseCase,
+
 ) : ViewModel() {
 
 

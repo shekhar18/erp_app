@@ -20,8 +20,10 @@ import com.techcognics.erpapp.domain.usecase.sales_dashboard_usecase.AllTotalAmo
 import com.techcognics.erpapp.domain.usecase.sales_dashboard_usecase.FetchItemGroupDetailsPercentageUseCase
 import com.techcognics.erpapp.domain.usecase.sales_dashboard_usecase.FetchSalesByTopCustomerUseCase
 import com.techcognics.erpapp.domain.usecase.sales_dashboard_usecase.FetchStateWiseSalesInvoiceDetailsUseCase
+import com.techcognics.erpapp.domain.usecase.sales_dashboard_usecase.GetFetchAllSalesInvoiceByQuarterlyUseCase
 import com.techcognics.erpapp.domain.usecase.sales_dashboard_usecase.GetSalesYearUseCase
 import com.techcognics.erpapp.domain.usecase.sales_dashboard_usecase.GetSalseInvoiceByYearUseCase
+import com.techcognics.erpapp.domain.usecase.sales_dashboard_usecase.GetTopSalesDetailsUseCase
 import com.techcognics.erpapp.presentation.base.Result
 import com.techcognics.erpapp.util.getRandomColor
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -42,7 +44,9 @@ class SalesDashboardViewModel @Inject constructor(
     private val getTokenUseCase: GetTokenUseCase,
     private val fetchStateWiseSalesInvoiceDetailsUseCase: FetchStateWiseSalesInvoiceDetailsUseCase,
     private val fetchItemGroupDetailsPercentageUseCase: FetchItemGroupDetailsPercentageUseCase,
-    private val fetchSalesByTopCustomerUseCase: FetchSalesByTopCustomerUseCase
+    private val fetchSalesByTopCustomerUseCase: FetchSalesByTopCustomerUseCase,
+    private val getTopSalesDetailsUseCase: GetTopSalesDetailsUseCase,
+    private val getFetchAllSalesInvoiceByQuarterlyUseCase: GetFetchAllSalesInvoiceByQuarterlyUseCase
 ) : ViewModel() {
 
     private val _salesDashboardState = MutableLiveData<Result<Unit>>(
@@ -94,6 +98,13 @@ class SalesDashboardViewModel @Inject constructor(
         MutableLiveData<List<RowBarData>>(emptyList<RowBarData>())
     val topCustomer: LiveData<List<RowBarData>> = _topCustomer
 
+    private val _topSales: MutableLiveData<List<RowBarData>> =
+        MutableLiveData<List<RowBarData>>(emptyList<RowBarData>())
+    val topSales: LiveData<List<RowBarData>> = _topSales
+
+    private val _salesOfQuarter: MutableLiveData<List<RowBarData>> =
+        MutableLiveData<List<RowBarData>>(emptyList<RowBarData>())
+    val salesOfQuarter: LiveData<List<RowBarData>> = _salesOfQuarter
     fun getFiscalYear() {
         viewModelScope.launch {
             _salesDashboardState.value = Result.Loading
@@ -158,7 +169,7 @@ class SalesDashboardViewModel @Inject constructor(
                             startDate = _startDate.value.orEmpty(),
                             endDate = _endDate.value.orEmpty()
                         )
-                        Log.d("SALES", topCustomer.toString())
+
 
 
                         if (topCustomer.isNotEmpty()) {
@@ -180,7 +191,55 @@ class SalesDashboardViewModel @Inject constructor(
                             _topCustomer.postValue(rowData)
                         }
 
+                        val topSales = getTopSalesDetailsUseCase(
+                            token = token.toString(),
+                            startDate = _startDate.value.orEmpty(),
+                            endDate = _endDate.value.orEmpty()
+                        )
+                        if (topSales.isNotEmpty()) {
+                            val rowData = listOf(
+                                RowBarData(
+                                    barListDate = topSales.map {
+                                        BarDataCard(
+                                            label = it.itemDescription ?: "", data = listOf(
+                                                Bars.Data(
+                                                    value = it.totalGrossAmount ?: 0.0,
+                                                    label = it.itemDescription ?: "",
+                                                    color = SolidColor(getRandomColor())
+                                                )
+                                            )
+                                        )
+                                    }, color = getRandomColor()
+                                )
+                            )
+                            _topSales.postValue(rowData)
+                        }
 
+                      val salesQuarter = getFetchAllSalesInvoiceByQuarterlyUseCase(
+                            token = token.toString(),
+                            startDate = _startDate.value.orEmpty(),
+                            endDate = _endDate.value.orEmpty()
+                        )
+                        if (salesQuarter.isNotEmpty()) {
+                            val rowData = listOf(
+                                RowBarData(
+                                    barListDate = salesQuarter.map {
+                                        BarDataCard(
+                                            label = it.month ?: "", data = listOf(
+                                                Bars.Data(
+                                                    value = it.totalAmount ?: 0.0,
+                                                    label = it.month?: "",
+                                                    color = SolidColor(getRandomColor())
+                                                )
+                                            )
+                                        )
+                                    }, color = getRandomColor()
+                                )
+                            )
+                            _salesOfQuarter.postValue(rowData)
+                        }
+
+                        Log.d("SALES", salesQuarter.toString())
                     }
                     withContext(Dispatchers.Main) {
                         _salesDashboardState.value = Result.Idle

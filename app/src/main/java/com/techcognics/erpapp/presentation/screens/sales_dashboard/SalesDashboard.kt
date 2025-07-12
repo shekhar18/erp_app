@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -34,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -46,6 +46,7 @@ import com.techcognics.erpapp.presentation.component.Loader
 import com.techcognics.erpapp.presentation.component.SalesComparisonCard
 import com.techcognics.erpapp.presentation.component.button.BoarderButton
 import com.techcognics.erpapp.presentation.component.charts.CardLineChart
+import com.techcognics.erpapp.presentation.component.charts.ColumnBar
 import com.techcognics.erpapp.presentation.component.charts.Pie
 import com.techcognics.erpapp.presentation.component.charts.RowBar
 import com.techcognics.erpapp.presentation.component.dropdownmenu.YearDropdown
@@ -108,10 +109,17 @@ fun SalesDashboard(modifier: Modifier = Modifier, paddingValue: PaddingValues) {
                 item {
                     SalesByStateCardSection(viewModel)
                 }
+                item {
+                    TopSalesCardSection(viewModel)
+                }
 
                 item {
                     SalesByGroupAndTopCustomerCardSection(viewModel)
                 }
+                item {
+                    SalesOfQuarterCardSection(viewModel)
+                }
+
             }
         }
 
@@ -365,7 +373,7 @@ fun SalesByGroupAndTopCustomerCardSection(viewModel: SalesDashboardViewModel) {
 
     Column(
         modifier = Modifier
-            .height(300.dp)
+            .height(250.dp)
             .fillMaxWidth()
             .padding(16.dp),
     ) {
@@ -386,7 +394,9 @@ fun SalesByGroupAndTopCustomerCardSection(viewModel: SalesDashboardViewModel) {
                 containerColor = MaterialTheme.colorScheme.background
             )
         ) {
-            Column(modifier = Modifier.fillMaxSize()) {
+            Column(modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 10.dp)) {
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
                     BoarderButton(label = "Item Group Wise sales", onclick = {
                         viewModel.updateButtonTagByGroupOrCustomer("Item Group Wise sales")
@@ -405,13 +415,15 @@ fun SalesByGroupAndTopCustomerCardSection(viewModel: SalesDashboardViewModel) {
                 } else {
 
 
-                    Column {
+                    Column(modifier = Modifier.padding(5.dp)) {
                         if (customer?.isEmpty() == true) {
                             Row(
-                                modifier = Modifier.fillMaxWidth().padding(top=25.dp),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(top = 25.dp),
                                 horizontalArrangement = Arrangement.Absolute.Center,
 
-                            ) {
+                                ) {
                                 Text(
                                     "No Data Found",
                                     style = MaterialTheme.typography.titleSmall,
@@ -436,6 +448,165 @@ fun SalesByGroupAndTopCustomerCardSection(viewModel: SalesDashboardViewModel) {
 
 }
 
+@Composable
+fun TopSalesCardSection(viewModel: SalesDashboardViewModel) {
+    val topSales = viewModel.topSales.observeAsState()
+    Box(
+        modifier = Modifier
+            .height(300.dp)
+            .padding(15.dp)
+    ) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(300.dp)
+                .shadow(
+                    elevation = if (isSystemInDarkTheme()) 10.dp else 8.dp,
+                    ambientColor = if (isSystemInDarkTheme()) Color.White.copy(alpha = 0.5f) else Color.Black.copy(
+                        alpha = 0.5f
+                    ),
+                    spotColor = if (isSystemInDarkTheme()) Color.White.copy(alpha = 0.5f) else Color.Black.copy(
+                        alpha = 0.5f
+                    )
+                ), shape = RoundedCornerShape(4.dp), elevation = CardDefaults.cardElevation(
+                defaultElevation = 8.dp,
+            ), colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.background
+            )
+        ) {
+            if (topSales.value.orEmpty().isNotEmpty()) {
+                Column {
+                    Spacer(modifier = Modifier.height(5.dp))
+                    Text(
+                        text = "  Salse Top 5 Items",
+                        style = MaterialTheme.typography.titleSmall,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.W600,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
+                    topSales.value.orEmpty().forEach { customerData ->
+                        ColumnBar(modifier = Modifier, customerData.barListDate)
+                    }
+                }
+
+
+            } else {
+
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .padding(5.dp)
+                            .fillMaxWidth()
+                            .weight(0.2f)
+                    ) {
+                        Text(
+                            text = "  Salse Top 5 Items",
+                            style = MaterialTheme.typography.titleSmall,
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.W600,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(15.dp))
+                    Text(
+                        "No Data Found",
+                        style = MaterialTheme.typography.titleSmall,
+                        fontSize = 14.sp,
+                        color = MaterialTheme.colorScheme.onBackground,
+                        modifier = Modifier.weight(1f),
+                        textAlign = TextAlign.Center
+                    )
+                }
+            }
+        }
+
+    }
+}
+
+@Composable
+fun SalesOfQuarterCardSection(viewModel: SalesDashboardViewModel) {
+    val salesOfQuarter = viewModel.salesOfQuarter.observeAsState()
+    Box(
+        modifier = Modifier
+            .height(300.dp)
+            .padding(15.dp)
+    ) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(300.dp)
+                .shadow(
+                    elevation = if (isSystemInDarkTheme()) 10.dp else 8.dp,
+                    ambientColor = if (isSystemInDarkTheme()) Color.White.copy(alpha = 0.5f) else Color.Black.copy(
+                        alpha = 0.5f
+                    ),
+                    spotColor = if (isSystemInDarkTheme()) Color.White.copy(alpha = 0.5f) else Color.Black.copy(
+                        alpha = 0.5f
+                    )
+                ), shape = RoundedCornerShape(4.dp), elevation = CardDefaults.cardElevation(
+                defaultElevation = 8.dp,
+            ), colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.background
+            )
+        ) {
+            if (salesOfQuarter.value.orEmpty().isNotEmpty()) {
+                Column {
+                    Spacer(modifier = Modifier.height(5.dp))
+                    Text(
+                        text = "  Salse of Quarterly",
+                        style = MaterialTheme.typography.titleSmall,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.W600,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
+                    salesOfQuarter.value.orEmpty().forEach { customerData ->
+                        ColumnBar(modifier = Modifier, customerData.barListDate)
+                    }
+                }
+
+
+            } else {
+
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .padding(5.dp)
+                            .fillMaxWidth()
+                            .weight(0.2f)
+                    ) {
+                        Text(
+                            text = "  Salse of Quarterly",
+                            style = MaterialTheme.typography.titleSmall,
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.W600,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(15.dp))
+                    Text(
+                        "No Data Found",
+                        style = MaterialTheme.typography.titleSmall,
+                        fontSize = 14.sp,
+                        color = MaterialTheme.colorScheme.onBackground,
+                        modifier = Modifier.weight(1f),
+                        textAlign = TextAlign.Center
+                    )
+                }
+            }
+        }
+
+    }
+}
 
 @Preview
 @Composable

@@ -1,6 +1,6 @@
 package com.techcognics.erpapp.presentation.component.charts
 
-import android.util.Log
+//import com.techcognics.erpapp.util.showTooltipOnClick
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
@@ -39,16 +39,13 @@ import com.techcognics.erpapp.data.sales_dashboard_data.StateWiseSalesInvoiceDet
 import com.techcognics.erpapp.presentation.component.TooltipWithArrow
 import com.techcognics.erpapp.util.getRandomColor
 import com.techcognics.erpapp.util.listenTapOffset
-//import com.techcognics.erpapp.util.showTooltipOnClick
 import ir.ehsannarmani.compose_charts.PieChart
 import ir.ehsannarmani.compose_charts.models.Pie
-import ir.ehsannarmani.compose_charts.models.PopupProperties
 
 
 @Composable
 fun Pie(
-    modifier: Modifier = Modifier,
-    data: List<MainData>?
+    modifier: Modifier = Modifier, data: List<MainData>?
 ) {
     val pieList = data?.takeIf { it.isNotEmpty() }?.mapNotNull {
         when (it) {
@@ -89,13 +86,11 @@ fun Pie(
                 detectTapGestures(onTap = {
                     showToolTip = false
                 })
-            }
-    ) {
+            }) {
         // Tooltip
         if (showToolTip) {
             TooltipWithArrow(
-                text = "${pieValues.label} - ${pieValues.data}%",
-                position = offset
+                text = "${pieValues.label} - ${pieValues.data}%", position = offset
             )
         }
 
@@ -126,18 +121,22 @@ fun Pie(
                         horizontalArrangement = Arrangement.SpaceEvenly,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Box(modifier = Modifier.size(160.dp)){
+                        Box(modifier = Modifier.size(160.dp)) {
                             Box(
                                 modifier = Modifier
                                     .matchParentSize()
                                     .listenTapOffset {
                                         offset = it
-                                        Log.d("SALES",it.x.toString())
-                                    }
-                            )
+                                    })
                             PieChart(
                                 modifier = Modifier.size(120.dp),
-                                data = list!!,
+                                data = remember {
+                                    list.orEmpty().map {
+                                        Pie(
+                                            label = it.label, data = it.data, color = it.color
+                                        )
+                                    }
+                                },
                                 onPieClick = { clickedPie ->
                                     pieValues = clickedPie
                                     list = list?.map {
@@ -158,7 +157,7 @@ fun Pie(
                                 style = Pie.Style.Stroke(width = 20.dp)
                             )
                         }
-                          // Legends
+                        // Legends
                         Box(modifier = modifier.padding(16.dp)) {
                             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                                 list?.forEach { item ->

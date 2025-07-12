@@ -5,23 +5,25 @@ import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.techcognics.erpapp.data.BarDataCard
-import com.techcognics.erpapp.presentation.screens.sales_dashboard.SalesDashboardViewModel
 import ir.ehsannarmani.compose_charts.RowChart
 import ir.ehsannarmani.compose_charts.models.BarProperties
 import ir.ehsannarmani.compose_charts.models.Bars
+import ir.ehsannarmani.compose_charts.models.IndicatorPosition
+import ir.ehsannarmani.compose_charts.models.LabelHelperProperties
+import ir.ehsannarmani.compose_charts.models.LabelProperties
+import ir.ehsannarmani.compose_charts.models.VerticalIndicatorProperties
 
 @Composable
 fun RowBar(modifier: Modifier = Modifier, list: List<BarDataCard>) {
-
-
-
-
 
 
     Box(
@@ -39,11 +41,32 @@ fun RowBar(modifier: Modifier = Modifier, list: List<BarDataCard>) {
                     )
                 }.toList()
             },
+            indicatorProperties = VerticalIndicatorProperties(
+                enabled = true,
+                position = IndicatorPosition.Vertical.Bottom,
+                textStyle = TextStyle(
+                    fontSize = 12.sp, color = MaterialTheme.colorScheme.onBackground
+                ),
+            ),labelHelperProperties = LabelHelperProperties(
+                enabled = false,
+            ),
             barProperties = BarProperties(
                 thickness = 15.dp, spacing = 4.dp, cornerRadius = Bars.Data.Radius.Circular(6.dp)
             ),
             animationSpec = spring(
                 dampingRatio = Spring.DampingRatioMediumBouncy, stiffness = Spring.StiffnessLow
+            ),
+            labelProperties = LabelProperties(
+                enabled = true,
+                builder = { modifier, label, shouldRotate, index ->
+                    Text(
+                        modifier = modifier,
+                        text = label,
+                        style = MaterialTheme.typography.titleSmall,
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+                },
+                padding = 16.dp,
             ),
         )
     }
