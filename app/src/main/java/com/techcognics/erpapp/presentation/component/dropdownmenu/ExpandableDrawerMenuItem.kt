@@ -23,20 +23,23 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.techcognics.erpapp.R
 import com.techcognics.erpapp.data.user_roles.Children
 
 @Composable
 fun ExpandableDrawerMenuItem(
-    title: String,
+    title: String?,
+    subTitle: String?,
     icon: Int,
-    children: List<Children> = emptyList(),
-    onChildClick: (String) -> Unit = {}
-) {
-    var expanded by remember { mutableStateOf(false) }
+    children: List<Children>? = emptyList(),
+    onChildClick: (String) -> Unit = {},
 
+    ) {
+    var expanded by remember { mutableStateOf(false) }
+    val context = LocalContext.current
     Column(modifier = Modifier
         .fillMaxWidth()
         .clickable { expanded = !expanded }
@@ -52,12 +55,27 @@ fun ExpandableDrawerMenuItem(
                     .width(16.dp),
             )
             Spacer(modifier = Modifier.width(20.dp))
-            Text(
-                text = title,
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.weight(1f)
-            )
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = title ?: "",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.primary,
+
+                    )
+                if (expanded) {
+                    Spacer(Modifier.height(2.dp))
+                    Text(
+                        text = subTitle ?: "",
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.primary,
+                    )
+                }
+
+
+            }
+
             Icon(
                 imageVector = if (expanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
                 contentDescription = if (expanded) "Collapse" else "Expand",
@@ -66,15 +84,32 @@ fun ExpandableDrawerMenuItem(
         }
 
         AnimatedVisibility(visible = expanded) {
+
             Column(modifier = Modifier.padding(start = 32.dp, top = 8.dp)) {
-                children.forEach { child ->
+                children?.forEach { child ->
+                    val iconId = context.resources.getIdentifier(
+                        (child.icon ?: "dashboard") as String?,
+                        "drawable",
+                        context.packageName
+                    )
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
                             .height(25.dp)
-                            .clickable { onChildClick(child.name) }) {
+                            .clickable { onChildClick(child.name ?: "") }) {
                         Icon(
-                            painter = painterResource(R.drawable.home_icon),
+                            painter = painterResource(
+                                (if (iconId != 0) {
+                                    iconId
+                                } else {
+                                    context.resources.getIdentifier(
+                                        ("dashboard") as String?,
+                                        "drawable",
+                                        context.packageName
+                                    )
+                                }).toInt()
+
+                            ),
                             contentDescription = "text",
                             tint = contentColor,
                             modifier = Modifier
@@ -82,11 +117,13 @@ fun ExpandableDrawerMenuItem(
                                 .width(16.dp),
                         )
                         Spacer(modifier = Modifier.width(16.dp))
-                        Text(
-                            text = child.name,
-                            style = MaterialTheme.typography.bodyMedium,
-                            modifier = Modifier.fillMaxWidth()
-                        )
+                        child.name?.let {
+                            Text(
+                                text = it,
+                                style = MaterialTheme.typography.bodyMedium,
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        }
                     }
                 }
             }

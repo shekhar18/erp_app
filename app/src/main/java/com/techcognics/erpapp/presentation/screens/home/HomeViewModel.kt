@@ -5,9 +5,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.techcognics.erpapp.data.profile_data.UserProfileResponse
 import com.techcognics.erpapp.data.user_roles.MenuResponseItem
 import com.techcognics.erpapp.domain.usecase.ClearSessionUseCase
 import com.techcognics.erpapp.domain.usecase.GetSaveUserRoleUseCase
+import com.techcognics.erpapp.domain.usecase.GetSavedUserDetailsUseCase
 import com.techcognics.erpapp.domain.usecase.GetTokenUseCase
 import com.techcognics.erpapp.domain.usecase.GetUserRolesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,6 +23,7 @@ class HomeViewModel @Inject constructor(
     val getSaveUserRoleUseCase: GetSaveUserRoleUseCase,
     val getUserRolesUseCase: GetUserRolesUseCase,
     val getTokenUseCase: GetTokenUseCase,
+    val getSavedUserDetailsUseCase: GetSavedUserDetailsUseCase
 ) : ViewModel() {
 
 
@@ -29,8 +32,20 @@ class HomeViewModel @Inject constructor(
     )
     val drawerMenuList: LiveData<List<MenuResponseItem>> = _drawerMenuList
 
+    private val _getUserDetails: MutableLiveData<UserProfileResponse?> = MutableLiveData()
+    val getUserDetails: LiveData<UserProfileResponse?> = _getUserDetails
+
     init {
         getUserRoles()
+        getUserLoginAs()
+    }
+
+    fun getUserLoginAs() {
+        viewModelScope.launch {
+            val userDetails = getSavedUserDetailsUseCase()
+            _getUserDetails.value = userDetails
+        }
+
     }
 
     fun getUserRoles() {
@@ -41,12 +56,12 @@ class HomeViewModel @Inject constructor(
 
                 val listMenu = menuResponse.mapNotNull { menu ->
                     val filteredChildren = menu.children?.filter { child ->
-                        child.authorities.isNotEmpty() && child.authorities.any { it in userRoles }
+                        child.authorities?.isNotEmpty() == true && child.authorities.any { it in userRoles }
                     }
 
                     // Check if parent itself has matching authorities
                     val isParentAuthorized =
-                        menu.authorities.isNotEmpty() && menu.authorities.any { it in userRoles }
+                        menu.authorities?.isNotEmpty() == true && menu.authorities.any { it in userRoles }
 
                     // Include parent if it's authorized or it has any authorized children
                     if (isParentAuthorized || !filteredChildren.isNullOrEmpty()) {

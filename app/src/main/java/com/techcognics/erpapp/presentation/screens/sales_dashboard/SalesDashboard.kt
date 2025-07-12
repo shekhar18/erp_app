@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -86,7 +87,7 @@ fun SalesDashboard(modifier: Modifier = Modifier, paddingValue: PaddingValues) {
             ) {
                 item {
                     YearDropdown(
-                        modifier = modifier,
+                        modifier = modifier.wrapContentSize(),
                         years = viewModel.yearList.observeAsState().value,
                         currentYear = selectedYear,
                         onYearSelected = { year ->
@@ -94,7 +95,7 @@ fun SalesDashboard(modifier: Modifier = Modifier, paddingValue: PaddingValues) {
                             getStartAndEndDate(year, viewModel)
                             viewModel.getFetchSalesDashboardData()
                         })
-                    Spacer(modifier = Modifier.height(10.dp))
+                    Spacer(modifier = Modifier.width(10.dp))
                 }
                 item { DashboardTitle(label = "SALES DASHBOARD") }
                 item {

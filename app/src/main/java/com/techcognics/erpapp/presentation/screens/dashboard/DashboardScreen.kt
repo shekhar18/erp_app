@@ -8,13 +8,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.techcognics.erpapp.presentation.screens.home.HomeViewModel
 
 @Composable
 fun DashboardScreen(modifier: Modifier = Modifier, homeNavController: NavHostController) {
+    val homeViewModel: HomeViewModel = hiltViewModel()
     Column(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -22,7 +26,7 @@ fun DashboardScreen(modifier: Modifier = Modifier, homeNavController: NavHostCon
     ) {
         Text(text = "Welcome to ERP", style = MaterialTheme.typography.bodyLarge)
         Text(
-            text = "You are Logged in as ${"Admin"}",
+            text = "You are Logged in as ${homeViewModel.getUserDetails.observeAsState().value?.login}",
             style = MaterialTheme.typography.bodySmall,
             modifier = modifier
                 .background(

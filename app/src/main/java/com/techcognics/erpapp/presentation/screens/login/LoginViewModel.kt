@@ -7,10 +7,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.techcognics.erpapp.data.login_data.LoginResponse
 import com.techcognics.erpapp.domain.usecase.GetSaveUserRoleUseCase
+import com.techcognics.erpapp.domain.usecase.GetSavedUserDetailsUseCase
 import com.techcognics.erpapp.domain.usecase.GetTokenUseCase
 import com.techcognics.erpapp.domain.usecase.GetUserProfileUseCase
 import com.techcognics.erpapp.domain.usecase.LoginUseCase
 import com.techcognics.erpapp.domain.usecase.SaveTokenUseCase
+import com.techcognics.erpapp.domain.usecase.SaveUserDetailsUseCase
 import com.techcognics.erpapp.domain.usecase.SaveUserRoleUseCase
 import com.techcognics.erpapp.presentation.base.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,6 +28,7 @@ class LoginViewModel @Inject constructor(
     val saveTokenUseCase: SaveTokenUseCase,
     val getUserProfileUseCase: GetUserProfileUseCase,
     val saveUserRoleUseCase: SaveUserRoleUseCase,
+    val savedUserDetailsUseCase: SaveUserDetailsUseCase
 ) : ViewModel() {
 
     private val LOGIN_TAG = "LoginViewModel"
@@ -75,9 +78,12 @@ class LoginViewModel @Inject constructor(
                 saveTokenUseCase.invoke("Bearer ${response.tokenId}")
 
 
-                val userRoles = getUserProfileUseCase("Bearer ${response.tokenId}").authorities
+                val userRoles = getUserProfileUseCase("Bearer ${response.tokenId}")
 
-                saveUserRoleUseCase(userRoleList = userRoles)
+                saveUserRoleUseCase(userRoleList = userRoles.authorities)
+                savedUserDetailsUseCase(userRoles)
+
+
 
 
 

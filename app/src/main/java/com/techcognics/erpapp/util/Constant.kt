@@ -41,10 +41,10 @@ object Constant {
 
     val dashboardMenu = listOf(
         DrawerMenu(
-            icon = R.drawable.home_icon,
+            icon = R.drawable.domain,
             title = "Company Dashboard",
         ), DrawerMenu(
-            icon = R.drawable.home_icon,
+            icon = R.drawable.bar_chart,
             title = "Sales Dashboard",
         )
     )

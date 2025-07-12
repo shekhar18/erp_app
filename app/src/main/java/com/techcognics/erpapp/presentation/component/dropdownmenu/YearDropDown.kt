@@ -5,10 +5,15 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -46,18 +51,19 @@ fun YearDropdown(
             modifier = modifier
                 .clip(RoundedCornerShape(50)) // Capsule shape
                 .border(1.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(50))
-                .background(MaterialTheme.colorScheme.background)
-                .height(56.dp)
-                .width((LocalConfiguration.current.screenWidthDp / 2.5).dp),
+                .background(MaterialTheme.colorScheme.background).padding(0.dp)
+                .height(42.dp)
+                .width((LocalConfiguration.current.screenWidthDp / 3).dp),
             expanded = expanded,
             onExpandedChange = { expanded = !expanded }) {
             TextField(
                 value = currentYear?.toString() ?: "",
                 onValueChange = {},
                 readOnly = true,
-               // label = { Text("Fiscal Year", style = MaterialTheme.typography.labelLarge) },
+                textStyle = MaterialTheme.typography.labelSmall,
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryEditable, true)
+                modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryEditable, true).wrapContentHeight(),
+
             )
             ExposedDropdownMenu(
                 expanded = expanded, onDismissRequest = { expanded = false }) {
@@ -67,10 +73,9 @@ fun YearDropdown(
                             year.fiscalYear.toString(), style = MaterialTheme.typography.labelSmall
                         )
                     }, onClick = {
-
                         expanded = false
                         onYearSelected(year.fiscalYear.toString())
-                    })
+                    },modifier=modifier.wrapContentSize(), contentPadding = PaddingValues(start = 10.dp, top = 0.dp, bottom = 0.dp))
                 }
             }
         }

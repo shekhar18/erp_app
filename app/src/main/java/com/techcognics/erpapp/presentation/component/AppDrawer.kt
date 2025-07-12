@@ -17,8 +17,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.currentCompositionLocalContext
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.techcognics.erpapp.R
@@ -36,18 +40,7 @@ fun AppDrawer(
     mainNavController: NavHostController,
     menuList: List<MenuResponseItem>?
 ) {
-    val stagesOne = listOf(
-        "Company Setup", "User Management", "Role Management", "Authorization To Role"
-    )
-    val stagesTwo = listOf(
-        "City Master",
-        "State Master",
-        "Country Master",
-        "HSN & GST Master",
-        "Currency Master",
-        "Unit Of Measurement",
-        "Financial Year"
-    )
+    val context = LocalContext.current
 
     Box(
         modifier = Modifier
@@ -72,16 +65,29 @@ fun AppDrawer(
                 modifier = Modifier.fillMaxSize()
             ) {
                 menuList?.size?.let {
-                    items(it){ item ->
+                    items(it) { item ->
+
+                        val iconId = context.resources.getIdentifier((menuList[item].icon ?: "dashboard") as String?, "drawable", context.packageName)
                         ExpandableDrawerMenuItem(
                             title = menuList[item].name,
-                            icon = R.drawable.dashboard_icon,
+                            subTitle = menuList[item].description,
+                            icon = (if(iconId != 0){
+                                iconId
+                            }else{
+                                context.resources.getIdentifier(("dashboard") as String?, "drawable", context.packageName)
+                            }) as Int,
                             children = menuList[item].children
                         ) { childClicked ->
                             // Handle click on child item
                             when (childClicked) {
-                                Constant.dashboardMenu[0].title -> homeNavController.navigate(Constant.COMPANY_DASHBOARD_SCREEN)
-                                Constant.dashboardMenu[1].title -> homeNavController.navigate(Constant.SALES_DASHBOARD_SCREEN)
+                                Constant. dashboardMenu[0].title -> homeNavController.navigate(
+                                    Constant.COMPANY_DASHBOARD_SCREEN
+                                )
+
+                                Constant.dashboardMenu[1].title -> homeNavController.navigate(
+                                    Constant.SALES_DASHBOARD_SCREEN
+                                )
+
                                 else -> {}
                             }
 
