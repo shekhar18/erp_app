@@ -11,6 +11,7 @@ import com.techcognics.erpapp.data.profile_data.UserProfileResponse
 import com.techcognics.erpapp.data.registration_data.RegistrationRequest
 import com.techcognics.erpapp.data.registration_data.RegistrationResponse
 import com.techcognics.erpapp.data.sales_dashboard_data.AllTotalAmountsOfSalesResponse
+import com.techcognics.erpapp.data.sales_dashboard_data.FetchAllSalesByGrowthResponse
 import com.techcognics.erpapp.data.sales_dashboard_data.FetchAllSalesInvoiceByQuarterlyResponse
 import com.techcognics.erpapp.data.sales_dashboard_data.FetchItemGroupDetailsPercentageResponse
 import com.techcognics.erpapp.data.sales_dashboard_data.FetchSalesByTopCustomerResponse
@@ -116,7 +117,6 @@ interface AppApiService {
     ): List<FetchItemGroupDetailsPercentageResponse>
 
 
-
     @GET("salesDashboard/fetchSalesByTopCustomer")
     suspend fun getFetchSalesByTopCustomer(
         @Header("Authorization") token: String,
@@ -137,6 +137,13 @@ interface AppApiService {
         @Query("startDate") startDate: String,
         @Query("endDate") endDate: String
     ): List<FetchAllSalesInvoiceByQuarterlyResponse>
+
+    @GET("salesDashboard/fetchAllSalesByGrowth")
+    suspend fun getFetchAllSalesByGrowth(
+        @Header("Authorization") token: String,
+        @Query("startDate") startDate: String,
+        @Query("endDate") endDate: String
+    ): List<FetchAllSalesByGrowthResponse>
 
 
 }

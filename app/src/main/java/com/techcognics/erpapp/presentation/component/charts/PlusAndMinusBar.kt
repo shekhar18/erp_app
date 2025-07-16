@@ -1,7 +1,5 @@
 package com.techcognics.erpapp.presentation.component.charts
 
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -23,32 +21,34 @@ import ir.ehsannarmani.compose_charts.models.IndicatorPosition
 import ir.ehsannarmani.compose_charts.models.LabelHelperProperties
 import ir.ehsannarmani.compose_charts.models.LabelProperties
 
+
 @Composable
-fun ColumnBar(modifier: Modifier = Modifier, list: List<BarDataCard>) {
+fun PlusAndMinusBar(modifier: Modifier = Modifier, list: List<BarDataCard>) {
     ColumnChart(
         modifier = modifier
             .fillMaxWidth()
-            .height(220.dp)
-            .padding(start = 10.dp)
-            , data = remember {
+            .padding(horizontal = 10.dp)
+            .height(220.dp),
+        data = remember {
             list.map {
                 Bars(
-                    label = it.label, values = it.data
+                    label = it.label, values = it.data.toList()
                 )
             }.toList()
         },
+        maxValue = 100.0,
+        minValue = -100.0,
         indicatorProperties = HorizontalIndicatorProperties(
             enabled = true,
             position = IndicatorPosition.Horizontal.Start,
             textStyle = TextStyle(
                 fontSize = 12.sp, color = MaterialTheme.colorScheme.onBackground
             ),
-        ), barProperties = BarProperties(
-
-            thickness = 15.dp, spacing = 4.dp, cornerRadius = Bars.Data.Radius.Circular(0.dp)
-        ), animationSpec = spring(
-            dampingRatio = Spring.DampingRatioMediumBouncy, stiffness = Spring.StiffnessLow
-        ), labelProperties = LabelProperties(
+        ),
+        barProperties = BarProperties(
+            thickness = 15.dp, spacing = 0.dp, cornerRadius = Bars.Data.Radius.Circular(0.dp)
+        ),
+        labelProperties = LabelProperties(
             enabled = true, builder = { modifier, label, shouldRotate, index ->
                 Text(
                     modifier = modifier,
@@ -56,10 +56,11 @@ fun ColumnBar(modifier: Modifier = Modifier, list: List<BarDataCard>) {
                     style = MaterialTheme.typography.titleSmall,
                     color = MaterialTheme.colorScheme.onBackground
                 )
-            }, padding = 10.dp, rotation = LabelProperties.Rotation(
-                mode = LabelProperties.Rotation.Mode.Force, degree = -40f
+            },rotation = LabelProperties.Rotation(
+                mode = LabelProperties.Rotation.Mode.Force, degree = -45f
             )
-        ), labelHelperProperties = LabelHelperProperties(
+        ),
+        labelHelperProperties = LabelHelperProperties(
             enabled = false,
         )
     )

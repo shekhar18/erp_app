@@ -7,13 +7,17 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.input.pointer.changedToDown
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
+import com.techcognics.erpapp.data.BarDataCard
+import com.techcognics.erpapp.data.RowBarData
 import com.techcognics.erpapp.data.company_dashboard_data.AmountsByMonthResponse
+import ir.ehsannarmani.compose_charts.models.Bars
 import java.util.Locale
 import kotlin.random.Random
 
@@ -76,6 +80,28 @@ fun getRandomColor(): Color {
         green = Random.nextFloat(),
         blue = Random.nextFloat(),
         alpha = 1f // Full opacity
+    )
+}
+
+fun <T> List<T>.toRowBarData(mapper: (T) -> Pair<String, Double>): List<RowBarData> {
+    if (isEmpty()) return emptyList()
+    return listOf(
+        RowBarData(
+            barListDate = this.map { item ->
+                val (label, value) = mapper(item)
+                BarDataCard(
+                    label = label,
+                    data = listOf(
+                        Bars.Data(
+                            value = value,
+                            label = label,
+                            color = SolidColor(getRandomColor())
+                        )
+                    )
+                )
+            },
+            color = getRandomColor()
+        )
     )
 }
 

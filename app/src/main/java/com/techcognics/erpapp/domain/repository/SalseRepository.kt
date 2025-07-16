@@ -1,6 +1,7 @@
 package com.techcognics.erpapp.domain.repository
 
 import com.techcognics.erpapp.data.sales_dashboard_data.AllTotalAmountsOfSalesResponse
+import com.techcognics.erpapp.data.sales_dashboard_data.FetchAllSalesByGrowthResponse
 import com.techcognics.erpapp.data.sales_dashboard_data.FetchAllSalesInvoiceByQuarterlyResponse
 import com.techcognics.erpapp.data.sales_dashboard_data.FetchItemGroupDetailsPercentageResponse
 import com.techcognics.erpapp.data.sales_dashboard_data.FetchSalesByTopCustomerResponse
@@ -37,4 +38,5 @@ interface SalseRepository {
 
     suspend fun fetchTopSalesDetails(token: String, startDate: String, endDate: String):List<FetchTopItemDetailsResponse>
     suspend fun fetchAllSalesInvoiceByQuarterly(token: String, startDate: String, endDate: String):List<FetchAllSalesInvoiceByQuarterlyResponse>
+    suspend fun fetchAllSalesByGrowth(token: String, startDate: String, endDate: String):List<FetchAllSalesByGrowthResponse>
 }

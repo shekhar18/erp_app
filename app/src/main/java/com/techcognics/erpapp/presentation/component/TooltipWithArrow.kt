@@ -1,13 +1,11 @@
 package com.techcognics.erpapp.presentation.component
 
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,8 +13,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
@@ -47,7 +43,7 @@ fun TooltipWithArrow(
                 )
             }
             // Small triangle arrow pointing down
-            Canvas(modifier = Modifier.size(12.dp)) {
+            /*Canvas(modifier = Modifier.size(12.dp)) {
                 drawPath(
                     path = Path().apply {
                         moveTo(0f, 0f)
@@ -64,7 +60,7 @@ fun TooltipWithArrow(
                         close()
                     }, color = Color.LightGray, style = Stroke(width = 1f)
                 )
-            }
+            }*/
         }
     }
 }

@@ -2,6 +2,7 @@ package com.techcognics.erpapp.data.repository
 
 import com.techcognics.erpapp.data.network.api_service.AppApiService
 import com.techcognics.erpapp.data.sales_dashboard_data.AllTotalAmountsOfSalesResponse
+import com.techcognics.erpapp.data.sales_dashboard_data.FetchAllSalesByGrowthResponse
 import com.techcognics.erpapp.data.sales_dashboard_data.FetchAllSalesInvoiceByQuarterlyResponse
 import com.techcognics.erpapp.data.sales_dashboard_data.FetchItemGroupDetailsPercentageResponse
 import com.techcognics.erpapp.data.sales_dashboard_data.FetchSalesByTopCustomerResponse
@@ -66,12 +67,20 @@ class SalesRepositoryImpl @Inject constructor(val appApiService: AppApiService) 
     }
 
     override suspend fun fetchAllSalesInvoiceByQuarterly(
-        token: String,
-        startDate: String,
-        endDate: String
+        token: String, startDate: String, endDate: String
     ): List<FetchAllSalesInvoiceByQuarterlyResponse> {
         return appApiService.getFetchAllSalesInvoiceByQuarterly(
             token = token, startDate = startDate, endDate = endDate
+        )
+    }
+
+    override suspend fun fetchAllSalesByGrowth(
+        token: String, startDate: String, endDate: String
+    ): List<FetchAllSalesByGrowthResponse> {
+        return appApiService.getFetchAllSalesByGrowth(
+            token = token,
+            startDate = startDate,
+            endDate = endDate
         )
     }
 

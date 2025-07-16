@@ -26,6 +26,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -48,6 +49,7 @@ import com.techcognics.erpapp.presentation.component.button.BoarderButton
 import com.techcognics.erpapp.presentation.component.charts.CardLineChart
 import com.techcognics.erpapp.presentation.component.charts.ColumnBar
 import com.techcognics.erpapp.presentation.component.charts.Pie
+import com.techcognics.erpapp.presentation.component.charts.PlusAndMinusBar
 import com.techcognics.erpapp.presentation.component.charts.RowBar
 import com.techcognics.erpapp.presentation.component.dropdownmenu.YearDropdown
 import com.techcognics.erpapp.util.getRandomColor
@@ -56,30 +58,21 @@ import java.time.LocalDate
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun SalesDashboard(modifier: Modifier = Modifier, paddingValue: PaddingValues) {
-
     val viewModel: SalesDashboardViewModel = hiltViewModel()
     val state by viewModel.salesDashboardState.observeAsState()
-    var selectedYear by rememberSaveable { mutableStateOf<String?>(LocalDate.now().year.toString()) }
+    var selectedYear by rememberSaveable { mutableStateOf(LocalDate.now().year.toString()) }
 
     LaunchedEffect(true) {
         viewModel.getFiscalYear()
-        getStartAndEndDate(selectedYear = LocalDate.now().year.toString(), viewModel)
+        viewModel.getButtonTagWiseDate()
+        viewModel.getSalseGrowthByMonthsAndYear()
+        getStartAndEndDate(selectedYear, viewModel)
         viewModel.getFetchSalesDashboardData()
     }
 
-
-
     when (state) {
         is Result.Loading -> Loader()
-        is Result.Error -> {
-            val message = (state as Result.Error).message
-            ErrorDialog(
-                onClick = {
-                    // viewModel.companyDashboardApiCalls()
-                }, message = message
-            )
-        }
-
+        is Result.Error -> ErrorDialog(onClick = {}, message = (state as Result.Error).message)
         is Result.Idle, is Result.Success -> {
             LazyColumn(
                 modifier = modifier
@@ -88,119 +81,29 @@ fun SalesDashboard(modifier: Modifier = Modifier, paddingValue: PaddingValues) {
             ) {
                 item {
                     YearDropdown(
-                        modifier = modifier.wrapContentSize(),
                         years = viewModel.yearList.observeAsState().value,
                         currentYear = selectedYear,
-                        onYearSelected = { year ->
-                            selectedYear = year
-                            getStartAndEndDate(year, viewModel)
+                        onYearSelected = {
+                            selectedYear = it
+                            getStartAndEndDate(it, viewModel)
                             viewModel.getFetchSalesDashboardData()
-                        })
-                    Spacer(modifier = Modifier.width(10.dp))
+                        }
+                    )
                 }
                 item { DashboardTitle(label = "SALES DASHBOARD") }
-                item {
-                    SalesStatusCardSection(viewModel)
-                }
-                item {
-                    SalesComparisonCardSection(viewModel)
-                    Spacer(modifier = Modifier.height(10.dp))
-                }
-                item {
-                    SalesByStateCardSection(viewModel)
-                }
-                item {
-                    TopSalesCardSection(viewModel)
-                }
-
-                item {
-                    SalesByGroupAndTopCustomerCardSection(viewModel)
-                }
-                item {
-                    SalesOfQuarterCardSection(viewModel)
-                }
+                item { SalesStatusCard(viewModel) }
+                item { SalesComparisonCardSection(viewModel) }
+                item { SalesByStateCardSection(viewModel) }
+                item { TopSalesCardSection(viewModel) }
+                item { SalesByGroupAndTopCustomerCardSection(viewModel) }
+                item { SalesOfQuarterCardSection(viewModel) }
+                item { SalesOfGrowthCardSection(viewModel) }
 
             }
         }
 
-        else -> {}
+        null -> TODO()
     }
-
-
-    /*  val salesState = listOf(
-          StatCard(
-              "Revenue", "₹50", "Cr", Color(0xFFFFCDD2), Color(0xFFFFEBEE), R.drawable.rad_chart
-          ), StatCard(
-              "Expected Revenue",
-              "₹13",
-              "Lakhs",
-              Color(0xFFC8E6C9),
-              Color(0xFFE8F5E9),
-              R.drawable.green_chart
-          ), StatCard(
-              "Sales Orders",
-              "₹12",
-              "Lakhs",
-              Color(0xFFD1C4E9),
-              Color(0xFFEDE7F6),
-              R.drawable.purple_chart
-          ), StatCard(
-              "All Values",
-              "₹12",
-              "Lakhs",
-              Color(0xFFFFE0B2),
-              Color(0xFFFFF3E0),
-              R.drawable.yellow_chart
-          )
-      )*/
-
-    /*   Column(
-           modifier = modifier
-               .fillMaxSize()
-               .padding(paddingValue)
-       ) {
-           Row(
-               modifier = modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center
-           ) {
-               Text(
-                   "Techcognics India Pvt LTD Sales Dashboard",
-                   style = MaterialTheme.typography.bodyLarge,
-                   color = MaterialTheme.colorScheme.primary,
-                   modifier = Modifier.padding(8.dp),
-               )
-           }
-           LazyVerticalGrid(
-               columns = GridCells.Fixed(2),
-               contentPadding = PaddingValues(8.dp),
-               verticalArrangement = Arrangement.spacedBy(12.dp),
-               horizontalArrangement = Arrangement.spacedBy(12.dp),
-           ) {
-               items(salesState.size) { index ->
-                   StatCardItem(
-                       card = salesState[index],
-                       modifier = Modifier
-                           .fillMaxWidth()
-                           .aspectRatio(1.6f) // adjust ratio to fit nicely
-                   )
-               }
-           }
-           SalesComparisonCard()
-           Spacer(modifier = modifier.height(10.dp))
-           Card(
-               modifier = modifier
-                   .height(400.dp)
-                   .width(350.dp),
-               shape = RoundedCornerShape(4.dp),
-               elevation = CardDefaults.cardElevation(
-                   defaultElevation = 8.dp,
-               ),
-               colors = CardDefaults.cardColors(
-                   containerColor = MaterialTheme.colorScheme.background
-               )
-           ) {
-               Pie()
-           }
-       }*/
 }
 
 
@@ -216,51 +119,58 @@ fun getStartAndEndDate(selectedYear: String, viewModel: SalesDashboardViewModel)
 }
 
 
+
 @Composable
-fun SalesStatusCardSection(viewModel: SalesDashboardViewModel) {
-    val cards = viewModel.salesTilesData.observeAsState().value.orEmpty()
+fun SalesStatusCard(viewModel: SalesDashboardViewModel) {
+    val cards by viewModel.salesTilesData.observeAsState(emptyList())
+
+    val cardContent = remember(cards) {
+        cards
+            .filter { it.displayName.isNotEmpty() }
+            .sortedBy { it.order }
+            .map { item ->
+                @Composable {
+                    CardLineChart(
+                        label = "${item.displayName} \n ₹ ${item.totalAmount}",
+                        lineCurve = false,
+                        showBorder = true,
+                        modifier = Modifier,
+                        dataList = listOf(0.0, item.totalAmount),
+                        firstGradientFillColor = getRandomColor(),
+                        secondGradientFillColor = Color.Transparent,
+                        lineThickness = 1.dp,
+                    )
+                }
+            }
+    }
 
     Box(
         modifier = Modifier
             .height(350.dp)
             .padding(horizontal = 8.dp)
     ) {
-
-        val filterData = cards.filter { it.displayName.isNotEmpty() }.sortedBy { it.order }
-
-        val cardContent = filterData.map {
-
-            @Composable {
-                CardLineChart(
-                    label = "${it.displayName} \n ₹ ${it.totalAmount}",
-                    lineCurve = false,
-                    showBorder = true,
-                    modifier = Modifier,
-                    dataList = listOf(0.0, it.totalAmount),
-                    firstGradientFillColor = getRandomColor(),
-                    secondGradientFillColor = Color.Transparent,
-                    lineThickness = 1.dp,
-                )
-            }
-        }
         AutoResponsiveCardGrid(columnsSize = 2, cards = cardContent)
     }
 }
 
 @Composable
 fun SalesComparisonCardSection(viewModel: SalesDashboardViewModel) {
-    val invoiceList = viewModel.salesInvoiceByYearList.observeAsState().value.orEmpty()
-    Box(
-        modifier = Modifier
-            .height(50.dp)
-            .padding(horizontal = 8.dp)
-    ) {
-        if (invoiceList.isNotEmpty()) {
+    val invoiceList by viewModel.salesInvoiceByYearList.observeAsState(emptyList())
+
+    if (invoiceList.isNotEmpty()) {
+        val lastInvoice = invoiceList.last()
+        val firstYear = invoiceList.first().years.toString()
+
+        Box(
+            modifier = Modifier
+                .height(50.dp)
+                .padding(horizontal = 8.dp)
+        ) {
             SalesComparisonCard(
                 modifier = Modifier,
-                salseCount = invoiceList.last().totalAmount,
-                persentage = invoiceList.last().percentage,
-                previousYear = invoiceList.first().years.toString()
+                salseCount = lastInvoice.totalAmount,
+                persentage = lastInvoice.percentage,
+                previousYear = firstYear
             )
         }
     }
@@ -358,7 +268,6 @@ fun SalesByStateCardSection(viewModel: SalesDashboardViewModel) {
 
             Pie(
                 data = viewModel.stateWiseSalesInvoiceDetailList.observeAsState().value
-                    ?: emptyList(),
             )
         }
     }
@@ -394,9 +303,11 @@ fun SalesByGroupAndTopCustomerCardSection(viewModel: SalesDashboardViewModel) {
                 containerColor = MaterialTheme.colorScheme.background
             )
         ) {
-            Column(modifier = Modifier
-                .fillMaxSize()
-                .padding(top = 10.dp)) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(top = 10.dp)
+            ) {
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
                     BoarderButton(label = "Item Group Wise sales", onclick = {
                         viewModel.updateButtonTagByGroupOrCustomer("Item Group Wise sales")
@@ -591,6 +502,186 @@ fun SalesOfQuarterCardSection(viewModel: SalesDashboardViewModel) {
                             fontWeight = FontWeight.W600,
                             color = MaterialTheme.colorScheme.primary
                         )
+                    }
+                    Spacer(modifier = Modifier.height(15.dp))
+                    Text(
+                        "No Data Found",
+                        style = MaterialTheme.typography.titleSmall,
+                        fontSize = 14.sp,
+                        color = MaterialTheme.colorScheme.onBackground,
+                        modifier = Modifier.weight(1f),
+                        textAlign = TextAlign.Center
+                    )
+                }
+            }
+        }
+
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+fun SalesOfGrowthCardSection(viewModel: SalesDashboardViewModel) {
+    val salseGrowth = viewModel.salesGrowth.observeAsState()
+    val forGrowthButton = viewModel.buttonTagGrowth.observeAsState()
+    Box(
+        modifier = Modifier
+            .height(280.dp)
+            .padding(15.dp)
+    ) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(300.dp)
+                .shadow(
+                    elevation = if (isSystemInDarkTheme()) 10.dp else 8.dp,
+                    ambientColor = if (isSystemInDarkTheme()) Color.White.copy(alpha = 0.5f) else Color.Black.copy(
+                        alpha = 0.5f
+                    ),
+                    spotColor = if (isSystemInDarkTheme()) Color.White.copy(alpha = 0.5f) else Color.Black.copy(
+                        alpha = 0.5f
+                    )
+                ), shape = RoundedCornerShape(4.dp), elevation = CardDefaults.cardElevation(
+                defaultElevation = 8.dp,
+            ), colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.background
+            )
+        ) {
+            if (salseGrowth.value.orEmpty().isNotEmpty()) {
+
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 5.dp, top = 10.dp, end = 5.dp, bottom = 10.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+
+                        Text(
+                            text = "Salse Growth %",
+                            style = MaterialTheme.typography.titleSmall,
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.W600,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                        Spacer(modifier = Modifier.width(25.dp))
+                        Row(
+                            horizontalArrangement = Arrangement.End
+                        ) {
+                            BoarderButton(
+                                modifier = Modifier,
+                                onclick = {
+                                    viewModel.updateButtonTagGrowth("1M")
+                                    viewModel.getSalseGrowthByMonthsAndYear()
+                                },
+                                label = "1M",
+                                buttonState = forGrowthButton.value,
+                            )
+                            Spacer(modifier = Modifier.width(5.dp))
+                            BoarderButton(
+                                modifier = Modifier,
+                                onclick = {
+                                    viewModel.updateButtonTagGrowth("3M")
+                                    viewModel.getSalseGrowthByMonthsAndYear()
+
+                                },
+                                label = "3M",
+                                buttonState = forGrowthButton.value,
+                            )
+                            Spacer(modifier = Modifier.width(5.dp))
+                            BoarderButton(
+                                modifier = Modifier,
+                                onclick = {
+                                    viewModel.updateButtonTagGrowth("6M")
+                                    viewModel.getSalseGrowthByMonthsAndYear()
+                                },
+                                label = "6M",
+                                buttonState = forGrowthButton.value,
+                            )
+                            Spacer(modifier = Modifier.width(5.dp))
+                            BoarderButton(
+                                modifier = Modifier,
+                                buttonState = forGrowthButton.value,
+                                onclick = {
+                                    viewModel.updateButtonTagGrowth("1Y")
+                                    viewModel.getSalseGrowthByMonthsAndYear()
+                                },
+                                label = "1Y"
+                            )
+
+                        }
+
+                    }
+                    salseGrowth.value.orEmpty().map { customerData ->
+                        PlusAndMinusBar(modifier = Modifier, customerData.barListDate)
+                    }
+                }
+
+
+            } else {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 5.dp, top = 10.dp, end = 5.dp, bottom = 10.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+
+                        Text(
+                            text = "Salse Growth %",
+                            style = MaterialTheme.typography.titleSmall,
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.W600,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                        Spacer(modifier = Modifier.width(25.dp))
+                        Row(
+                            horizontalArrangement = Arrangement.End
+                        ) {
+                            BoarderButton(
+                                modifier = Modifier,
+                                onclick = {
+
+
+                                },
+                                label = "1M",
+                                buttonState = forGrowthButton.value.toString(),
+                            )
+                            Spacer(modifier = Modifier.width(5.dp))
+                            BoarderButton(
+                                modifier = Modifier,
+                                onclick = {
+
+
+                                },
+                                label = "3M",
+                                buttonState = forGrowthButton.value.toString(),
+                            )
+                            Spacer(modifier = Modifier.width(5.dp))
+                            BoarderButton(
+                                modifier = Modifier,
+                                onclick = {
+
+                                },
+                                label = "6M",
+                                buttonState = forGrowthButton.value.toString(),
+                            )
+                            Spacer(modifier = Modifier.width(5.dp))
+                            BoarderButton(
+                                modifier = Modifier,
+                                buttonState = forGrowthButton.value.toString(),
+                                onclick = {
+
+                                },
+                                label = "1Y"
+                            )
+
+                        }
+
                     }
                     Spacer(modifier = Modifier.height(15.dp))
                     Text(
