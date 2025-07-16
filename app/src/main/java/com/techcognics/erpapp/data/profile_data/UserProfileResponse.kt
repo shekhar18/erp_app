@@ -27,4 +27,5 @@ data class UserProfileResponse(
 
     @SerializedName("authorities") val authorities: List<String>,
 
+
     )

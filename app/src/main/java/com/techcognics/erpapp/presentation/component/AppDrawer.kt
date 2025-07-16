@@ -17,15 +17,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.currentCompositionLocalContext
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.techcognics.erpapp.R
 import com.techcognics.erpapp.data.user_roles.MenuResponseItem
 import com.techcognics.erpapp.presentation.component.dropdownmenu.ExpandableDrawerMenuItem
 import com.techcognics.erpapp.util.Constant
@@ -87,6 +83,11 @@ fun AppDrawer(
                                 Constant.dashboardMenu[1].title -> homeNavController.navigate(
                                     Constant.SALES_DASHBOARD_SCREEN
                                 )
+
+                                Constant.dashboardMenu[2].title -> homeNavController.navigate(
+                                    Constant.CUSTOMER_SCREEN
+                                )
+
 
                                 else -> {}
                             }

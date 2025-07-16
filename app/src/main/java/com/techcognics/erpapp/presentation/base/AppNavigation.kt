@@ -10,6 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.techcognics.erpapp.presentation.screens.crm.CustomerScreen
 import com.techcognics.erpapp.presentation.screens.home.HomeScreen
 import com.techcognics.erpapp.presentation.screens.login.LoginScreen
 import com.techcognics.erpapp.presentation.screens.registration.RegistrationScreen
@@ -43,5 +44,10 @@ fun Host(navController: NavHostController, isLogin: Boolean) {
         composable(Constant.HOME_SCREEN) {
             HomeScreen(mainNavController = navController)
         }
+
+        composable(Constant.CUSTOMER_SCREEN) {
+            CustomerScreen(mainNavController = navController)
+        }
+
     }
 }

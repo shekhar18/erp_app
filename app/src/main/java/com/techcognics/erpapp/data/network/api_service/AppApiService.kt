@@ -7,6 +7,7 @@ import com.techcognics.erpapp.data.company_dashboard_data.SalesInvoiceByMonthRes
 import com.techcognics.erpapp.data.company_dashboard_data.TotalIncomeAmountResponse
 import com.techcognics.erpapp.data.login_data.LoginRequest
 import com.techcognics.erpapp.data.login_data.LoginResponse
+import com.techcognics.erpapp.data.model.Customer
 import com.techcognics.erpapp.data.profile_data.UserProfileResponse
 import com.techcognics.erpapp.data.registration_data.RegistrationRequest
 import com.techcognics.erpapp.data.registration_data.RegistrationResponse
@@ -138,5 +139,13 @@ interface AppApiService {
         @Query("endDate") endDate: String
     ): List<FetchAllSalesInvoiceByQuarterlyResponse>
 
+    //customer crm
+    @GET("api/businessPartner/fetchBpDetailsBy/CUSTOMER")
+    suspend fun getCustomers(): List<Customer>
+
+    @POST("api/businessPartner/save")
+    suspend fun addCustomer(@Body customer: Customer): Customer
+
 
 }
+

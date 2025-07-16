@@ -29,7 +29,7 @@ fun ErpHomeNavHost(
 
 @RequiresApi(Build.VERSION_CODES.Q)
 @Composable
-fun HomeHost(homeNavController: NavHostController, paddingValues: PaddingValues,) {
+fun HomeHost(homeNavController: NavHostController, paddingValues: PaddingValues) {
 
     NavHost(navController = homeNavController, startDestination = Constant.DASHBOARD_SCREEN) {
         composable(Constant.DASHBOARD_SCREEN) {
@@ -39,11 +39,20 @@ fun HomeHost(homeNavController: NavHostController, paddingValues: PaddingValues,
             CompanyDashboardScreen(paddingValue = paddingValues)
         }
         composable(Constant.SALES_DASHBOARD_SCREEN) {
-            SalesDashboard(paddingValue = paddingValues,)
+            SalesDashboard(paddingValue = paddingValues)
         }
         composable(Constant.PROFILE_SCREEN) {
 
         }
+
+
     }
 
 }
+
+
+
+
+
+
+

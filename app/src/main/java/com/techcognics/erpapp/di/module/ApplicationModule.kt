@@ -5,15 +5,19 @@ import android.content.Context
 import com.techcognics.erpapp.data.network.api_service.AppApiService
 import com.techcognics.erpapp.data.network.interceptor.ApiInterceptor
 import com.techcognics.erpapp.data.repository.CompanyRepositoryImpl
+import com.techcognics.erpapp.data.repository.CustomerRepositoryImpl
 import com.techcognics.erpapp.data.repository.SalesRepositoryImpl
 import com.techcognics.erpapp.data.repository.UserRepositoryImpl
 import com.techcognics.erpapp.data.repository.UserSessionRepositoryImpl
 import com.techcognics.erpapp.data.session.SessionManager
 import com.techcognics.erpapp.domain.repository.CompanyRepository
+import com.techcognics.erpapp.domain.repository.CustomerRepository
 import com.techcognics.erpapp.domain.repository.SalseRepository
 import com.techcognics.erpapp.domain.repository.UserRepository
 import com.techcognics.erpapp.domain.repository.UserSessionRepository
+import com.techcognics.erpapp.domain.usecase.AddCustomerUseCase
 import com.techcognics.erpapp.domain.usecase.ClearSessionUseCase
+import com.techcognics.erpapp.domain.usecase.GetCustomersUseCase
 import com.techcognics.erpapp.domain.usecase.GetTokenUseCase
 import com.techcognics.erpapp.domain.usecase.LoginUseCase
 import com.techcognics.erpapp.domain.usecase.RegistrationUseCase
@@ -103,4 +107,18 @@ class ApplicationModule {
     @Provides
     fun provideGetSalesYearUseCase(salseRepository: SalseRepository): GetSalesYearUseCase =
         GetSalesYearUseCase(salseRepository = salseRepository)
+
+    //customer
+    @Provides
+    fun provideCustomerRepository(appApiService: AppApiService): CustomerRepository =
+        CustomerRepositoryImpl(appApiService)
+
+    @Provides
+    fun provideAddCustomersUseCase(repository: CustomerRepository): AddCustomerUseCase =
+        AddCustomerUseCase(repository)
+    @Provides
+    fun provideGetCustomersUseCase(repository: CustomerRepository): GetCustomersUseCase =
+        GetCustomersUseCase(repository)
 }
+
+

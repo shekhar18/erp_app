@@ -92,4 +92,9 @@ dependencies {
     implementation(libs.material)
 
     implementation(libs.androidx.lifecycle.process)
+
+    //google fonts
+    implementation("androidx.compose.material:material-icons-extended:1.3.2")
+
+
 }
