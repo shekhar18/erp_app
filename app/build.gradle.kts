@@ -92,4 +92,5 @@ dependencies {
     implementation(libs.material)
 
     implementation(libs.androidx.lifecycle.process)
+    implementation(libs.androidx.foundation)
 }

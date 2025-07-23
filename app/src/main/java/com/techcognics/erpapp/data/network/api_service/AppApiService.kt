@@ -1,5 +1,14 @@
 package com.techcognics.erpapp.data.network.api_service
 
+import com.techcognics.erpapp.data.CityResponse
+import com.techcognics.erpapp.data.ControlAccountDetailsResponse
+import com.techcognics.erpapp.data.CountryResponse
+import com.techcognics.erpapp.data.CurrencyResponse
+import com.techcognics.erpapp.data.IndustryResponse
+import com.techcognics.erpapp.data.LeadSourceResponse
+import com.techcognics.erpapp.data.PaymentTermsResponse
+import com.techcognics.erpapp.data.SalesTeamResponse
+import com.techcognics.erpapp.data.StateResponse
 import com.techcognics.erpapp.data.company_dashboard_data.AllAmountByMonthListResponse
 import com.techcognics.erpapp.data.company_dashboard_data.AllTotalAmountResponse
 import com.techcognics.erpapp.data.company_dashboard_data.AmountsByMonthResponse
@@ -144,6 +153,52 @@ interface AppApiService {
         @Query("startDate") startDate: String,
         @Query("endDate") endDate: String
     ): List<FetchAllSalesByGrowthResponse>
+
+    @GET("country/fetchAll")
+    suspend fun country(
+        @Header("Authorization") token: String,
+    ): List<CountryResponse>
+
+    @GET("state/fetchAll")
+    suspend fun state(
+        @Header("Authorization") token: String,
+    ): List<StateResponse>
+
+    //leadSource/fetchAllActiveRecords
+    @GET("city/fetchAll")
+    suspend fun city(
+        @Header("Authorization") token: String,
+    ): List<CityResponse>
+
+    @GET("leadSource/fetchAllActiveRecords")
+    suspend fun leadSource(
+        @Header("Authorization") token: String,
+    ): List<LeadSourceResponse>
+
+    @GET("paymentTerms/fetchAllPaymentTermsDetails")
+    suspend fun paymentConditions(
+        @Header("Authorization") token: String,
+    ): List<PaymentTermsResponse>
+
+    @GET("currency/fetchAll")
+    suspend fun currency(
+        @Header("Authorization") token: String,
+    ): List<CurrencyResponse>
+
+    @GET("controlAccount/fetchAllControlAccountDetails")
+    suspend fun controlAccount(
+        @Header("Authorization") token: String,
+    ): List<ControlAccountDetailsResponse>
+
+    @GET("industry/fetchAllIndustryDetails")
+    suspend fun industry(
+        @Header("Authorization") token: String,
+    ): List<IndustryResponse>
+
+    @GET("salesTeam/fetchAllSalesTeamDetails")
+    suspend fun salseTeam(
+        @Header("Authorization") token: String,
+    ): List<SalesTeamResponse>
 
 
 }

@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -30,12 +29,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.techcognics.erpapp.presentation.base.Result
 import com.techcognics.erpapp.presentation.component.AutoResponsiveCardGrid
-import com.techcognics.erpapp.presentation.component.DashboardTitle
 import com.techcognics.erpapp.presentation.component.CopyrightFooter
 import com.techcognics.erpapp.presentation.component.DateRangePicker
 import com.techcognics.erpapp.presentation.component.DynamicTable
 import com.techcognics.erpapp.presentation.component.ErrorDialog
 import com.techcognics.erpapp.presentation.component.Loader
+import com.techcognics.erpapp.presentation.component.ScreenTitle
 import com.techcognics.erpapp.presentation.component.charts.CardBarChart
 import com.techcognics.erpapp.presentation.component.charts.CardLineChart
 import com.techcognics.erpapp.presentation.component.charts.SwitchableMultipleLineAndBarCard
@@ -84,7 +83,7 @@ fun CompanyDashboardScreen(
                     Spacer(modifier = Modifier.height(10.dp))
                 }
 
-                item { DashboardTitle(label = "COMPANY DASHBOARD") }
+                item { ScreenTitle(titleFirst = "COMPANY DASHBOARD", titleSecond = "Overview analysis") }
 
                 item {
                     CompanyStatusCardSection(viewModel)

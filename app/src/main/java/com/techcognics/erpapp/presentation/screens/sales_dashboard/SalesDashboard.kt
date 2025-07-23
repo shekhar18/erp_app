@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -41,7 +40,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.techcognics.erpapp.presentation.base.Result
 import com.techcognics.erpapp.presentation.component.AutoResponsiveCardGrid
-import com.techcognics.erpapp.presentation.component.DashboardTitle
+import com.techcognics.erpapp.presentation.component.ScreenTitle
 import com.techcognics.erpapp.presentation.component.ErrorDialog
 import com.techcognics.erpapp.presentation.component.Loader
 import com.techcognics.erpapp.presentation.component.SalesComparisonCard
@@ -90,7 +89,12 @@ fun SalesDashboard(modifier: Modifier = Modifier, paddingValue: PaddingValues) {
                         }
                     )
                 }
-                item { DashboardTitle(label = "SALES DASHBOARD") }
+                item {
+                    ScreenTitle(
+                        titleFirst = "SALES DASHBOARD",
+                        titleSecond = "Overview analysis"
+                    )
+                }
                 item { SalesStatusCard(viewModel) }
                 item { SalesComparisonCardSection(viewModel) }
                 item { SalesByStateCardSection(viewModel) }

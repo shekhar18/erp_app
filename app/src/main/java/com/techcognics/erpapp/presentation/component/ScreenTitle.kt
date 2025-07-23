@@ -17,7 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun DashboardTitle(modifier: Modifier = Modifier, label: String) {
+fun ScreenTitle(modifier: Modifier = Modifier, titleFirst: String, titleSecond: String = "") {
     Row(
         modifier = modifier
             .height(30.dp)
@@ -25,7 +25,7 @@ fun DashboardTitle(modifier: Modifier = Modifier, label: String) {
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
-            text = label,
+            text = titleFirst,
             color = MaterialTheme.colorScheme.primary,
             style = MaterialTheme.typography.bodySmall,
             fontWeight = FontWeight.Bold
@@ -35,22 +35,26 @@ fun DashboardTitle(modifier: Modifier = Modifier, label: String) {
                 .width(8.dp)
                 .fillMaxHeight()
         )
-        Spacer(
-            modifier = modifier
-                .width(1.dp)
-                .fillMaxHeight()
-                .background(Color.Gray)
-        )
-        Spacer(
-            modifier = modifier
-                .width(8.dp)
-                .fillMaxHeight()
-        )
-        Text(
-            text = "Overview analysis",
-            color = MaterialTheme.colorScheme.onBackground,
-            style = MaterialTheme.typography.bodySmall
-        )
+
+        if (titleSecond.isNotEmpty()) {
+            Spacer(
+                modifier = modifier
+                    .width(1.dp)
+                    .fillMaxHeight()
+                    .background(Color.Gray)
+            )
+            Spacer(
+                modifier = modifier
+                    .width(8.dp)
+                    .fillMaxHeight()
+            )
+            Text(
+                text = titleSecond,// "Overview analysis",
+                color = MaterialTheme.colorScheme.onBackground,
+                style = MaterialTheme.typography.bodySmall
+            )
+        }
+
         Spacer(
             modifier = modifier
                 .width(8.dp)

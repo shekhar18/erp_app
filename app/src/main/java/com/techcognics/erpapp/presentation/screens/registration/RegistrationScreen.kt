@@ -32,7 +32,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.techcognics.erpapp.R
 import com.techcognics.erpapp.presentation.base.Result
@@ -195,7 +194,7 @@ fun RegistrationScreen(modifier: Modifier = Modifier, mainNavController: NavHost
                                     .fillMaxWidth()
                                     .padding(start = 10.dp, end = 10.dp)
                             ) {
-                                PrimaryButton("Submit") {
+                                PrimaryButton(modifier = modifier, buttonText = "Submit") {
                                     viewModel.submitDate()
                                 }
                             }

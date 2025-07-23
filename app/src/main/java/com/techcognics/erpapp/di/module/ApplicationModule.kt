@@ -4,16 +4,22 @@ package com.techcognics.erpapp.di.module
 import android.content.Context
 import com.techcognics.erpapp.data.network.api_service.AppApiService
 import com.techcognics.erpapp.data.network.interceptor.ApiInterceptor
+import com.techcognics.erpapp.data.repository.AppRepositoryImpl
 import com.techcognics.erpapp.data.repository.CompanyRepositoryImpl
 import com.techcognics.erpapp.data.repository.SalesRepositoryImpl
 import com.techcognics.erpapp.data.repository.UserRepositoryImpl
 import com.techcognics.erpapp.data.repository.UserSessionRepositoryImpl
 import com.techcognics.erpapp.data.session.SessionManager
+import com.techcognics.erpapp.domain.repository.AppRepository
 import com.techcognics.erpapp.domain.repository.CompanyRepository
 import com.techcognics.erpapp.domain.repository.SalseRepository
 import com.techcognics.erpapp.domain.repository.UserRepository
 import com.techcognics.erpapp.domain.repository.UserSessionRepository
 import com.techcognics.erpapp.domain.usecase.ClearSessionUseCase
+import com.techcognics.erpapp.domain.usecase.GetCityUseCase
+import com.techcognics.erpapp.domain.usecase.GetCountryUseCase
+import com.techcognics.erpapp.domain.usecase.GetLeadSourceUseCase
+import com.techcognics.erpapp.domain.usecase.GetStateUseCase
 import com.techcognics.erpapp.domain.usecase.GetTokenUseCase
 import com.techcognics.erpapp.domain.usecase.LoginUseCase
 import com.techcognics.erpapp.domain.usecase.RegistrationUseCase
@@ -49,11 +55,11 @@ class ApplicationModule {
         gsonFactory: GsonConverterFactory, apiInterceptor: ApiInterceptor
     ): AppApiService {
         return Retrofit.Builder().baseUrl(Constant.BASE_URL).client(
-                OkHttpClient.Builder().addInterceptor(apiInterceptor).addInterceptor(
-                    HttpLoggingInterceptor().apply {
-                        level = HttpLoggingInterceptor.Level.BODY
-                    }).build()
-            ).addConverterFactory(gsonFactory).build().create(AppApiService::class.java)
+            OkHttpClient.Builder().addInterceptor(apiInterceptor).addInterceptor(
+                HttpLoggingInterceptor().apply {
+                    level = HttpLoggingInterceptor.Level.BODY
+                }).build()
+        ).addConverterFactory(gsonFactory).build().create(AppApiService::class.java)
     }
 
 
@@ -68,6 +74,10 @@ class ApplicationModule {
     @Provides
     fun provideSalesRepository(appApiService: AppApiService): SalseRepository =
         SalesRepositoryImpl(appApiService)
+
+    @Provides
+    fun provideAppRepository(appApiService: AppApiService): AppRepository =
+        AppRepositoryImpl(appApiService)
 
     @Provides
     fun provideLoginUserCase(userRepository: UserRepository) = LoginUseCase(userRepository)
@@ -103,4 +113,19 @@ class ApplicationModule {
     @Provides
     fun provideGetSalesYearUseCase(salseRepository: SalseRepository): GetSalesYearUseCase =
         GetSalesYearUseCase(salseRepository = salseRepository)
+
+    @Provides
+    fun provideGetCountryUseCase(appRepository: AppRepository) = GetCountryUseCase(appRepository)
+
+    @Provides
+    fun provideGetStateUseCase(appRepository: AppRepository) = GetStateUseCase(appRepository)
+
+    @Provides
+    fun provideGetCityUseCase(appRepository: AppRepository) = GetCityUseCase(appRepository)
+
+    @Provides
+    fun provideGetLeadSourceUseCase(appRepository: AppRepository) =
+        GetLeadSourceUseCase(appRepository)
+
+
 }

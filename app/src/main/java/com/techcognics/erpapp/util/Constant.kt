@@ -16,7 +16,9 @@ object Constant {
     const val DASHBOARD_SCREEN = "DASHBOARD"
     const val SALES_DASHBOARD_SCREEN = "SALES_DASHBOARD"
     const val COMPANY_DASHBOARD_SCREEN = "COMPANY_DASHBOARD"
+    const val CUSTOMER_SCREEN = "CUSTOMER_SCREEN"
     const val PROFILE_SCREEN = "PROFILE_SCREEN"
+    const val CUSTOMER_ADD_SCREEN = "CUSTOMER_ADD_SCREEN"
 
 
 
@@ -46,7 +48,11 @@ object Constant {
         ), DrawerMenu(
             icon = R.drawable.bar_chart,
             title = "Sales Dashboard",
-        )
+        ),
+        DrawerMenu(
+                icon = R.drawable.bar_chart,
+        title = "Customer",
+    )
     )
 
     //menuList

@@ -19,11 +19,11 @@ import androidx.compose.ui.unit.sp
 import com.techcognics.erpapp.R
 
 @Composable
-fun PrimaryButton(buttonText: String, onClick: () -> Unit) {
+fun PrimaryButton(modifier: Modifier = Modifier, buttonText: String, onClick: () -> Unit) {
 
     Button(
         onClick = onClick,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(26.dp),
         shape = RoundedCornerShape(5.dp),

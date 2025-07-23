@@ -42,7 +42,7 @@ fun LoginCardContent(
             Spacer(modifier = Modifier.height(20.dp))
             RememberMeRow(checked, onCheckedChange)
             Spacer(modifier = Modifier.height(10.dp))
-            PrimaryButton("Login") {onClick() }
+            PrimaryButton(modifier = Modifier.fillMaxWidth(), buttonText = "Login") {onClick() }
             Spacer(modifier = Modifier.height(8.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center

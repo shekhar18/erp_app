@@ -15,41 +15,40 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.techcognics.erpapp.presentation.component.text.LabelText
 
 @Composable
-fun InputField(
-    label: String, value: String, onValueChange: (String) -> Unit, isPassword: Boolean = false,
+fun MultilineInputField(
+    modifier: Modifier = Modifier,
+    label: String,
+    value: String,
+    onValueChange: (String) -> Unit,
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
         LabelText(label)
         Spacer(modifier = Modifier.height(5.dp))
         Box(
             modifier = Modifier
-                .height(28.dp)
+                .height(60.dp)
                 .fillMaxWidth()
+
                 .border(
                     width = 1.dp,
                     color = MaterialTheme.colorScheme.secondary,
                     shape = RoundedCornerShape(4.dp)
                 )
-                .padding(horizontal = 8.dp, vertical = 4.dp),
-            contentAlignment = Alignment.CenterStart
+                .padding(start = 10.dp, top = 10.dp), contentAlignment = Alignment.TopStart
         ) {
             BasicTextField(
                 modifier = Modifier.fillMaxWidth(),
                 value = value,
                 onValueChange = onValueChange,
-                singleLine = true,
-
-                visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
+                maxLines = 5,
+                singleLine = false,
                 textStyle = TextStyle(
-                    fontSize = 12.sp,
-                    color = MaterialTheme.colorScheme.onBackground
+                    fontSize = 12.sp, color = MaterialTheme.colorScheme.onBackground
                 ),
                 cursorBrush = SolidColor(MaterialTheme.colorScheme.onBackground),
             )

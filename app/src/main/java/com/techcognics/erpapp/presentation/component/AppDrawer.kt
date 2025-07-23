@@ -87,6 +87,9 @@ fun AppDrawer(
                                 Constant.dashboardMenu[1].title -> homeNavController.navigate(
                                     Constant.SALES_DASHBOARD_SCREEN
                                 )
+                                Constant.dashboardMenu[2].title -> homeNavController.navigate(
+                                    Constant.CUSTOMER_SCREEN
+                                )
 
                                 else -> {}
                             }
