@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,7 +24,12 @@ import com.techcognics.erpapp.presentation.component.text.LabelText
 
 @Composable
 fun InputField(
-    label: String, value: String, onValueChange: (String) -> Unit, isPassword: Boolean = false,
+    label: String,
+    value: String,
+    onValueChange: (String) -> Unit,
+    isPassword: Boolean = false,
+    validation: Boolean = false,
+    errorMessage: String = ""
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
         LabelText(label)
@@ -34,7 +40,7 @@ fun InputField(
                 .fillMaxWidth()
                 .border(
                     width = 1.dp,
-                    color = MaterialTheme.colorScheme.secondary,
+                    color = if (validation) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.secondary,
                     shape = RoundedCornerShape(4.dp)
                 )
                 .padding(horizontal = 8.dp, vertical = 4.dp),
@@ -48,10 +54,19 @@ fun InputField(
 
                 visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
                 textStyle = TextStyle(
-                    fontSize = 12.sp,
-                    color = MaterialTheme.colorScheme.onBackground
+                    fontSize = 12.sp, color = MaterialTheme.colorScheme.onBackground
                 ),
                 cursorBrush = SolidColor(MaterialTheme.colorScheme.onBackground),
+            )
+        }
+
+        if (validation) {
+            Spacer(modifier = Modifier.height(2.dp))
+            Text(
+                text = errorMessage,
+                style = MaterialTheme.typography.titleSmall,
+                fontSize = 12.sp,
+                color = MaterialTheme.colorScheme.error
             )
         }
     }

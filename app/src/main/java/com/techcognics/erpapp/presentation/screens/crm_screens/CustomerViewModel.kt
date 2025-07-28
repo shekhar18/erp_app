@@ -53,47 +53,105 @@ class CustomerViewModel @Inject constructor(
     //Business Partner Details field
     private val _customerCode: MutableLiveData<String> = MutableLiveData<String>("")
     val customerCode: LiveData<String> = _customerCode
+    private val _customerCodeValid: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
+    val customerCodeValid: LiveData<Boolean> = _customerCodeValid
 
+    //....
     private val _companyName: MutableLiveData<String> = MutableLiveData<String>("")
     val companyName: LiveData<String> = _companyName
+    private val _companyNameValid: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
+    val companyNameValid: LiveData<Boolean> = _companyNameValid
 
+    //....
     private val _customerPinCode: MutableLiveData<String> = MutableLiveData<String>("")
     val customerPinCode: LiveData<String> = _customerPinCode
+    private val _customerPinCodeValid: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
+    val customerPinCodeValid: LiveData<Boolean> = _customerPinCodeValid
+
+    //....
     private val _customerCategory: MutableLiveData<String> = MutableLiveData<String>("")
     val customerCategory: LiveData<String> = _customerCategory
+    private val _customerCategoryValid: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
+    val customerCategoryValid: LiveData<Boolean> = _customerCategoryValid
 
+    //...
     private val _country: MutableLiveData<String> = MutableLiveData<String>("")
     val country: LiveData<String> = _country
+    private val _countryValid: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
+    val countryValid: LiveData<Boolean> = _countryValid
 
+
+    //....
     private val _state: MutableLiveData<String> = MutableLiveData<String>("")
     val state: LiveData<String> = _state
+    private val _stateValid: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
+    val stateValid: LiveData<Boolean> = _stateValid
 
+
+    //....
     private val _city: MutableLiveData<String> = MutableLiveData<String>("")
     val city: LiveData<String> = _city
+    private val _cityValid: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
+    val cityValid: LiveData<Boolean> = _cityValid
 
+
+    //....
     private val _leadSource: MutableLiveData<String> = MutableLiveData<String>("")
     val leadSource: LiveData<String> = _leadSource
+    private val _leadSourceValid: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
+    val leadSourceValid: LiveData<Boolean> = _leadSourceValid
 
+
+    //....
     private val _address: MutableLiveData<String> = MutableLiveData<String>("")
     val address: LiveData<String> = _address
+    private val _addressValid: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
+    val addressValid: LiveData<Boolean> = _addressValid
+
+    //....
     private val _contactPerson: MutableLiveData<String> = MutableLiveData<String>("")
     val contactPerson: LiveData<String> = _contactPerson
+    private val _contactPersonValid: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
+    val contactPersonValid: LiveData<Boolean> = _contactPersonValid
 
+    //...
     private val _mobileNumber: MutableLiveData<String> = MutableLiveData<String>("")
     val mobileNumber: LiveData<String> = _mobileNumber
+    private val _mobileNumberValid: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
+    val mobileNumberValid: LiveData<Boolean> = _mobileNumberValid
+
+    //....
     private val _emailId: MutableLiveData<String> = MutableLiveData<String>("")
     val emailId: LiveData<String> = _emailId
+    private val _emailIdValid: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
+    val emailIdValid: LiveData<Boolean> = _emailIdValid
 
+    //....
     private val _shipName: MutableLiveData<String> = MutableLiveData<String>("")
     val shipName: LiveData<String> = _shipName
+    private val _shipNameValid: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
+    val shipNameValid: LiveData<Boolean> = _shipNameValid
 
+    //...
     private val _panNumber: MutableLiveData<String> = MutableLiveData<String>("")
     val panNumber: LiveData<String> = _panNumber
+    private val _panNumberValid: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
+    val panNumberValid: LiveData<Boolean> = _panNumberValid
+
+
+    //....
     private val _gstNumber: MutableLiveData<String> = MutableLiveData<String>("")
     val gstNumber: LiveData<String> = _gstNumber
+    private val _gstNumberValid: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
+    val gstNumberValid: LiveData<Boolean> = _gstNumberValid
+
+    //....
     private val _adharNumber: MutableLiveData<String> = MutableLiveData<String>("")
     val adharNumber: LiveData<String> = _adharNumber
+    private val _adharNumberValid: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
+    val adharNumberValid: LiveData<Boolean> = _adharNumberValid
 
+    //....
     private val _countryList: MutableLiveData<List<CountryResponse>> =
         MutableLiveData<List<CountryResponse>>(emptyList<CountryResponse>())
     val countryList: LiveData<List<CountryResponse>> = _countryList
@@ -209,6 +267,36 @@ class CustomerViewModel @Inject constructor(
         }
     }
 
+    fun updateFieldValidation(field: String, value: Boolean) {
+        when (field) {
+            "code" -> _customerCodeValid.value = value
+            "companyName" -> _companyNameValid.value = value
+            "customerPinCode" -> _customerPinCodeValid.value = value
+            "customerCategory" -> _customerCategoryValid.value = value
+            "country" -> _countryValid.value = value
+            "state" -> _stateValid.value = value
+            "city" -> _cityValid.value = value
+            "leadSource" -> _leadSourceValid.value = value
+            "address" -> _addressValid.value = value
+            "contactPerson" -> _contactPersonValid.value = value
+            "mobileNumber" -> _mobileNumberValid.value = value
+            "emailId" -> _emailIdValid.value = value
+            "shipName" -> _shipNameValid.value = value
+            "panCard" -> _panNumberValid.value = value
+            "gstNumber" -> _gstNumberValid.value = value
+            "adharNumber" -> _adharNumberValid.value = value
+            /*"creditDay" -> _creditDaysValid.value = value
+            "billingCurrency" -> _selectedBillingCurrencyValid.value = value
+            "accountControl" -> _selectionAccountControlValid.value = value
+            "industry" -> _selectedIndustryValid.value = value
+            "salsePerson" -> _selectedSalesPersonValid.value = value
+            "taxCategoryCode" -> _taxCategoryCodeValid.value = value
+            "groupCustomerCode" -> _groupCustomerCodeValid.value = value*/
+        }
+    }
+
+
+
     fun updateTermAndConditionList(list: List<String>) {
         _selectedTermAndCondition.value = list
     }
@@ -317,9 +405,62 @@ class CustomerViewModel @Inject constructor(
     }
 
 
-    fun validationForCreateCustomer() {
+    fun validationForCreateCustomer(pageNumber:Int) {
+
+        when(pageNumber){
+            1 -> getValidationOfBusinessPartnerDetails()
+            2 -> getValidationOfContactInformation()
+            3 -> getValidationOfBusinessShipAddress()
+            4 -> getValidationOfIdentificationAndTaxDetails()
+            5 -> getValidationOfBusinessAndAccountInfo()
+            6 -> getValidationOfPaymentAndFinancials()
+        }
 
     }
 
+    private fun getValidationOfPaymentAndFinancials() {
+        TODO("Not yet implemented")
+    }
+
+    private fun getValidationOfBusinessAndAccountInfo() {
+        TODO("Not yet implemented")
+    }
+
+    private fun getValidationOfIdentificationAndTaxDetails() {
+        TODO("Not yet implemented")
+    }
+
+    private fun getValidationOfBusinessShipAddress() {
+        TODO("Not yet implemented")
+    }
+
+    private fun getValidationOfContactInformation() {
+        TODO("Not yet implemented")
+    }
+
+
+    fun getValidationOfBusinessPartnerDetails() {
+        if (_customerCode.value?.isBlank() == true) {
+            _customerCodeValid.value = true
+        } else if (_companyName.value?.isBlank() == true) {
+            _companyNameValid.value = true
+        } else if (_customerPinCode.value.isNullOrEmpty()) {
+            _customerPinCodeValid.value = true
+        } else if (_customerCategory.value.isNullOrEmpty()) {
+            _customerCategoryValid.value = true
+        } else if (_country.value.isNullOrEmpty()) {
+            _countryValid.value = true
+        } else if (_state.value.isNullOrEmpty()) {
+            _stateValid.value = true
+        } else if(_city.value.isNullOrEmpty()){
+            _cityValid.value = true
+        }else if(_leadSource.value.isNullOrEmpty()){
+            _leadSourceValid.value = true
+        }else if(_address.value.isNullOrEmpty()){
+            _addressValid.value = true
+        }
+
+
+    }
 
 }

@@ -36,11 +36,14 @@ fun BusinessPartnerDetailsScree(modifier: Modifier = Modifier) {
     val scrollState = rememberScrollState()
     val viewModel: CustomerViewModel = hiltViewModel()
     var leadSource by rememberSaveable { mutableStateOf(emptyList<String>()) }
+
     LaunchedEffect(Unit) {
         viewModel.fetchData()
     }
+
     leadSource = viewModel.leadSourceList.observeAsState().value?.map { return@map it.leadSource }
         ?: emptyList<String>()
+
     Surface(
         modifier = modifier
             .fillMaxSize()
@@ -66,22 +69,42 @@ fun BusinessPartnerDetailsScree(modifier: Modifier = Modifier) {
                     InputField(
                         label = "Code*",
                         value = viewModel.customerCode.observeAsState().value.orEmpty(),
-                        onValueChange = { viewModel.updateFieldValue("code", it) })
+                        onValueChange = {
+                            viewModel.updateFieldValue("code", it)
+                            viewModel.updateFieldValidation("code", false)
+                        },
+                        validation = viewModel.customerCodeValid.observeAsState().value == true
+                    )
                     Spacer(modifier = modifier.height(10.dp))
                     InputField(
                         label = "Company Name*",
                         value = viewModel.companyName.observeAsState().value.orEmpty(),
-                        onValueChange = { viewModel.updateFieldValue("companyName", it) })
+                        onValueChange = {
+                            viewModel.updateFieldValue("companyName", it)
+                            viewModel.updateFieldValidation("companyName", false)
+                        },
+                        validation = viewModel.companyNameValid.observeAsState().value == true
+                    )
                     Spacer(modifier = modifier.height(10.dp))
                     InputField(
                         label = "Customer Pin Code*",
                         value = viewModel.customerPinCode.observeAsState().value.orEmpty(),
-                        onValueChange = { viewModel.updateFieldValue("customerPinCode", it) })
+                        onValueChange = {
+                            viewModel.updateFieldValue("customerPinCode", it)
+                            viewModel.updateFieldValidation("customerPinCode", false)
+                        },
+                        validation = viewModel.customerPinCodeValid.observeAsState().value == true
+                    )
                     Spacer(modifier = modifier.height(10.dp))
                     InputField(
                         label = "Category",
                         value = viewModel.customerCategory.observeAsState().value.orEmpty(),
-                        onValueChange = { viewModel.updateFieldValue("customerCategory", it) })
+                        onValueChange = {
+                            viewModel.updateFieldValue("customerCategory", it)
+                            viewModel.updateFieldValidation("customerCategory", false)
+                        },
+                        validation = viewModel.customerCategoryValid.observeAsState().value == true
+                    )
                     Spacer(modifier = modifier.height(10.dp))
                     SimpleDropDown(
                         label = "Country*",
@@ -89,6 +112,7 @@ fun BusinessPartnerDetailsScree(modifier: Modifier = Modifier) {
                         selectedOption = viewModel.country.observeAsState().value.orEmpty(),
                         onOptionSelected = {
                             viewModel.updateFieldValue("country", it)
+                            viewModel.updateFieldValidation("country", false)
                         })
                     Spacer(modifier = modifier.height(10.dp))
                     SimpleDropDown(
@@ -97,6 +121,7 @@ fun BusinessPartnerDetailsScree(modifier: Modifier = Modifier) {
                         selectedOption = viewModel.state.observeAsState().value.orEmpty(),
                         onOptionSelected = {
                             viewModel.updateFieldValue("state", it)
+                            viewModel.updateFieldValidation("state", false)
                         })
                     Spacer(modifier = modifier.height(10.dp))
                     SimpleDropDown(
@@ -105,6 +130,7 @@ fun BusinessPartnerDetailsScree(modifier: Modifier = Modifier) {
                         selectedOption = viewModel.city.observeAsState().value.orEmpty(),
                         onOptionSelected = {
                             viewModel.updateFieldValue("city", it)
+                            viewModel.updateFieldValidation("city", false)
                         })
                     Spacer(modifier = modifier.height(10.dp))
                     SimpleDropDown(
@@ -113,6 +139,7 @@ fun BusinessPartnerDetailsScree(modifier: Modifier = Modifier) {
                         selectedOption = viewModel.leadSource.observeAsState().value.orEmpty(),
                         onOptionSelected = {
                             viewModel.updateFieldValue("leadSource", it)
+                            viewModel.updateFieldValidation("leadSource", false)
                         })
                     Spacer(modifier = modifier.height(10.dp))
                     MultilineInputField(
@@ -121,9 +148,13 @@ fun BusinessPartnerDetailsScree(modifier: Modifier = Modifier) {
                         value = viewModel.address.observeAsState().value.orEmpty(),
                         onValueChange = {
                             viewModel.updateFieldValue("address", it)
-                        })
+                            viewModel.updateFieldValidation("address", false)
+                        },
+                        validation = viewModel.addressValid.observeAsState().value == true
+                    )
                 }
             }
+
             is Result.Error -> {
                 val message = (viewModel.BPDUiState.observeAsState().value as Result.Error).message
                 ErrorDialog(

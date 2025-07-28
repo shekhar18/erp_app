@@ -5,7 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -28,12 +27,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.techcognics.erpapp.presentation.component.button.PrimaryButton
-import com.techcognics.erpapp.presentation.screens.crm_screens.BusinessAndAccountInfoScreen
-import com.techcognics.erpapp.presentation.screens.crm_screens.BusinessPartnerDetailsScree
-import com.techcognics.erpapp.presentation.screens.crm_screens.BusinessShipAddress
-import com.techcognics.erpapp.presentation.screens.crm_screens.ContactInformationScreen
-import com.techcognics.erpapp.presentation.screens.crm_screens.IdentificationAndTaxDetailsScreen
-import com.techcognics.erpapp.presentation.screens.crm_screens.PaymentAndFinancialsScreen
 import kotlinx.coroutines.launch
 
 
@@ -42,7 +35,8 @@ fun MultiStepFormPager(
     modifier: Modifier = Modifier,
     homeNavHostController: NavHostController,
     pages: List<@Composable () -> Unit>,
-    onSubmit: (Int) -> Unit
+    onSubmit: (Int) -> Unit,
+    pageNumber: (Int) -> Unit
 ) {
 
 
@@ -51,9 +45,7 @@ fun MultiStepFormPager(
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
-    Column(
-
-    ) {
+    Column {
         StepperIndicator(
             currentStep = pagerState.currentPage, totalSteps = totalSteps
         )
@@ -76,6 +68,7 @@ fun MultiStepFormPager(
                     modifier = Modifier.weight(1f), buttonText = "Previous", onClick = {
                         scope.launch {
                             pagerState.animateScrollToPage(pagerState.currentPage - 1)
+                            pageNumber(pagerState.currentPage)
                         }
                     })
 
@@ -86,12 +79,14 @@ fun MultiStepFormPager(
                 buttonText = if (pagerState.currentPage == totalSteps - 1) "Submit" else "Next"
             ) {
                 scope.launch {
+
                     if (pagerState.currentPage == totalSteps - 1) {
                         // Handle Submit
                         Toast.makeText(context, "Form Submitted", Toast.LENGTH_SHORT).show()
                     } else {
                         pagerState.animateScrollToPage(pagerState.currentPage + 1)
                     }
+                    pageNumber(pagerState.currentPage)
                 }
             }
             Spacer(modifier = Modifier.width(8.dp))

@@ -35,7 +35,9 @@ fun SimpleDropDown(
     modifier: Modifier = Modifier,
     optionList: List<String>,
     selectedOption: String,
-    onOptionSelected: (String) -> Unit
+    onOptionSelected: (String) -> Unit,
+    validation: Boolean = false,
+    errorMessage: String = ""
 ) {
     var expanded by rememberSaveable { mutableStateOf(false) }
 
@@ -55,7 +57,7 @@ fun SimpleDropDown(
                 .height(28.dp)
                 .border(
                     width = 1.dp,
-                    color = MaterialTheme.colorScheme.secondary,
+                    color = if (validation) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.secondary,
                     shape = RoundedCornerShape(4.dp)
                 )
                 .clip(RoundedCornerShape(6.dp))

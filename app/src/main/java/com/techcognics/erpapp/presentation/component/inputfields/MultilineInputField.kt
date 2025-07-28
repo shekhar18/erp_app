@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,6 +26,7 @@ fun MultilineInputField(
     label: String,
     value: String,
     onValueChange: (String) -> Unit,
+    validation: Boolean = false,errorMessage:String=""
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
         LabelText(label)
@@ -36,7 +38,7 @@ fun MultilineInputField(
 
                 .border(
                     width = 1.dp,
-                    color = MaterialTheme.colorScheme.secondary,
+                    color = if(validation) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.secondary,
                     shape = RoundedCornerShape(4.dp)
                 )
                 .padding(start = 10.dp, top = 10.dp), contentAlignment = Alignment.TopStart
@@ -51,6 +53,15 @@ fun MultilineInputField(
                     fontSize = 12.sp, color = MaterialTheme.colorScheme.onBackground
                 ),
                 cursorBrush = SolidColor(MaterialTheme.colorScheme.onBackground),
+            )
+        }
+        if (validation) {
+            Spacer(modifier = Modifier.height(2.dp))
+            Text(
+                text = errorMessage,
+                style = MaterialTheme.typography.titleSmall,
+                fontSize = 12.sp,
+                color = MaterialTheme.colorScheme.error
             )
         }
     }
