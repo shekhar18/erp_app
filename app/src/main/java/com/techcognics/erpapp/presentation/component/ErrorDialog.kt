@@ -1,5 +1,7 @@
 package com.techcognics.erpapp.presentation.component
 
+import android.R.attr.onClick
+import android.R.id.message
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -23,8 +25,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.techcognics.erpapp.R
+import com.techcognics.erpapp.presentation.component.button.BoarderButton
+import com.techcognics.erpapp.presentation.component.button.PrimaryButton
 
 
 @Composable
@@ -70,8 +75,23 @@ fun ErrorDialog(modifier: Modifier = Modifier, onClick: () -> Unit, message: Str
                         style = MaterialTheme.typography.labelSmall,
                         textAlign = TextAlign.Center
                     )
+                    Spacer(modifier = Modifier.height(20.dp))
+                    PrimaryButton(
+                        modifier = Modifier.
+                        height(20.dp)
+                            .width(50.dp),
+                        buttonText = "OK"
+                    ) { }
                 }
             }
         }
     }
+}
+@Preview(showBackground = true)
+@Composable
+private fun ShowErrorDialog() {
+    ErrorDialog(
+        message = "Failed to load customer data.\nPlease check your network and try again.",
+        onClick = {}
+    )
 }
