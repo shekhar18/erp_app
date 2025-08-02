@@ -89,8 +89,8 @@ fun ErrorDialog(modifier: Modifier = Modifier, onClick: () -> Unit, message: Str
 }
 @Preview(showBackground = true)
 @Composable
-private fun ShowErrorDialog() {
-    ErrorDialog(
+private fun ShowSuccessDialog() {
+    SuccessDialog(
         message = "Failed to load customer data.\nPlease check your network and try again.",
         onClick = {}
     )
