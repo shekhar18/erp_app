@@ -30,7 +30,7 @@ import com.techcognics.erpapp.presentation.component.button.PrimaryButton
 
 
 @Composable
-fun ErrorDialog(modifier: Modifier = Modifier, onClick: () -> Unit, message: String="") {
+fun WarningDialog(modifier: Modifier = Modifier, onClick: () -> Unit, message: String="") {
     Column(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -59,8 +59,8 @@ fun ErrorDialog(modifier: Modifier = Modifier, onClick: () -> Unit, message: Str
                         content = {
                             Icon(
                                 modifier = modifier,
-                                painter = painterResource(id = R.drawable.error_icon),
-                                contentDescription = "Error",
+                                painter = painterResource(id = R.drawable.warning_icon),
+                                contentDescription = "Warning",
                                 tint = Color.Red,
                             )
                         },
@@ -68,7 +68,7 @@ fun ErrorDialog(modifier: Modifier = Modifier, onClick: () -> Unit, message: Str
 
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
-                        text = "An Error has occurred. Please try again",
+                        text = "Warning",
                         style = MaterialTheme.typography.labelSmall,
                         textAlign = TextAlign.Center
                     )
@@ -86,9 +86,9 @@ fun ErrorDialog(modifier: Modifier = Modifier, onClick: () -> Unit, message: Str
 }
 @Preview(showBackground = true)
 @Composable
-private fun ShowErrorDialog() {
-    ErrorDialog(
-        message = "Failed to load customer data.\nPlease check your network and try again.",
+private fun ShowWarningDialog() {
+    WarningDialog(
+        message = "Warning",
         onClick = {}
     )
 }

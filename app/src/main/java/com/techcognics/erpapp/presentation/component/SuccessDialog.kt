@@ -74,8 +74,8 @@ fun SuccessDialog(modifier: Modifier = Modifier, onClick: () -> Unit, message: S
                     )
                     Spacer(modifier = Modifier.height(20.dp))
                     PrimaryButton(
-                        modifier = Modifier.
-                        height(20.dp)
+                        modifier = Modifier
+                            .height(20.dp)
                             .width(50.dp),
                         buttonText = "OK"
                     ) { }
@@ -84,10 +84,18 @@ fun SuccessDialog(modifier: Modifier = Modifier, onClick: () -> Unit, message: S
         }
     }
 }
+//@Preview(showBackground = true)
+//@Composable
+//private fun ShowSuccessDialog() {
+//    SuccessDialog(
+//        message = "Success",
+//        onClick = {}
+//    )
+//}
 @Preview(showBackground = true)
 @Composable
 private fun ShowSuccessDialog() {
-    ErrorDialog(
+    SuccessDialog(
         message = "Success",
         onClick = {}
     )
