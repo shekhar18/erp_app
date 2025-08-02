@@ -9,6 +9,7 @@ import com.techcognics.erpapp.data.LeadSourceResponse
 import com.techcognics.erpapp.data.PaymentTermsResponse
 import com.techcognics.erpapp.data.SalesTeamResponse
 import com.techcognics.erpapp.data.StateResponse
+import com.techcognics.erpapp.data.crm_data.CusotmerResponce
 
 interface AppRepository {
     suspend fun getCountry(
@@ -33,6 +34,6 @@ interface AppRepository {
     suspend fun getAccountControl(token: String): List<ControlAccountDetailsResponse>
     suspend fun getSalesTeam(token: String): List<SalesTeamResponse>
     suspend fun getIndustry(token: String): List<IndustryResponse>
-
+    suspend fun getCustomers(token: String):List<CusotmerResponce>
 
 }

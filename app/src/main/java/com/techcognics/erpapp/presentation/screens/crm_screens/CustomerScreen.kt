@@ -17,12 +17,17 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.techcognics.erpapp.data.table_data.TableRowData
+import com.techcognics.erpapp.presentation.base.Result
+import com.techcognics.erpapp.presentation.component.Loader
 import com.techcognics.erpapp.presentation.component.ScreenTitle
 import com.techcognics.erpapp.presentation.component.table.DataTable
 import com.techcognics.erpapp.util.Constant
@@ -37,33 +42,51 @@ fun CustomerScreen(
     val viewModel: CustomerViewModel = hiltViewModel()
     val scrollState = rememberScrollState()
 
+    LaunchedEffect(true) {
+        viewModel.fetchBusinessPartner()
+    }
+
     Scaffold(modifier = modifier.padding(paddingValue), content = { it ->
-        Column(
-            modifier = modifier
-                .padding(it)
-                .fillMaxHeight()
-        ) {
-            Row(
+
+
+        when (viewModel.BPLUIState.observeAsState().value) {
+            is Result.Loading -> Loader()
+
+
+            is Result.Idle, is Result.Success -> Column(
                 modifier = modifier
-                    .fillMaxWidth()
-                    .background(Color.Gray)
-                    .padding(start = 5.dp, end = 5.dp)
-                    .height(50.dp)
-
+                    .padding(it)
+                    .fillMaxHeight()
             ) {
+                Row(
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .background(Color.Gray)
+                        .padding(start = 5.dp, end = 5.dp)
+                        .height(50.dp)
 
+                ) {
+
+                }
+                Spacer(modifier = modifier.height(5.dp))
+                DataTable(
+                    headers = listOf(
+                        "Code",
+                        "Company Name",
+                        "Contact Person",
+                        "Mobile Number",
+                        "Address"
+                    ),
+                    rows = viewModel.tableRowData.observeAsState().value.orEmpty(),
+                    headerColor = Color.LightGray
+                )
             }
-            Spacer(modifier = modifier.height(5.dp))
-            DataTable(
-                headers = listOf("ID", "Name", "Email"), rows = listOf(
-                    TableRowData(listOf("3", "Charlie", "charlie@example.com")),
-                    TableRowData(listOf("1", "Alice", "alice@example.com")),
-                    TableRowData(listOf("2", "Bob", "bob@example.com")),
-                ), headerColor = Color.LightGray
-            )
 
+            is Result.Error -> {}
+            else -> {}
 
         }
+
 
     }, topBar = { ScreenTitle(titleFirst = "Customer") }, floatingActionButton = {
         FloatingActionButton(onClick = {

@@ -13,7 +13,10 @@ import com.techcognics.erpapp.data.LeadSourceResponse
 import com.techcognics.erpapp.data.PaymentTermsResponse
 import com.techcognics.erpapp.data.SalesTeamResponse
 import com.techcognics.erpapp.data.StateResponse
+import com.techcognics.erpapp.data.crm_data.CusotmerResponce
+import com.techcognics.erpapp.data.table_data.TableRowData
 import com.techcognics.erpapp.domain.usecase.GetBillingCurrencyUseCase
+import com.techcognics.erpapp.domain.usecase.GetBusinessPartnerUseCase
 import com.techcognics.erpapp.domain.usecase.GetCityUseCase
 import com.techcognics.erpapp.domain.usecase.GetCountryUseCase
 import com.techcognics.erpapp.domain.usecase.GetIndustryUseCase
@@ -43,6 +46,7 @@ class CustomerViewModel @Inject constructor(
     val retrieveAccountControlUseCase: RetrieveAccountControlUseCase,
     val salesTeamUseCase: GetSalesTeamUseCase,
     val getIndustryUseCase: GetIndustryUseCase,
+    val getBusinessPartnerUseCase: GetBusinessPartnerUseCase,
 ) : ViewModel() {
 
 
@@ -234,6 +238,22 @@ class CustomerViewModel @Inject constructor(
     val groupCustomerCode: LiveData<String> = _groupCustomerCode
     //payment and financials field
 
+    //business partner
+    private val _BPLUIState: MutableLiveData<Result<Unit>> = MutableLiveData<Result<Unit>>()
+    val BPLUIState: LiveData<Result<Unit>> = _BPLUIState
+
+    private val _businessPartnerList: MutableLiveData<List<CusotmerResponce>> =
+        MutableLiveData<List<CusotmerResponce>>()
+    val businessPartnerList: LiveData<List<CusotmerResponce>> = _businessPartnerList
+
+    private val _tableRowData: MutableLiveData<List<TableRowData>> =
+        MutableLiveData<List<TableRowData>>(
+            emptyList()
+        )
+    val tableRowData: LiveData<List<TableRowData>> = _tableRowData
+    //business partner
+
+
     fun updateCustomerSearch(value: String) {
         _customerSearch.value = value
 
@@ -294,7 +314,6 @@ class CustomerViewModel @Inject constructor(
             "groupCustomerCode" -> _groupCustomerCodeValid.value = value*/
         }
     }
-
 
 
     fun updateTermAndConditionList(list: List<String>) {
@@ -363,6 +382,38 @@ class CustomerViewModel @Inject constructor(
 
     }
 
+    fun fetchBusinessPartner() {
+        _BPLUIState.value = Result.Loading
+        viewModelScope.launch(Dispatchers.IO) {
+            supervisorScope {
+                getTokenUseCase.invoke().collect { token ->
+                    val businessPartner = getBusinessPartnerUseCase.invoke(token.toString())
+                    _businessPartnerList.postValue(businessPartner)
+
+                    val listOfTableRows = businessPartner.map {
+                         TableRowData(
+                            listOf<String>(
+                                it.bpCode,
+                                it.bpCompanyName,
+                                it.contactPerson,
+                                it.mobileNo,
+                                it.address
+                            )
+                        )
+                    }
+                    _tableRowData.postValue(listOfTableRows)
+
+
+                    withContext(Dispatchers.Main) {
+                        _BPLUIState.value = Result.Success(Unit)
+                    }
+
+                }
+            }
+        }
+
+    }
+
 
     fun countryList(): List<String> {
         return _countryList.value?.map { return@map it.countryName } ?: emptyList<String>()
@@ -405,9 +456,9 @@ class CustomerViewModel @Inject constructor(
     }
 
 
-    fun validationForCreateCustomer(pageNumber:Int) {
+    fun validationForCreateCustomer(pageNumber: Int) {
 
-        when(pageNumber){
+        when (pageNumber) {
             1 -> getValidationOfBusinessPartnerDetails()
             2 -> getValidationOfContactInformation()
             3 -> getValidationOfBusinessShipAddress()
@@ -452,11 +503,11 @@ class CustomerViewModel @Inject constructor(
             _countryValid.value = true
         } else if (_state.value.isNullOrEmpty()) {
             _stateValid.value = true
-        } else if(_city.value.isNullOrEmpty()){
+        } else if (_city.value.isNullOrEmpty()) {
             _cityValid.value = true
-        }else if(_leadSource.value.isNullOrEmpty()){
+        } else if (_leadSource.value.isNullOrEmpty()) {
             _leadSourceValid.value = true
-        }else if(_address.value.isNullOrEmpty()){
+        } else if (_address.value.isNullOrEmpty()) {
             _addressValid.value = true
         }
 

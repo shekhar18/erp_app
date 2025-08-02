@@ -14,6 +14,7 @@ import com.techcognics.erpapp.data.company_dashboard_data.AllTotalAmountResponse
 import com.techcognics.erpapp.data.company_dashboard_data.AmountsByMonthResponse
 import com.techcognics.erpapp.data.company_dashboard_data.SalesInvoiceByMonthResponse
 import com.techcognics.erpapp.data.company_dashboard_data.TotalIncomeAmountResponse
+import com.techcognics.erpapp.data.crm_data.CusotmerResponce
 import com.techcognics.erpapp.data.login_data.LoginRequest
 import com.techcognics.erpapp.data.login_data.LoginResponse
 import com.techcognics.erpapp.data.profile_data.UserProfileResponse
@@ -200,5 +201,8 @@ interface AppApiService {
         @Header("Authorization") token: String,
     ): List<SalesTeamResponse>
 
+
+    @GET("businessPartner/fetchBpDetailsBy/CUSTOMER")
+    suspend fun getBusinessPartner(@Header("Authorization") token: String): List<CusotmerResponce>
 
 }

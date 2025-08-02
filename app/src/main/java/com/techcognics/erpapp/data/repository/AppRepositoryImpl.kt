@@ -9,6 +9,7 @@ import com.techcognics.erpapp.data.LeadSourceResponse
 import com.techcognics.erpapp.data.PaymentTermsResponse
 import com.techcognics.erpapp.data.SalesTeamResponse
 import com.techcognics.erpapp.data.StateResponse
+import com.techcognics.erpapp.data.crm_data.CusotmerResponce
 import com.techcognics.erpapp.data.network.api_service.AppApiService
 import com.techcognics.erpapp.domain.repository.AppRepository
 import javax.inject.Inject
@@ -49,5 +50,9 @@ class AppRepositoryImpl @Inject constructor(val appApiService: AppApiService) : 
     override suspend fun getIndustry(token: String): List<IndustryResponse> {
         return appApiService.industry(token)
     }
+
+    override suspend fun getCustomers(token: String): List<CusotmerResponce> =
+        appApiService.getBusinessPartner(token)
+
 
 }
